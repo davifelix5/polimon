@@ -1,27 +1,22 @@
-*target*
+##############################
+## Java
+##############################
+.mtj.tmp/
+*.class
 *.jar
 *.war
 *.ear
-*.class
+*.nar
+hs_err_pid*
+replay_pid*
 
-# eclipse specific git ignore
-*.pydevproject
-.project
-.metadata
-bin/**
-tmp/**
-tmp/**/*
-*.tmp
-*.bak
-*.swp
-*~.nib
-local.properties
-.classpath
-.settings/
-.loadpath
+##############################
+## Visual Studio Code
+##############################
+.vscode/
+.code-workspace
 
-# External tool builders
-.externalToolBuilders/
-
-# Locally stored "Eclipse launch configurations"
-*.launch
+##############################
+## OS X
+##############################
+.DS_Store
