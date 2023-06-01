@@ -1,5 +1,5 @@
 
-public enum STATE {
+public enum State {
 	Game,
 	Options,
 	Credits,

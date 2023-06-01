@@ -6,20 +6,31 @@ public class GamePanel extends JPanel implements Runnable {
     final int originalTileSize = 32;
     final int scale = 1;
     final int tileSize = scale * originalTileSize;
-    final int maxScreenCol = 12;
-    final int maxScreenRow = 16;
+    final int maxScreenCol = 15;
+    final int maxScreenRow = 20;
     final int width = tileSize*maxScreenRow;
     final int height = tileSize*maxScreenCol;
     final int FPS = 60;
 
     Thread thread;
+    public Menu menu;
+    public RestScreen rest;
+
+    public State gameState;
 
     KeyHandler keyHandler = new KeyHandler();
+    MouseHandler mouseHandler = new MouseHandler(this);
+
     public GamePanel() {
+        this.gameState = State.RestScreen;
+        this.rest = new RestScreen();
+        this.menu = new Menu(mouseHandler);
+        this.addKeyListener(keyHandler);
+        this.addMouseListener(mouseHandler);
+
         this.setPreferredSize(new Dimension(width, height));
         this.setBackground(Color.black);
         this.setDoubleBuffered(true);
-        this.addKeyListener(keyHandler);
         this.setFocusable(true);
         this.requestFocus();
     }
@@ -53,7 +64,7 @@ public class GamePanel extends JPanel implements Runnable {
 
             while (delta >= 1) {
                 // Update information regarding the game state
-                update();
+                tick();
                 // Since there has been updates, the game should render
                 shouldRender = true;
                 delta--;
@@ -74,23 +85,32 @@ public class GamePanel extends JPanel implements Runnable {
         }
     }
 
-    public void update() {
-        if (keyHandler.upPressed)
-            playerY -= playerSpeed;
-        if (keyHandler.downPressed)
-            playerY += playerSpeed;
-        if (keyHandler.leftPressed)
-            playerX -= playerSpeed;
-        if (keyHandler.rightPressed)
-            playerX += playerSpeed;
+    public void manageState() {
+        switch (gameState) {
+            case RestScreen: {
+                if (keyHandler.anyKeyPressed) {
+                    this.gameState = State.MainMenu;
+                }
+            }
+        }
+    }
+
+    public void tick() {
+        manageState();
+        switch (gameState) {
+            case MainMenu -> menu.tick();
+            case RestScreen -> rest.tick();
+        }
+
     }
 
     @Override
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
         Graphics2D g2d = (Graphics2D) g;
-        g2d.setColor(Color.CYAN);
-        g2d.fillRect(playerX, playerY, tileSize, tileSize);
-        g2d.dispose();
+        switch (gameState) {
+            case MainMenu -> menu.render(g);
+            case RestScreen -> rest.render(g);
+        }
     }
 }
