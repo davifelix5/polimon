@@ -1,4 +1,10 @@
+package game.elements;
+
 import java.awt.*;
+
+import game.handlers.MouseHandler;
+import game.handlers.MouseInteraction;
+import game.handlers.MouseInteractionStrategy;
 
 public class Button implements MouseInteraction {
 

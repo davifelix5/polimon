@@ -1,3 +1,11 @@
+package game;
+
+import game.handlers.KeyHandler;
+import game.handlers.MouseHandler;
+import game.state.Menu;
+import game.state.RestScreen;
+import game.state.State;
+
 import javax.swing.*;
 import java.awt.*;
 
@@ -24,7 +32,7 @@ public class GamePanel extends JPanel implements Runnable {
     public GamePanel() {
         this.gameState = State.RestScreen;
         this.rest = new RestScreen();
-        this.menu = new Menu(mouseHandler);
+        this.menu = new game.state.Menu(mouseHandler);
         this.addKeyListener(keyHandler);
         this.addMouseListener(mouseHandler);
 
@@ -71,7 +79,7 @@ public class GamePanel extends JPanel implements Runnable {
             }
 
             if (shouldRender) {
-                // Draw elements on the screen
+                // Draw game.elements on the screen
                 repaint();
                 drawCount++;
             }

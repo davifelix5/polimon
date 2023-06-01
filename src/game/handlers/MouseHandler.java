@@ -1,3 +1,7 @@
+package game.handlers;
+
+import game.GamePanel;
+
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;

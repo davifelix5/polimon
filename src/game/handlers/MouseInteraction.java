@@ -1,3 +1,5 @@
+package game.handlers;
+
 public interface MouseInteraction {
     MouseInteractionStrategy getInteractionStrategy();
     int getWidth();

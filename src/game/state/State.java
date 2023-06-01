@@ -1,3 +1,4 @@
+package game.state;
 
 public enum State {
 	Game,

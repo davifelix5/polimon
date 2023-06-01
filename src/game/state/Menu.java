@@ -1,3 +1,8 @@
+package game.state;
+
+import game.elements.*;
+import game.handlers.MouseHandler;
+
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics;
