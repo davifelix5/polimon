@@ -11,7 +11,7 @@ public class Play {
 
     public Play(KeyHandler keyHandler) {
         this.keyHandler = keyHandler;
-        player = new Player(50, 50, keyHandler);
+        player = new Player(50, 50, 2, keyHandler);
     }
 
     public void tick() {

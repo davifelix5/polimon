@@ -6,15 +6,16 @@ import java.util.ArrayList;
 public class SpriteSheet {
     public BufferedImage image;
 
-    public int spriteWidth, spriteHeigth;
+    public int spriteWidth, spriteHeigth, lins, cols;
 
     public ArrayList<BufferedImage> sprites = new ArrayList<>();
 
-    // 
     public SpriteSheet(BufferedImage image, int spriteWidth, int spriteHeigth){
         this.image = image;
         this.spriteWidth = spriteWidth;
         this.spriteHeigth = spriteHeigth;
+        this.lins = (image.getHeight() / spriteHeigth);
+        this.cols = (image.getWidth() / spriteWidth);
         this.getSpriteList();
     }
 
@@ -25,9 +26,6 @@ public class SpriteSheet {
     }
 
     public void getSpriteList(){
-        int cols = (image.getWidth() / spriteWidth);
-        int lins = (image.getHeight() / spriteHeigth);
-
         for(int j = 1; j <= cols; j ++){
             for(int i = 1; i <= lins; i ++){
                 sprites.add(grabImage(i, j));
@@ -36,8 +34,6 @@ public class SpriteSheet {
     }
 
     public BufferedImage getSprite(int lin, int col){
-        int i = lin - 1;
-        int j = col - 1;
-        return sprites.get((i*4) + j);
+        return sprites.get((lin*4) + col);
     }
 }

@@ -1,5 +1,6 @@
 package game.entity;
 
+import game.animation.Animation;
 import game.animation.SpriteSheet;
 import game.handlers.KeyHandler;
 
@@ -7,105 +8,90 @@ import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.util.ArrayList;
 
 import javax.imageio.ImageIO;
 
 public class Player extends Entity {
 
     private final KeyHandler movementKeyInput;
+    private final ArrayList<Animation> animations = new ArrayList<>();
+    private int currentAnimationIndex;
+    private final int movingRate;
 
-    public SpriteSheet sprites;
-
-    public String direction;
-
-    
-
-    public Double spriteCounter = 0.0;
-    public int spriteNum = 1;
-
-    public Player(int x, int y, KeyHandler movementKeyInput) {
+    public Player(int x, int y, int movingRate, KeyHandler movementKeyInput) {
         super(x, y);
+        this.movingRate = movingRate;
+        this.currentAnimationIndex = 0;
         this.movementKeyInput = movementKeyInput;
-        getPlayerImage();
+        definePlayerAnimation();
     }
 
     @Override
     public void tick() {
-        if (direction == null) {
-            direction = "Stop";
-        } else {
-            switch (direction) {
-                case "Rigth" -> direction = "RigthStop";
-                case "Left" -> direction = "LeftStop";
-                case "Up" -> direction = "UpStop";
-                case "Down" -> direction = "Stop";
+        int BACKWARD = 0, LEFT = 1,  RIGHT = 2, FOWARD = 3;
+
+        if (!movementKeyInput.downPressed && !movementKeyInput.upPressed){
+            if (currentAnimationIndex == FOWARD || currentAnimationIndex == BACKWARD) {
+                getAnimation().stop();
+                getAnimation().reset();
             }
-        }
-
-        if (movementKeyInput.upPressed) {
-            direction = "Up";
-        } else if (movementKeyInput.downPressed) {
-            direction = "Down";
-        }
-
-        // Movimentação em y
-        if (movementKeyInput.leftPressed) {
-            direction = "Left";
-        } else if (movementKeyInput.rightPressed) {
-            direction = "Rigth";
-        }
-
-        if (!movementKeyInput.downPressed && !movementKeyInput.upPressed)
             setVelY(0);
+        }
 
-        if (!movementKeyInput.rightPressed && !movementKeyInput.leftPressed)
+        if (!movementKeyInput.rightPressed && !movementKeyInput.leftPressed) {
+            if (currentAnimationIndex == RIGHT || currentAnimationIndex == LEFT) {
+                getAnimation().stop();
+                getAnimation().reset();
+            }
             setVelX(0);
+        }
 
         // Movimentação em X
         if (getVelX() == 0) {
             if (movementKeyInput.upPressed) {
-                setVelY(-2);
+                currentAnimationIndex = FOWARD;
+                getAnimation().start();
+                setVelY(-movingRate);
             } else if (movementKeyInput.downPressed) {
-                setVelY(2);
+                currentAnimationIndex = BACKWARD;
+                getAnimation().start();
+                setVelY(movingRate);
             }
         }
 
         // Movimentação em y
         if (getVelY() == 0) {
             if (movementKeyInput.leftPressed) {
-                setVelX(-2);
+                currentAnimationIndex = LEFT;
+                getAnimation().start();
+                setVelX(-movingRate);
             } else if (movementKeyInput.rightPressed) {
-                setVelX(2);
+                currentAnimationIndex = RIGHT;
+                getAnimation().start();
+                setVelX(movingRate);
             }
         }
 
+        getAnimation().tick();
         setX(getX() + getVelX());
         setY(getY() + getVelY());
-
-        spriteCounter += 1;
-        spriteChanger();
     }
 
-    public void spriteChanger(){
-        if (spriteCounter > 10){
-            spriteCounter = 0.0;
-            if(spriteNum == 1){
-                spriteNum = 2;
-            }
-            else if(spriteNum == 2){
-                spriteNum = 1;
-            }
-        }
+    private Animation getAnimation() {
+        return animations.get(currentAnimationIndex);
     }
 
-
-    public void getPlayerImage(){
+    public void definePlayerAnimation(){
         try {
-
             BufferedImage spriteSheet = ImageIO.read(new FileInputStream("src/game/res/sprites/playerSprites.png"));
-
-            this.sprites = new SpriteSheet(spriteSheet, 32, 41);
-        
+            SpriteSheet sprites = new SpriteSheet(spriteSheet, 32, 41);
+            for (int i = 0; i < sprites.lins; i++) {
+                ArrayList<BufferedImage> frames = new ArrayList<>();
+                for (int j = 0; j < sprites.cols; j++)
+                    frames.add(sprites.getSprite(i, j));
+                animations.add(new Animation(frames, 10));
+            }
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -114,42 +100,7 @@ public class Player extends Entity {
     @Override
     public void render(Graphics g) {
 
-        BufferedImage image = null;
-
-        switch (direction) {
-            case "Stop" -> image = sprites.getSprite(1 , 1);
-            case "Up" -> {
-                if (spriteNum == 1) {
-                    image = sprites.getSprite(4 , 2);
-                } else if (spriteNum == 2) {
-                    image = sprites.getSprite(4, 4);
-                }
-            }
-            case "Left" -> {
-                if (spriteNum == 1) {
-                    image = sprites.getSprite(2 , 2);
-                } else if (spriteNum == 2) {
-                    image = sprites.getSprite(2 , 4);
-                }
-            }
-            case "Rigth" -> {
-                if (spriteNum == 1) {
-                    image = sprites.getSprite(3 , 2);
-                } else if (spriteNum == 2) {
-                    image = sprites.getSprite(3 , 4);
-                }
-            }
-            case "Down" -> {
-                if (spriteNum == 1) {
-                    image = sprites.getSprite(1 , 2);
-                } else if (spriteNum == 2) {
-                    image = sprites.getSprite(1 , 4);
-                }
-            }
-            case "RigthStop" -> image = sprites.getSprite(3 , 1);
-            case "LeftStop" -> image = sprites.getSprite(2 , 1);
-            case "UpStop" -> image = sprites.getSprite(4 , 1);
-        }
+        BufferedImage image = getAnimation().nextSprite();
         g.drawImage(image, getX(), getY(), 32, 32, null);
 
     }
