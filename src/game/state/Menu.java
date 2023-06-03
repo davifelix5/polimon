@@ -1,11 +1,11 @@
 package game.state;
 
+import game.GamePanel;
 import game.buttons.*;
+import game.buttons.Button;
 import game.handlers.MouseHandler;
 
-import java.awt.Color;
-import java.awt.Font;
-import java.awt.Graphics;
+import java.awt.*;
 
 public class Menu {
 
@@ -28,6 +28,9 @@ public class Menu {
 		exit = new Button("Exit", 120, 340, 400, 50, mouse, new ExitButtonStrategy());
 
 		Font h1 = new Font("arial", Font.BOLD, 32);
+
+		g.setColor(Color.BLACK);
+		g.fillRect(0,0, GamePanel.width, GamePanel.height);
 
 		g.setFont(h1);
 		g.setColor(Color.white);

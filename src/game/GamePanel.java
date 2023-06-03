@@ -12,13 +12,13 @@ import java.awt.*;
 
 public class GamePanel extends JPanel implements Runnable {
 
-    static final int originalTileSize = 32;
-    static final int scale = 1;
-    static final int tileSize = scale * originalTileSize;
-    static final int maxScreenCol = 15;
-    static final int maxScreenRow = 20;
-    static final int width = tileSize*maxScreenRow;
-    static final int height = tileSize*maxScreenCol;
+    public static final int originalTileSize = 32;
+    public static final int scale = 1;
+    public static final int tileSize = scale * originalTileSize;
+    public static final int maxScreenCol = 20;
+    public static final int maxScreenRow = 30;
+    public static final int width = tileSize*maxScreenRow;
+    public static final int height = tileSize*maxScreenCol;
     final int FPS = 60;
 
     Thread thread;
@@ -35,12 +35,12 @@ public class GamePanel extends JPanel implements Runnable {
         this.gameState = State.RestScreen;
         this.addKeyListener(keyHandler);
         this.addMouseListener(mouseHandler);
+        this.setDoubleBuffered(true);
         this.rest = new RestScreen();
         this.menu = new Menu(mouseHandler);
         this.play = new Play(keyHandler);
 
         this.setPreferredSize(new Dimension(width, height));
-        this.setBackground(Color.black);
         this.setDoubleBuffered(true);
         this.setFocusable(true);
         this.requestFocus();
