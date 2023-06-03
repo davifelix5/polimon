@@ -41,31 +41,42 @@ public class Player extends Entity {
                 case "Down" -> direction = "Stop";
             }
         }
-        // Movimentação em X
-        if (movementKeyInput.upPressed){
-            setVelY(-2);
+
+        if (movementKeyInput.upPressed) {
             direction = "Up";
-        }
-        else if (movementKeyInput.downPressed){
-            setVelY(2);
+        } else if (movementKeyInput.downPressed) {
             direction = "Down";
-        }
-        else{
-            setVelY(0);
         }
 
         // Movimentação em y
-        if (movementKeyInput.leftPressed){
-            setVelX(-2);
+        if (movementKeyInput.leftPressed) {
             direction = "Left";
-        }
-
-        else if(movementKeyInput.rightPressed){
-            setVelX(2);
+        } else if (movementKeyInput.rightPressed) {
             direction = "Rigth";
         }
-        else{
+
+        if (!movementKeyInput.downPressed && !movementKeyInput.upPressed)
+            setVelY(0);
+
+        if (!movementKeyInput.rightPressed && !movementKeyInput.leftPressed)
             setVelX(0);
+
+        // Movimentação em X
+        if (getVelX() == 0) {
+            if (movementKeyInput.upPressed) {
+                setVelY(-2);
+            } else if (movementKeyInput.downPressed) {
+                setVelY(2);
+            }
+        }
+
+        // Movimentação em y
+        if (getVelY() == 0) {
+            if (movementKeyInput.leftPressed) {
+                setVelX(-2);
+            } else if (movementKeyInput.rightPressed) {
+                setVelX(2);
+            }
         }
 
         setX(getX() + getVelX());
