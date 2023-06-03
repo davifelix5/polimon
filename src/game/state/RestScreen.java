@@ -6,16 +6,14 @@ import java.awt.Graphics;
 import java.awt.event.KeyAdapter;
 
 public class RestScreen extends KeyAdapter {
-	
-	
-	
+
 	public void tick() {
 		
 	}
 	public void render(Graphics g) {
 		
-		Font h1 = new Font("arial", 1, 60);
-		Font h2 = new Font("arial", 1, 26);
+		Font h1 = new Font("arial", Font.BOLD, 60);
+		Font h2 = new Font("arial", Font.BOLD, 26);
 		
 		g.setFont(h1);
 		g.setColor(Color.white);

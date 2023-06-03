@@ -1,4 +1,4 @@
-package game.elements;
+package game.buttons;
 
 import java.awt.*;
 

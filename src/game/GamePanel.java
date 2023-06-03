@@ -3,6 +3,7 @@ package game;
 import game.handlers.KeyHandler;
 import game.handlers.MouseHandler;
 import game.state.Menu;
+import game.state.Play;
 import game.state.RestScreen;
 import game.state.State;
 
@@ -11,18 +12,19 @@ import java.awt.*;
 
 public class GamePanel extends JPanel implements Runnable {
 
-    final int originalTileSize = 32;
-    final int scale = 1;
-    final int tileSize = scale * originalTileSize;
-    final int maxScreenCol = 15;
-    final int maxScreenRow = 20;
-    final int width = tileSize*maxScreenRow;
-    final int height = tileSize*maxScreenCol;
+    static final int originalTileSize = 32;
+    static final int scale = 1;
+    static final int tileSize = scale * originalTileSize;
+    static final int maxScreenCol = 15;
+    static final int maxScreenRow = 20;
+    static final int width = tileSize*maxScreenRow;
+    static final int height = tileSize*maxScreenCol;
     final int FPS = 60;
 
     Thread thread;
     public Menu menu;
     public RestScreen rest;
+    public Play play;
 
     public State gameState;
 
@@ -31,10 +33,11 @@ public class GamePanel extends JPanel implements Runnable {
 
     public GamePanel() {
         this.gameState = State.RestScreen;
-        this.rest = new RestScreen();
-        this.menu = new game.state.Menu(mouseHandler);
         this.addKeyListener(keyHandler);
         this.addMouseListener(mouseHandler);
+        this.rest = new RestScreen();
+        this.menu = new Menu(mouseHandler);
+        this.play = new Play(keyHandler);
 
         this.setPreferredSize(new Dimension(width, height));
         this.setBackground(Color.black);
@@ -42,9 +45,6 @@ public class GamePanel extends JPanel implements Runnable {
         this.setFocusable(true);
         this.requestFocus();
     }
-
-    int playerX = 128, playerY = 196;
-    int playerSpeed = 4;
 
     public void start() {
         thread = new Thread(this);
@@ -94,11 +94,9 @@ public class GamePanel extends JPanel implements Runnable {
     }
 
     public void manageState() {
-        switch (gameState) {
-            case RestScreen: {
-                if (keyHandler.anyKeyPressed) {
-                    this.gameState = State.MainMenu;
-                }
+        if (gameState == State.RestScreen) {
+            if (keyHandler.anyKeyPressed) {
+                this.gameState = State.MainMenu;
             }
         }
     }
@@ -108,6 +106,7 @@ public class GamePanel extends JPanel implements Runnable {
         switch (gameState) {
             case MainMenu -> menu.tick();
             case RestScreen -> rest.tick();
+            case Game -> play.tick();
         }
 
     }
@@ -115,10 +114,14 @@ public class GamePanel extends JPanel implements Runnable {
     @Override
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
-        Graphics2D g2d = (Graphics2D) g;
         switch (gameState) {
             case MainMenu -> menu.render(g);
             case RestScreen -> rest.render(g);
+            case Game -> play.render(g);
         }
+    }
+
+    public void setGameState(State gameState) {
+        this.gameState = gameState;
     }
 }
