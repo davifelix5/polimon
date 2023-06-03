@@ -1,4 +1,4 @@
-package sprites;
+package game.animation;
 
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
@@ -28,16 +28,16 @@ public class SpriteSheet {
         int cols = (image.getWidth() / spriteWidth);
         int lins = (image.getHeight() / spriteHeigth);
 
-        for(int i = 0; i < cols; i ++){
-            for(int j = 0; j < lins; j ++){
+        for(int j = 1; j <= cols; j ++){
+            for(int i = 1; i <= lins; i ++){
                 sprites.add(grabImage(i, j));
             }
         }
     }
 
     public BufferedImage getSprite(int lin, int col){
-        int i = lin--;
-        int j = col--; 
+        int i = lin - 1;
+        int j = col - 1;
         return sprites.get((i*4) + j);
     }
 }

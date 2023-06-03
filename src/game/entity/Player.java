@@ -1,7 +1,7 @@
 package game.entity;
 
+import game.animation.SpriteSheet;
 import game.handlers.KeyHandler;
-import sprites.SpriteSheet;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
@@ -93,7 +93,7 @@ public class Player extends Entity {
 
             BufferedImage spriteSheet = ImageIO.read(new FileInputStream("src/game/res/sprites/playerSprites.png"));
 
-            this.sprites = new SpriteSheet(spriteSheet, 32, 40);
+            this.sprites = new SpriteSheet(spriteSheet, 32, 41);
         
         } catch (IOException e) {
             e.printStackTrace();
