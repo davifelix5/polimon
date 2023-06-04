@@ -7,7 +7,6 @@ import game.handlers.KeyHandler;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.FileInputStream;
-import java.io.IOException;
 import java.util.ArrayList;
 
 import javax.imageio.ImageIO;
@@ -18,12 +17,14 @@ public class Player extends Entity {
     private final ArrayList<Animation> animations = new ArrayList<>();
     private int currentAnimationIndex;
     private final int movingRate;
+    private BufferedImage spriteSheetImage;
 
     public Player(int x, int y, int movingRate, KeyHandler movementKeyInput) {
         super(x, y);
         this.movingRate = movingRate;
         this.currentAnimationIndex = 0;
         this.movementKeyInput = movementKeyInput;
+        readSpriteSheetImage();
         definePlayerAnimation();
     }
 
@@ -82,18 +83,21 @@ public class Player extends Entity {
         return animations.get(currentAnimationIndex);
     }
 
-    public void definePlayerAnimation(){
+    private void readSpriteSheetImage() {
         try {
-            BufferedImage spriteSheet = ImageIO.read(new FileInputStream("src/game/res/sprites/playerSprites.png"));
-            SpriteSheet sprites = new SpriteSheet(spriteSheet, 32, 41);
-            for (int i = 0; i < sprites.lins; i++) {
-                ArrayList<BufferedImage> frames = new ArrayList<>();
-                for (int j = 0; j < sprites.cols; j++)
-                    frames.add(sprites.getSprite(i, j));
-                animations.add(new Animation(frames, 10));
-            }
-        } catch (IOException e) {
+            this.spriteSheetImage = ImageIO.read(new FileInputStream("src/game/res/sprites/playerSprites.png"));
+        } catch (Exception e) {
             e.printStackTrace();
+        }
+    }
+
+    public void definePlayerAnimation(){
+        SpriteSheet sprites = new SpriteSheet(spriteSheetImage, 32, 41);
+        for (int i = 0; i < sprites.lins; i++) {
+            ArrayList<BufferedImage> frames = new ArrayList<>();
+            for (int j = 0; j < sprites.cols; j++)
+                frames.add(sprites.getSprite(i, j));
+            animations.add(new Animation(frames, 10));
         }
     }
 
