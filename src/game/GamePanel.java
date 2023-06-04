@@ -124,4 +124,12 @@ public class GamePanel extends JPanel implements Runnable {
     public void setGameState(State gameState) {
         this.gameState = gameState;
     }
+
+    public static int clamp(int value, int min, int max) {
+        if (value >= max)
+            return max;
+        else if (value <= min)
+            return min;
+        return value;
+    }
 }

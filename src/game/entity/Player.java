@@ -1,5 +1,6 @@
 package game.entity;
 
+import game.GamePanel;
 import game.animation.Animation;
 import game.animation.SpriteSheet;
 import game.handlers.KeyHandler;
@@ -13,6 +14,8 @@ import javax.imageio.ImageIO;
 
 public class Player extends Entity {
 
+    private final int playerWidth = 32;
+    private final int playerHeight = 41;
     private final KeyHandler movementKeyInput;
     private final ArrayList<Animation> animations = new ArrayList<>();
     private int currentAnimationIndex;
@@ -75,8 +78,10 @@ public class Player extends Entity {
         }
 
         getAnimation().tick();
-        setX(getX() + getVelX());
-        setY(getY() + getVelY());
+        int nextPosX = getX() + getVelX();
+        int nextPosY = getY() + getVelY();
+        setX(GamePanel.clamp(nextPosX, 0, GamePanel.width - playerWidth));
+        setY(GamePanel.clamp(nextPosY, 0, GamePanel.height - playerHeight));
     }
 
     private Animation getAnimation() {
@@ -92,7 +97,7 @@ public class Player extends Entity {
     }
 
     public void definePlayerAnimation(){
-        SpriteSheet sprites = new SpriteSheet(spriteSheetImage, 32, 41);
+        SpriteSheet sprites = new SpriteSheet(spriteSheetImage, playerWidth, playerHeight);
         for (int i = 0; i < sprites.lins; i++) {
             ArrayList<BufferedImage> frames = new ArrayList<>();
             for (int j = 0; j < sprites.cols; j++)
