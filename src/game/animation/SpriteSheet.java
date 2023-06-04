@@ -19,21 +19,21 @@ public class SpriteSheet {
         this.getSpriteList();
     }
 
-    public BufferedImage grabImage(int col, int lin){
-        int x = (col * spriteWidth) - spriteWidth;
-        int y = (lin * spriteHeigth) - spriteHeigth;
+    public BufferedImage grabImage(int lin, int col){
+        int x = (col * spriteWidth);
+        int y = (lin * spriteHeigth);
         return image.getSubimage(x, y, spriteWidth, spriteHeigth);
     }
 
     public void getSpriteList(){
-        for(int j = 1; j <= cols; j ++){
-            for(int i = 1; i <= lins; i ++){
+        for(int i = 0; i < lins; i ++){
+            for(int j = 0; j < cols; j ++){
                 sprites.add(grabImage(i, j));
             }
         }
     }
 
     public BufferedImage getSprite(int lin, int col){
-        return sprites.get((lin*4) + col);
+        return sprites.get((lin*this.cols) + col);
     }
 }
