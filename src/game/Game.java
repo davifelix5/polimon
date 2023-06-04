@@ -2,43 +2,33 @@ package game;
 
 import game.handlers.KeyHandler;
 import game.handlers.MouseHandler;
+import game.state.*;
 import game.state.Menu;
-import game.state.Play;
-import game.state.RestScreen;
-import game.state.State;
 
 import javax.swing.*;
 import java.awt.*;
 
-public class GamePanel extends JPanel implements Runnable {
+public class Game extends JPanel implements Runnable {
 
-    public static final int originalTileSize = 32;
-    public static final int scale = 1;
-    public static final int tileSize = scale * originalTileSize;
-    public static final int maxScreenRow = 20;
-    public static final int maxScreenCol = 30;
-    public static final int width = tileSize*maxScreenCol;
-    public static final int height = tileSize*maxScreenRow;
+    public static final int originalTileSize = 32, scale = 1, tileSize = scale * originalTileSize;
+    public static final int maxScreenRow = 20, maxScreenCol = 30;
+    public static final int width = tileSize*maxScreenCol, height = tileSize*maxScreenRow;
     final int FPS = 60;
 
     Thread thread;
-    public Menu menu;
-    public RestScreen rest;
-    public Play play;
-
-    public State gameState;
+    private final StateManager gameStateManager = new StateManager();
 
     KeyHandler keyHandler = new KeyHandler();
     MouseHandler mouseHandler = new MouseHandler(this);
 
-    public GamePanel() {
-        this.gameState = State.RestScreen;
+    public Game() {
         this.addKeyListener(keyHandler);
         this.addMouseListener(mouseHandler);
         this.setDoubleBuffered(true);
-        this.rest = new RestScreen();
-        this.menu = new Menu(mouseHandler);
-        this.play = new Play(keyHandler);
+        this.gameStateManager.addState(StateID.RestScreen, new RestScreen(keyHandler, gameStateManager));
+        this.gameStateManager.addState(StateID.Menu, new Menu(mouseHandler, gameStateManager));
+        this.gameStateManager.addState(StateID.Bienio, new Bienio(keyHandler, gameStateManager));
+        this.gameStateManager.setState(StateID.RestScreen);
 
         this.setPreferredSize(new Dimension(width, height));
         this.setDoubleBuffered(true);
@@ -93,36 +83,18 @@ public class GamePanel extends JPanel implements Runnable {
         }
     }
 
-    public void manageState() {
-        if (gameState == State.RestScreen) {
-            if (keyHandler.anyKeyPressed) {
-                this.gameState = State.MainMenu;
-            }
-        }
-    }
-
     public void tick() {
-        manageState();
-        switch (gameState) {
-            case MainMenu -> menu.tick();
-            case RestScreen -> rest.tick();
-            case Game -> play.tick();
-        }
-
+        gameStateManager.getCurrentState().tick();
     }
 
     @Override
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
-        switch (gameState) {
-            case MainMenu -> menu.render(g);
-            case RestScreen -> rest.render(g);
-            case Game -> play.render(g);
-        }
+        gameStateManager.getCurrentState().render(g);
     }
 
-    public void setGameState(State gameState) {
-        this.gameState = gameState;
+    public IStateManager getStateManager() {
+        return this.gameStateManager;
     }
 
     public static int clamp(int value, int min, int max) {

@@ -1,6 +1,6 @@
 package game.handlers;
 
-import game.GamePanel;
+import game.Game;
 
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
@@ -9,9 +9,9 @@ import java.util.ArrayList;
 
 public class MouseHandler extends MouseAdapter {
     int pressedPositionX, pressedPositionY;
-    GamePanel game;
+    Game game;
 
-    public MouseHandler(GamePanel game) {
+    public MouseHandler(Game game) {
         this.game = game;
     }
 
@@ -31,9 +31,7 @@ public class MouseHandler extends MouseAdapter {
     }
     private boolean isMouseOverOnPress(int x, int y, int width, int height) {
         if(pressedPositionX > x && pressedPositionX < x + width) {
-            if(pressedPositionY > y && pressedPositionY < y + height) {
-                return true;
-            }else return false;
+            return pressedPositionY > y && pressedPositionY < y + height;
         }else return false;
 
     }

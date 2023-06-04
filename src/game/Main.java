@@ -4,7 +4,7 @@ import javax.swing.*;
 
 public class Main {
 	public static void main(String[] args) {
-		GamePanel game = new GamePanel();
+		Game game = new Game();
 		JFrame window = new JFrame();
 		window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		window.setResizable(false);

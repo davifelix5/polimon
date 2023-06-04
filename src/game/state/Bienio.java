@@ -3,7 +3,7 @@ package game.state;
 import game.animation.SpriteSheet;
 import game.entity.Player;
 import game.handlers.KeyHandler;
-import game.map.Map;
+import game.map.MapLayer;
 
 import javax.imageio.ImageIO;
 import java.awt.*;
@@ -13,14 +13,16 @@ import java.io.FileInputStream;
 import java.io.FileReader;
 import java.io.IOException;
 
-public class Play {
+public class Bienio implements IState {
     KeyHandler keyHandler;
     Player player;
+    IStateManager stateManager;
 
     private SpriteSheet spritesBienio;
 
-    public Play(KeyHandler keyHandler) {
+    public Bienio(KeyHandler keyHandler, IStateManager stateManager) {
         this.keyHandler = keyHandler;
+        this.stateManager = stateManager;
         player = new Player(50, 50, 2, keyHandler);
         readSpriteImages();
     }
@@ -43,14 +45,14 @@ public class Play {
                     {0, 11}, {0, 12}, {0, 13}, {2, 7}, {2, 8}, {2, 9}, {2, 1}, {2, 2}, {2, 3}, {2, 4}, {2, 5}, {2, 6},
                     {1, 0}, {1, 1}, {1, 2}, {1, 3}, {1, 4}, {1, 5}, {1, 6}, {1, 7}, {1, 8}, {1, 9}, {1, 10}, {1, 11}
             };
-            Map mesasMap = new Map(spritesBienio, mesasTileMap, mesasSpriteMap);
-            mesasMap.render(g);
+            MapLayer mesasMapLayer = new MapLayer(spritesBienio, mesasTileMap, mesasSpriteMap);
+            mesasMapLayer.render(g);
 
             // Cadeiras
             BufferedReader cadeirasTileMap = new BufferedReader(new FileReader("src/game/res/mapas/cadeiras-tilemap.csv"));
             int[][] cadeirasSpriteMap = {{0, 6}, {0, 7}, {1, 9}, {1, 10}, {1, 11}};
-            Map cadeirasMap = new Map(spritesBienio, cadeirasTileMap, cadeirasSpriteMap);
-            cadeirasMap.render(g);
+            MapLayer cadeirasMapLayer = new MapLayer(spritesBienio, cadeirasTileMap, cadeirasSpriteMap);
+            cadeirasMapLayer.render(g);
 
             player.render(g);
 
@@ -66,5 +68,10 @@ public class Play {
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    @Override
+    public IStateManager getStateManager() {
+        return stateManager;
     }
 }

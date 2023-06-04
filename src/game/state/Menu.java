@@ -1,20 +1,22 @@
 package game.state;
 
-import game.GamePanel;
+import game.Game;
 import game.buttons.*;
 import game.buttons.Button;
 import game.handlers.MouseHandler;
 
 import java.awt.*;
 
-public class Menu {
+public class Menu implements IState{
 
 	Button play, options, credits, exit;
 
 	MouseHandler mouse;
+	IStateManager stateManager;
 
-	public Menu(MouseHandler mouse) {
+	public Menu(MouseHandler mouse, IStateManager stateManager) {
 		this.mouse = mouse;
+		this.stateManager = stateManager;
 	}
 
 	public void tick() {
@@ -30,7 +32,7 @@ public class Menu {
 		Font h1 = new Font("arial", Font.BOLD, 32);
 
 		g.setColor(Color.BLACK);
-		g.fillRect(0,0, GamePanel.width, GamePanel.height);
+		g.fillRect(0,0, Game.width, Game.height);
 
 		g.setFont(h1);
 		g.setColor(Color.white);
@@ -40,5 +42,10 @@ public class Menu {
 		options.render(g);
 		credits.render(g);
 		exit.render(g);
+	}
+
+	@Override
+	public IStateManager getStateManager() {
+		return stateManager;
 	}
 }

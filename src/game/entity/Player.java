@@ -1,6 +1,6 @@
 package game.entity;
 
-import game.GamePanel;
+import game.Game;
 import game.animation.Animation;
 import game.animation.SpriteSheet;
 import game.handlers.KeyHandler;
@@ -80,8 +80,8 @@ public class Player extends Entity {
         getAnimation().tick();
         int nextPosX = getX() + getVelX();
         int nextPosY = getY() + getVelY();
-        setX(GamePanel.clamp(nextPosX, 0, GamePanel.width - playerWidth));
-        setY(GamePanel.clamp(nextPosY, 0, GamePanel.height - playerHeight));
+        setX(Game.clamp(nextPosX, 0, Game.width - playerWidth));
+        setY(Game.clamp(nextPosY, 0, Game.height - playerHeight));
     }
 
     private Animation getAnimation() {
