@@ -21,12 +21,14 @@ public class Player extends Entity {
     private int currentAnimationIndex;
     private final int movingRate;
     private BufferedImage spriteSheetImage;
+    private boolean coliding;
 
     public Player(int x, int y, int movingRate, KeyHandler movementKeyInput) {
         super(x, y);
         this.movingRate = movingRate;
         this.currentAnimationIndex = 0;
         this.movementKeyInput = movementKeyInput;
+        this.coliding = false;
         readSpriteSheetImage();
         definePlayerAnimation();
     }
@@ -35,7 +37,7 @@ public class Player extends Entity {
     public void tick() {
         int BACKWARD = 0, LEFT = 1,  RIGHT = 2, FOWARD = 3;
 
-        if (!movementKeyInput.downPressed && !movementKeyInput.upPressed){
+        if (!movementKeyInput.downPressed && !movementKeyInput.upPressed || coliding){
             if (currentAnimationIndex == FOWARD || currentAnimationIndex == BACKWARD) {
                 getAnimation().stop();
                 getAnimation().reset();
@@ -43,7 +45,7 @@ public class Player extends Entity {
             setVelY(0);
         }
 
-        if (!movementKeyInput.rightPressed && !movementKeyInput.leftPressed) {
+        if (!movementKeyInput.rightPressed && !movementKeyInput.leftPressed || coliding) {
             if (currentAnimationIndex == RIGHT || currentAnimationIndex == LEFT) {
                 getAnimation().stop();
                 getAnimation().reset();
@@ -77,11 +79,13 @@ public class Player extends Entity {
             }
         }
 
-        getAnimation().tick();
-        int nextPosX = getX() + getVelX();
-        int nextPosY = getY() + getVelY();
-        setX(Game.clamp(nextPosX, 0, Game.width - playerWidth));
-        setY(Game.clamp(nextPosY, 0, Game.height - playerHeight));
+        if (!coliding) {
+            getAnimation().tick();
+            int nextPosX = getX() + getVelX();
+            int nextPosY = getY() + getVelY();
+            setX(Game.clamp(nextPosX, 0, Game.width - playerWidth));
+            setY(Game.clamp(nextPosY, 0, Game.height - playerHeight));
+        }
     }
 
     private Animation getAnimation() {
@@ -108,12 +112,19 @@ public class Player extends Entity {
 
     @Override
     public void render(Graphics g) {
-
         BufferedImage image = getAnimation().nextSprite();
         g.drawImage(image, getX(), getY(), 32, 32, null);
-
+        g.setColor(Color.GREEN);
     }
 
+    @Override
+    public Rectangle getBounds() {
+        return new Rectangle(10, 20, 10, 10);
+    }
+
+    public void setColiding(boolean coliding) {
+        this.coliding = coliding;
+    }
 }
 
 

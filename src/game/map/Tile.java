@@ -1,5 +1,7 @@
 package game.map;
 
+import game.animation.SpriteSheet;
+
 import java.awt.*;
 import java.awt.image.BufferedImage;
 
@@ -8,14 +10,19 @@ public class Tile {
     private final boolean solid;
     private final BufferedImage image;
 
-    public Tile(int width, int height, boolean solid, BufferedImage image) {
-        this.width = width;
-        this.height = height;
+
+    public Tile(SpriteSheet spriteSheet, int lin, int col, boolean solid) {
+        this.width = spriteSheet.spriteWidth;
+        this.height = spriteSheet.spriteHeigth;
         this.solid = solid;
-        this.image = image;
+        this.image = spriteSheet.getSprite(lin, col);
     }
 
     public void draw(Graphics g, int x, int y) {
         g.drawImage(this.image, x, y, width, height, null);
+    }
+
+    public boolean isSolid() {
+        return solid;
     }
 }
