@@ -50,12 +50,20 @@ public class Button implements MouseInteraction {
     }
 
     public void render(Graphics g) {
-        int fontSize = 26;
+
+        int fontSize = 35;
+        int strLength = title.length();
+
         Font h2 = new Font("arial", Font.PLAIN, fontSize);
         g.setFont(h2);
+        g.setColor(Color.DARK_GRAY);
+        g.fillRect(posX, posY,width,height);
+
         g.setColor(Color.white);
-        g.drawString(title, (640 - (5 * h2.getSize() / 2)) / 2, (posY + height / 2) + fontSize / 2);
+
+        g.drawString(title, ((960 - (strLength * h2.getSize()) / 2) / 2), (posY + height / 2) + fontSize / 2);
         g.drawRect(posX, posY, width, height);
+
     }
 
 }
