@@ -26,8 +26,6 @@ public class RestScreen extends KeyAdapter {
 			Font t1 = Fontes.getPokemonSolid();
 			Font t2 = Fontes.getPokemonHollow();
 			Font subTitle = new Font("arial", Font.BOLD, 32);
-			g.setColor(Color.BLACK);
-			g.fillRect(0,0, GamePanel.width, GamePanel.height);
 
 			g.setColor(Color.YELLOW);
 			g.setFont(t1);
