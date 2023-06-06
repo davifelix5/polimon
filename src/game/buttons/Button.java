@@ -51,7 +51,6 @@ public class Button implements MouseInteraction {
 
     public void render(Graphics g) {
 
-        Graphics2D g2d = (Graphics2D) g;
         int fontSize = 35;
         int strLength = title.length();
 
@@ -62,7 +61,7 @@ public class Button implements MouseInteraction {
 
         g.setColor(Color.white);
 
-        g.drawString(title, (960 - (strLength * h2.getSize()) / 2), (posY + height / 2) + fontSize / 2);
+        g.drawString(title, ((960 - (strLength * h2.getSize()) / 2) / 2), (posY + height / 2) + fontSize / 2);
         g.drawRect(posX, posY, width, height);
 
     }
