@@ -47,4 +47,5 @@ public abstract class Entity {
     public void setVelY(int velY) {
         this.velY = velY;
     }
+    public abstract Rectangle getBounds();
 }

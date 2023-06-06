@@ -1,5 +1,6 @@
 package game.map;
 
+
 import java.awt.*;
 import java.awt.image.BufferedImage;
 
@@ -8,7 +9,8 @@ public class Tile {
     private final boolean solid;
     private final BufferedImage image;
 
-    public Tile(int width, int height, boolean solid, BufferedImage image) {
+
+    public Tile(int width, int height, BufferedImage image, boolean solid) {
         this.width = width;
         this.height = height;
         this.solid = solid;
@@ -17,5 +19,9 @@ public class Tile {
 
     public void draw(Graphics g, int x, int y) {
         g.drawImage(this.image, x, y, width, height, null);
+    }
+
+    public boolean isSolid() {
+        return solid;
     }
 }

@@ -1,12 +1,12 @@
 package game.buttons;
 
-import game.GamePanel;
+import game.Game;
 import game.handlers.MouseInteractionStrategy;
 
 public class ExitButtonStrategy implements MouseInteractionStrategy {
 
     @Override
-    public void onPress(GamePanel game) {
+    public void onPress(Game game) {
         System.exit(0);
     }
 }

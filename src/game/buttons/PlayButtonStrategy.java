@@ -1,13 +1,13 @@
 package game.buttons;
 
-import game.GamePanel;
+import game.Game;
 import game.handlers.MouseInteractionStrategy;
-import game.state.State;
+import game.state.StateID;
 
 public class PlayButtonStrategy implements MouseInteractionStrategy {
 
     @Override
-    public void onPress(GamePanel game) {
-        game.setGameState(State.Game);
+    public void onPress(Game game) {
+        game.getStateManager().setState(StateID.Bienio);
     }
 }

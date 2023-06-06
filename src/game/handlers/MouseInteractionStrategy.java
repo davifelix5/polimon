@@ -1,7 +1,7 @@
 package game.handlers;
 
-import game.GamePanel;
+import game.Game;
 
 public interface MouseInteractionStrategy {
-    void onPress(GamePanel game);
+    void onPress(Game game);
 }
