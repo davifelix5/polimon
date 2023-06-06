@@ -1,10 +1,10 @@
 package game.state;
 
+import game.Game;
 import game.animation.SpriteSheet;
 import game.entity.Player;
 import game.handlers.KeyHandler;
 import game.map.MapLayer;
-import game.map.Tile;
 import game.map.TileManager;
 
 import javax.imageio.ImageIO;
@@ -20,8 +20,8 @@ public class Bienio implements IState {
     Player player;
     IStateManager stateManager;
     private final TileManager tm = new TileManager();
-
-    private SpriteSheet spritesBienio;
+    private SpriteSheet tileset1, tileset2;
+    private BufferedImage background;
 
     public Bienio(KeyHandler keyHandler, IStateManager stateManager) {
         this.keyHandler = keyHandler;
@@ -39,27 +39,34 @@ public class Bienio implements IState {
         try {
 
             // Map background
-            BufferedImage background = ImageIO.read(new FileInputStream("src/game/res/mapas/bienio1-chao.png"));
             g.drawImage(background, 0, 0, null);
 
-            player.render(g);
             // Mesas
-            BufferedReader mesasTileMap = new BufferedReader(new FileReader("src/game/res/mapas/mesas-tilemap.csv"));
-            Tile[] mesasTiles = {
-                    new Tile(spritesBienio, 0, 0, true), new Tile(spritesBienio, 0, 1, true), new Tile(spritesBienio, 0, 2, true), new Tile(spritesBienio, 0, 3, true), new Tile(spritesBienio, 0, 4, true), new Tile(spritesBienio, 0, 5, true), new Tile(spritesBienio, 1, 12, true), new Tile(spritesBienio, 1, 13, true), new Tile(spritesBienio, 2, 0, true), new Tile(spritesBienio, 0, 8, true), new Tile(spritesBienio, 0, 9, true), new Tile(spritesBienio, 0,10, true),
-                    new Tile(spritesBienio, 0, 11, true), new Tile(spritesBienio, 0, 12, true), new Tile(spritesBienio, 0, 13, true), new Tile(spritesBienio, 2, 7, true), new Tile(spritesBienio, 2, 8, true), new Tile(spritesBienio, 2, 9, true), new Tile(spritesBienio, 2, 1, true), new Tile(spritesBienio, 2, 2, true), new Tile(spritesBienio, 2, 3, true), new Tile(spritesBienio, 2, 4, true), new Tile(spritesBienio, 2, 5, true), new Tile(spritesBienio, 2, 6, true),
-                    new Tile(spritesBienio, 1, 0, true), new Tile(spritesBienio, 1, 1, true), new Tile(spritesBienio, 1, 2, true), new Tile(spritesBienio, 1, 3, true), new Tile(spritesBienio, 1, 4, true), new Tile(spritesBienio, 1, 5, true), new Tile(spritesBienio, 1, 6, true), new Tile(spritesBienio, 1, 7, false), new Tile(spritesBienio, 1, 8, false), new Tile(spritesBienio, 1, 9, true), new Tile(spritesBienio, 1, 10, false), new Tile(spritesBienio, 1, 11, false)
-            };
-            MapLayer mesasMapLayer = new MapLayer(mesasTileMap, mesasTiles);
+            BufferedReader mesasTileMap = new BufferedReader(new FileReader("src/game/res/mapas/mesas.csv"));
+            MapLayer mesasMapLayer = new MapLayer(mesasTileMap, tileset1, true);
             mesasMapLayer.render(g);
             this.tm.addLayer(mesasMapLayer);
 
+            // Bancos
+            BufferedReader bancosTileMap = new BufferedReader(new FileReader("src/game/res/mapas/bancos.csv"));
+            MapLayer bancosMapLayer = new MapLayer(bancosTileMap, tileset2, true);
+            bancosMapLayer.render(g);
+            this.tm.addLayer(bancosMapLayer);
+
             // Cadeiras
-            BufferedReader cadeirasTileMap = new BufferedReader(new FileReader("src/game/res/mapas/cadeiras-tilemap.csv"));
-            Tile[] cadeirasTiles = {new Tile(spritesBienio, 0, 6, true), new Tile(spritesBienio, 0, 7, true), new Tile(spritesBienio, 1, 9, true), new Tile(spritesBienio, 1, 10, true), new Tile(spritesBienio, 1, 11, true)};
-            MapLayer cadeirasMapLayer = new MapLayer(cadeirasTileMap, cadeirasTiles);
+            BufferedReader cadeirasTileMap = new BufferedReader(new FileReader("src/game/res/mapas/cadeiras.csv"));
+            MapLayer cadeirasMapLayer = new MapLayer(cadeirasTileMap, tileset1, false);
             cadeirasMapLayer.render(g);
             this.tm.addLayer(cadeirasMapLayer);
+
+            // Player
+            player.render(g);
+
+            // Plantas
+            BufferedReader plantasTilemap = new BufferedReader(new FileReader("src/game/res/mapas/plantas.csv"));
+            MapLayer plantarMapLayer = new MapLayer(plantasTilemap, tileset1, false);
+            plantarMapLayer.render(g);
+            this.tm.addLayer(plantarMapLayer);
 
         } catch (IOException e) {
             e.printStackTrace();
@@ -68,8 +75,11 @@ public class Bienio implements IState {
 
     private void readSpriteImages() {
         try {
-            BufferedImage bienioSpritesImage = ImageIO.read(new FileInputStream("src/game/res/sprites/bienio-sprites.png"));
-            this.spritesBienio = new SpriteSheet(bienioSpritesImage, 32, 32);
+            BufferedImage tileset1Image = ImageIO.read(new FileInputStream("src/game/res/sprites/tileSet4.png"));
+            BufferedImage tileset2Image = ImageIO.read(new FileInputStream("src/game/res/sprites/tileSet5.png"));
+            this.tileset1 = new SpriteSheet(tileset1Image, Game.tileSize, Game.tileSize);
+            this.tileset2 = new SpriteSheet(tileset2Image, Game.tileSize, Game.tileSize);
+            this.background = ImageIO.read(new FileInputStream("src/game/res/mapas/bienio1-chao.png"));
         } catch (IOException e) {
             e.printStackTrace();
         }

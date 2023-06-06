@@ -1,20 +1,24 @@
 package game.map;
 
 import game.Game;
+import game.animation.SpriteSheet;
 
 import java.awt.*;
+import java.awt.image.BufferedImage;
 import java.io.BufferedReader;
 import java.util.ArrayList;
 
 public class MapLayer {
     private final BufferedReader tilemapFile;
     private final ArrayList<ArrayList<Integer>> tileNumbers = new ArrayList<>();
-    private final Tile[] tiles;
+    private final SpriteSheet spritesheet;
+    private final boolean solid;
     private final Tile[][] tileMap = new Tile[Game.maxScreenRow][Game.maxScreenCol];
 
-    public MapLayer(BufferedReader tilemapFile, Tile[] tiles) {
+    public MapLayer(BufferedReader tilemapFile, SpriteSheet spriteSheet, boolean solid) {
         this.tilemapFile = tilemapFile;
-        this.tiles = tiles;
+        this.spritesheet = spriteSheet;
+        this.solid = solid;
         parseTileMap();
     }
 
@@ -25,7 +29,8 @@ public class MapLayer {
             for (int j = 0; j < Game.maxScreenCol; j ++) {
                 int tileNumber = tileNumbers.get(i).get(j);
                 if (tileNumber >= 0) {
-                    Tile currentTile = tiles[tileNumber];
+                    BufferedImage tileImage = spritesheet.getSprite(tileNumber);
+                    Tile currentTile = new Tile(spritesheet.spriteWidth, spritesheet.spriteHeigth, tileImage, solid);
                     currentTile.draw(g, x, y);
                     tileMap[i][j] = currentTile;
                 }

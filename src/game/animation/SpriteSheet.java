@@ -36,4 +36,8 @@ public class SpriteSheet {
     public BufferedImage getSprite(int lin, int col){
         return sprites.get((lin*this.cols) + col);
     }
+
+    public BufferedImage getSprite(int index) {
+        return sprites.get(index);
+    }
 }

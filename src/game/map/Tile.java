@@ -1,6 +1,5 @@
 package game.map;
 
-import game.animation.SpriteSheet;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
@@ -11,11 +10,11 @@ public class Tile {
     private final BufferedImage image;
 
 
-    public Tile(SpriteSheet spriteSheet, int lin, int col, boolean solid) {
-        this.width = spriteSheet.spriteWidth;
-        this.height = spriteSheet.spriteHeigth;
+    public Tile(int width, int height, BufferedImage image, boolean solid) {
+        this.width = width;
+        this.height = height;
         this.solid = solid;
-        this.image = spriteSheet.getSprite(lin, col);
+        this.image = image;
     }
 
     public void draw(Graphics g, int x, int y) {
