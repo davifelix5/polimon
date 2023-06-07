@@ -7,30 +7,26 @@ import game.handlers.KeyHandler;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
-import java.io.FileInputStream;
 import java.util.ArrayList;
-
-import javax.imageio.ImageIO;
 
 public class Player extends Entity {
 
-    private final int playerWidth = 32;
-    private final int playerHeight = 41;
+    private int width = 32, height = 41;
     private final KeyHandler movementKeyInput;
-    private final ArrayList<Animation> animations = new ArrayList<>();
+    private ArrayList<Animation> animations;
     private int currentAnimationIndex;
-    private final int movingRate;
-    private BufferedImage spriteSheetImage;
+    private int movingRate;
+    private SpriteSheet animationSpriteSheet;
     private boolean coliding;
 
-    public Player(int x, int y, int movingRate, KeyHandler movementKeyInput) {
+    public Player(int x, int y, int movingRate, SpriteSheet animationSpriteSheet, KeyHandler movementKeyInput) {
         super(x, y);
         this.movingRate = movingRate;
         this.currentAnimationIndex = 0;
+        this.animationSpriteSheet = animationSpriteSheet;
         this.movementKeyInput = movementKeyInput;
         this.coliding = false;
-        readSpriteSheetImage();
-        definePlayerAnimation();
+        updateAnimations();
     }
 
     @Override
@@ -83,8 +79,8 @@ public class Player extends Entity {
             getAnimation().tick();
             int nextPosX = getX() + getVelX();
             int nextPosY = getY() + getVelY();
-            setX(Game.clamp(nextPosX, 0, Game.width - playerWidth));
-            setY(Game.clamp(nextPosY, 0, Game.height - playerHeight));
+            setX(Game.clamp(nextPosX, 0, Game.width - width));
+            setY(Game.clamp(nextPosY, 0, Game.height - height));
         }
     }
 
@@ -92,21 +88,23 @@ public class Player extends Entity {
         return animations.get(currentAnimationIndex);
     }
 
-    private void readSpriteSheetImage() {
-        try {
-            this.spriteSheetImage = ImageIO.read(new FileInputStream("src/game/res/sprites/playerSprites.png"));
-        } catch (Exception e) {
-            e.printStackTrace();
+    public void updateAnimations(){
+        this.width = animationSpriteSheet.spriteWidth;
+        this.height = animationSpriteSheet.spriteHeigth;
+        ArrayList<Animation> animations = new ArrayList<>();
+        for (int i = 0; i < animationSpriteSheet.lins; i++) {
+            ArrayList<BufferedImage> frames = new ArrayList<>();
+            for (int j = 0; j < animationSpriteSheet.cols; j++)
+                frames.add(animationSpriteSheet.getSprite(i, j));
+            animations.add(new Animation(frames, 10));
         }
+        this.animations = animations;
     }
 
-    public void definePlayerAnimation(){
-        SpriteSheet sprites = new SpriteSheet(spriteSheetImage, playerWidth, playerHeight);
-        for (int i = 0; i < sprites.lins; i++) {
-            ArrayList<BufferedImage> frames = new ArrayList<>();
-            for (int j = 0; j < sprites.cols; j++)
-                frames.add(sprites.getSprite(i, j));
-            animations.add(new Animation(frames, 10));
+    public void setAnimationFromSpriteSheet(SpriteSheet spriteSheet) {
+        if (spriteSheet != animationSpriteSheet) {
+            this.animationSpriteSheet = spriteSheet;
+            updateAnimations();
         }
     }
 
@@ -124,6 +122,10 @@ public class Player extends Entity {
 
     public void setColiding(boolean coliding) {
         this.coliding = coliding;
+    }
+
+    public void setMovingRate(int movingRate) {
+        this.movingRate = movingRate;
     }
 }
 
