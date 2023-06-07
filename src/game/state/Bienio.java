@@ -1,6 +1,8 @@
 package game.state;
 
 import game.Game;
+import game.animation.IAnimationSet;
+import game.animation.MoveAnimationSet;
 import game.animation.SpriteSheet;
 import game.entity.Player;
 import game.handlers.KeyHandler;
@@ -18,22 +20,24 @@ public class Bienio implements IState {
     IStateManager stateManager;
     private final TileManager tm = new TileManager();
     private SpriteSheet tileset1, tileset2, playerSprites, bikeSprites;
+    private IAnimationSet bikeAnimationSet, walkAnimationSet;
     private BufferedImage background;
 
     public Bienio(KeyHandler keyHandler, IStateManager stateManager) {
         this.keyHandler = keyHandler;
         this.stateManager = stateManager;
         readSpriteImages();
-        this.player = new Player(70, 50, 2, playerSprites, keyHandler);
+        createAnimationSets();
+        this.player = new Player(70, 50, 2, walkAnimationSet,keyHandler);
     }
 
     public void tick() {
-        if (keyHandler.bikeButtonPressed) {
-            player.setAnimationFromSpriteSheet(bikeSprites);
+        if (keyHandler.bikeButtonPressed && player.getMoveAnimation() != bikeAnimationSet) {
+            player.setMoveAnimation(bikeAnimationSet);
             player.setMovingRate(3);
         }
-        else {
-            player.setAnimationFromSpriteSheet(playerSprites);
+        else if (!keyHandler.bikeButtonPressed && player.getMoveAnimation() != walkAnimationSet) {
+            player.setMoveAnimation(walkAnimationSet);
             player.setMovingRate(2);
         }
         player.tick();
@@ -92,6 +96,11 @@ public class Bienio implements IState {
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    private void createAnimationSets() {
+        this.walkAnimationSet = new MoveAnimationSet(playerSprites, 0);
+        this.bikeAnimationSet = new MoveAnimationSet(bikeSprites, 0);
     }
 
     @Override
