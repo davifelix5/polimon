@@ -1,6 +1,8 @@
 package game.state;
 
 import game.Game;
+import game.animation.IAnimationSet;
+import game.animation.MoveAnimationSet;
 import game.animation.SpriteSheet;
 import game.entity.Player;
 import game.handlers.KeyHandler;
@@ -10,27 +12,34 @@ import game.map.TileManager;
 import javax.imageio.ImageIO;
 import java.awt.*;
 import java.awt.image.BufferedImage;
-import java.io.BufferedReader;
-import java.io.FileInputStream;
-import java.io.FileReader;
-import java.io.IOException;
+import java.io.*;
 
 public class Bienio implements IState {
     KeyHandler keyHandler;
     Player player;
     IStateManager stateManager;
     private final TileManager tm = new TileManager();
-    private SpriteSheet tileset1, tileset2;
+    private SpriteSheet tileset1, tileset2, playerSprites, bikeSprites;
+    private IAnimationSet bikeAnimationSet, walkAnimationSet;
     private BufferedImage background;
 
     public Bienio(KeyHandler keyHandler, IStateManager stateManager) {
         this.keyHandler = keyHandler;
         this.stateManager = stateManager;
-        player = new Player(70, 50, 2, keyHandler);
         readSpriteImages();
+        createAnimationSets();
+        this.player = new Player(70, 50, 2, walkAnimationSet,keyHandler);
     }
 
     public void tick() {
+        if (keyHandler.bikeButtonPressed && player.getMoveAnimation() != bikeAnimationSet) {
+            player.setMoveAnimation(bikeAnimationSet);
+            player.setMovingRate(3);
+        }
+        else if (!keyHandler.bikeButtonPressed && player.getMoveAnimation() != walkAnimationSet) {
+            player.setMoveAnimation(walkAnimationSet);
+            player.setMovingRate(2);
+        }
         player.tick();
         player.setColiding(tm.colides(player));
     }
@@ -80,9 +89,18 @@ public class Bienio implements IState {
             this.tileset1 = new SpriteSheet(tileset1Image, Game.tileSize, Game.tileSize);
             this.tileset2 = new SpriteSheet(tileset2Image, Game.tileSize, Game.tileSize);
             this.background = ImageIO.read(new FileInputStream("src/game/res/mapas/bienio1-chao.png"));
+            BufferedImage playerImages = ImageIO.read(new FileInputStream("src/game/res/sprites/playerSprites.png"));
+            this.playerSprites = new SpriteSheet(playerImages, 32, 41);
+            BufferedImage bikeSpritesImage = ImageIO.read(new FileInputStream("src/game/res/sprites/playerBike.png"));
+            this.bikeSprites = new SpriteSheet(bikeSpritesImage, 48, 48);
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    private void createAnimationSets() {
+        this.walkAnimationSet = new MoveAnimationSet(playerSprites, 0);
+        this.bikeAnimationSet = new MoveAnimationSet(bikeSprites, 0);
     }
 
     @Override

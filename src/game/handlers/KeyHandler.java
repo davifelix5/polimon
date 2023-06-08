@@ -5,7 +5,7 @@ import java.awt.event.KeyListener;
 
 public class KeyHandler implements KeyListener {
 
-    public boolean upPressed, downPressed, leftPressed, rightPressed;
+    public boolean upPressed, downPressed, leftPressed, rightPressed, bikeButtonPressed;
     public boolean anyKeyPressed;
 
     @Override
@@ -18,6 +18,7 @@ public class KeyHandler implements KeyListener {
         int code = e.getKeyCode();
         anyKeyPressed = true;
         switch (code) {
+            case KeyEvent.VK_B -> bikeButtonPressed = true;
             case KeyEvent.VK_W -> upPressed = true;
             case KeyEvent.VK_S -> downPressed = true;
             case KeyEvent.VK_A -> leftPressed = true;
@@ -30,6 +31,7 @@ public class KeyHandler implements KeyListener {
         int code = e.getKeyCode();
         anyKeyPressed = false;
         switch (code) {
+            case KeyEvent.VK_B -> bikeButtonPressed = false;
             case KeyEvent.VK_W -> upPressed = false;
             case KeyEvent.VK_S -> downPressed = false;
             case KeyEvent.VK_A -> leftPressed = false;
