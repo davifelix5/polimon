@@ -28,6 +28,7 @@ public class Bienio implements IState {
         this.stateManager = stateManager;
         readSpriteImages();
         createAnimationSets();
+        loadMapLayers();
         this.player = new Player(70, 50, 2, walkAnimationSet,keyHandler);
     }
 
@@ -45,36 +46,35 @@ public class Bienio implements IState {
     }
 
     public void render(Graphics g) {
-        try {
+        g.drawImage(background, 0, 0, null); // Map background
+        this.tm.renderLayer(0, g); // Mesas
+        this.tm.renderLayer(1, g); // Bancos
+        this.tm.renderLayer(2, g); // Cadeiras
+        player.render(g); // Player
+        this.tm.renderLayer(3,g ); // Plantas
+    }
 
-            // Map background
-            g.drawImage(background, 0, 0, null);
+    private void loadMapLayers() {
+        try {
 
             // Mesas
             BufferedReader mesasTileMap = new BufferedReader(new FileReader("src/game/res/mapas/mesas.csv"));
             MapLayer mesasMapLayer = new MapLayer(mesasTileMap, tileset1, true);
-            mesasMapLayer.render(g);
             this.tm.addLayer(mesasMapLayer);
 
             // Bancos
             BufferedReader bancosTileMap = new BufferedReader(new FileReader("src/game/res/mapas/bancos.csv"));
             MapLayer bancosMapLayer = new MapLayer(bancosTileMap, tileset2, true);
-            bancosMapLayer.render(g);
             this.tm.addLayer(bancosMapLayer);
 
             // Cadeiras
             BufferedReader cadeirasTileMap = new BufferedReader(new FileReader("src/game/res/mapas/cadeiras.csv"));
             MapLayer cadeirasMapLayer = new MapLayer(cadeirasTileMap, tileset1, false);
-            cadeirasMapLayer.render(g);
             this.tm.addLayer(cadeirasMapLayer);
-
-            // Player
-            player.render(g);
 
             // Plantas
             BufferedReader plantasTilemap = new BufferedReader(new FileReader("src/game/res/mapas/plantas.csv"));
             MapLayer plantarMapLayer = new MapLayer(plantasTilemap, tileset1, false);
-            plantarMapLayer.render(g);
             this.tm.addLayer(plantarMapLayer);
 
         } catch (IOException e) {

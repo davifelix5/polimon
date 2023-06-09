@@ -28,6 +28,7 @@ public class Game extends JPanel implements Runnable {
         this.gameStateManager.addState(StateID.RestScreen, new RestScreen(keyHandler, gameStateManager));
         this.gameStateManager.addState(StateID.Menu, new Menu(mouseHandler, gameStateManager));
         this.gameStateManager.addState(StateID.Bienio, new Bienio(keyHandler, gameStateManager));
+        this.gameStateManager.addState(StateID.Outside, new Outside(keyHandler, gameStateManager));
         this.gameStateManager.setState(StateID.RestScreen);
 
         this.setPreferredSize(new Dimension(width, height));

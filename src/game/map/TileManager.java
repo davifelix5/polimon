@@ -3,6 +3,7 @@ package game.map;
 import game.Game;
 import game.entity.Entity;
 
+import java.awt.*;
 import java.util.ArrayList;
 
 public class TileManager {
@@ -40,6 +41,16 @@ public class TileManager {
             i++;
         }
         return hasColision;
+    }
+
+    public void renderLayer(int layerIndex, Graphics g) {
+        this.layers.get(layerIndex).render(g);
+    }
+
+    public void renderRange(int layerStartIndex, int layerEndIndex, Graphics g) {
+        for (int i = layerStartIndex; i <= layerEndIndex; i ++) {
+            renderLayer(i, g);
+        }
     }
 
 }
