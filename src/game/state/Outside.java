@@ -1,8 +1,8 @@
 package game.state;
 
-import game.animation.MoveAnimationSet;
 import game.animation.SpriteSheet;
 import game.entity.Player;
+import game.entity.PlayerAnimations;
 import game.handlers.KeyHandler;
 import game.map.MapLayer;
 import game.map.TileManager;
@@ -13,48 +13,23 @@ import java.awt.image.BufferedImage;
 import java.io.BufferedReader;
 import java.io.FileInputStream;
 import java.io.FileReader;
-import java.io.IOException;
 
 public class Outside implements IState {
 
     private final TileManager tm = new TileManager();
-    private SpriteSheet playerSprites, bikeSprites;
-    private MoveAnimationSet walkAnimationSet;
-    private MoveAnimationSet bikeAnimationSet;
     private final Player player;
-    private final KeyHandler keyHandler;
     private final StateManager gameStateManager;
     private BufferedImage backgroundImage;
 
     public Outside(KeyHandler keyHandler, StateManager gameStateManager) {
-        this.keyHandler = keyHandler;
         this.gameStateManager = gameStateManager;
-        readBackgrundImage();
-        readSpriteImages();
-        createAnimationSets();
-        this.player = new Player(50, 50, 2, walkAnimationSet, keyHandler);
+        this.player = new Player(50, 50, 2, keyHandler, PlayerAnimations.Walk);
         loadMapLayers();
-    }
-
-    private void readBackgrundImage() {
-        try {
-            this.backgroundImage = ImageIO.read(new FileInputStream("src/game/res/mapas/MapaRaiaChao.png"));
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
     }
 
     @Override
     public void tick() {
         player.tick();
-        if (keyHandler.bikeButtonPressed && player.getMoveAnimation() != bikeAnimationSet) {
-            player.setMoveAnimation(bikeAnimationSet);
-            player.setMovingRate(3);
-        }
-        else if (!keyHandler.bikeButtonPressed && player.getMoveAnimation() != walkAnimationSet) {
-            player.setMoveAnimation(walkAnimationSet);
-            player.setMovingRate(2);
-        }
         this.player.setColiding(this.tm.colides(player));
     }
 
@@ -86,6 +61,7 @@ public class Outside implements IState {
             SpriteSheet carSpritesheet = new SpriteSheet(car, 32, 32);
             BufferedImage tree = ImageIO.read(new FileInputStream("src/game/res/sprites/treeTileSet.png"));
             SpriteSheet treeTileset = new SpriteSheet(tree, 32, 32);
+            this.backgroundImage = ImageIO.read(new FileInputStream("src/game/res/mapas/MapaRaiaChao.png"));
 
             // Tilemaps
             BufferedReader aguaTileMap = new BufferedReader(new FileReader("src/game/res/mapas/Mapa Raia_Agua.csv"));
@@ -116,22 +92,6 @@ public class Outside implements IState {
         } catch (Exception e) {
             e.printStackTrace();
         }
-    }
-
-    private void readSpriteImages() {
-        try {
-            BufferedImage playerImages = ImageIO.read(new FileInputStream("src/game/res/sprites/playerSprites.png"));
-            this.playerSprites = new SpriteSheet(playerImages, 32, 41);
-            BufferedImage bikeSpritesImage = ImageIO.read(new FileInputStream("src/game/res/sprites/playerBike.png"));
-            this.bikeSprites = new SpriteSheet(bikeSpritesImage, 48, 48);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-
-    private void createAnimationSets() {
-        this.walkAnimationSet = new MoveAnimationSet(playerSprites, 0);
-        this.bikeAnimationSet = new MoveAnimationSet(bikeSprites, 0);
     }
 
     @Override

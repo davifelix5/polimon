@@ -1,35 +1,59 @@
 package game.entity;
 
 import game.Game;
-import game.animation.Animation;
-import game.animation.IAnimationSet;
+import game.animation.*;
 import game.handlers.KeyHandler;
 
+import javax.imageio.ImageIO;
 import java.awt.*;
 import java.awt.image.BufferedImage;
+import java.io.FileInputStream;
 
 public class Player extends Entity {
 
-    private int width = 32, height = 41;
     private final KeyHandler movementKeyInput;
     private int movingRate;
     private boolean coliding;
-    private IAnimationSet moveAnimation;
 
-    public Player(int x, int y, int movingRate, IAnimationSet moveAnimation, KeyHandler movementKeyInput) {
+    private final IAnimationSet[] animationSets = new IAnimationSet[PlayerAnimations.values().length];
+    private PlayerAnimations currentAnimation;
+
+    public Player(int x, int y, int movingRate, KeyHandler movementKeyInput, PlayerAnimations currentAnimation) {
         super(x, y);
         this.movingRate = movingRate;
-        this.moveAnimation = moveAnimation;
         this.movementKeyInput = movementKeyInput;
+        this.currentAnimation = currentAnimation;
         this.coliding = false;
+        loadAnimations();
+    }
+
+    private void loadAnimations() {
+        try {
+            BufferedImage bikeSprites = ImageIO.read(new FileInputStream("src/game/res/sprites/playerBike.png"));
+            BufferedImage walkSprites = ImageIO.read(new FileInputStream("src/game/res/sprites/playerSprites.png"));
+            SpriteSheet bikeSpritesheet = new SpriteSheet(bikeSprites, 48, 48);
+            SpriteSheet walkSpriteSheet = new SpriteSheet(walkSprites, 32, 41);
+            this.animationSets[PlayerAnimations.Bike.getValue()] = new MoveAnimationSet(bikeSpritesheet, 0);
+            this.animationSets[PlayerAnimations.Walk.getValue()] = new MoveAnimationSet(walkSpriteSheet, 0);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
     public void tick() {
         int BACKWARD = 0, LEFT = 1,  RIGHT = 2, FOWARD = 3;
 
+        if (movementKeyInput.bikeButtonPressed) {
+            setCurrentAnimation(PlayerAnimations.Bike);
+            this.setMovingRate(3);
+        } else{
+            setCurrentAnimation(PlayerAnimations.Walk);
+            this.setMovingRate(2);
+        }
+
         if (!movementKeyInput.downPressed && !movementKeyInput.upPressed || coliding){
-            if (this.moveAnimation.getCurrentIndex() == FOWARD || this.moveAnimation.getCurrentIndex() == BACKWARD) {
+            if (getCurrentAnimationSet().getCurrentIndex() == FOWARD || getCurrentAnimationSet().getCurrentIndex() == BACKWARD) {
                 getAnimation().stop();
                 getAnimation().reset();
             }
@@ -37,7 +61,7 @@ public class Player extends Entity {
         }
 
         if (!movementKeyInput.rightPressed && !movementKeyInput.leftPressed || coliding) {
-            if (this.moveAnimation.getCurrentIndex() == RIGHT || this.moveAnimation.getCurrentIndex() == LEFT) {
+            if (getCurrentAnimationSet().getCurrentIndex() == RIGHT || getCurrentAnimationSet().getCurrentIndex() == LEFT) {
                 getAnimation().stop();
                 getAnimation().reset();
             }
@@ -47,11 +71,11 @@ public class Player extends Entity {
         // Movimentação em X
         if (getVelX() == 0) {
             if (movementKeyInput.upPressed) {
-                this.moveAnimation.setCurrentIndex(FOWARD);
+                getCurrentAnimationSet().setCurrentIndex(FOWARD);
                 getAnimation().start();
                 setVelY(-movingRate);
             } else if (movementKeyInput.downPressed) {
-                this.moveAnimation.setCurrentIndex(BACKWARD);
+                getCurrentAnimationSet().setCurrentIndex(BACKWARD);
                 getAnimation().start();
                 setVelY(movingRate);
             }
@@ -60,11 +84,11 @@ public class Player extends Entity {
         // Movimentação em y
         if (getVelY() == 0) {
             if (movementKeyInput.leftPressed) {
-                this.moveAnimation.setCurrentIndex(LEFT);
+                getCurrentAnimationSet().setCurrentIndex(LEFT);
                 getAnimation().start();
                 setVelX(-movingRate);
             } else if (movementKeyInput.rightPressed) {
-                this.moveAnimation.setCurrentIndex(RIGHT);
+                getCurrentAnimationSet().setCurrentIndex(RIGHT);
                 getAnimation().start();
                 setVelX(movingRate);
             }
@@ -74,8 +98,8 @@ public class Player extends Entity {
             getAnimation().tick();
             int nextPosX = getX() + getVelX();
             int nextPosY = getY() + getVelY();
-            setX(Game.clamp(nextPosX, 0, Game.width - width));
-            setY(Game.clamp(nextPosY, 0, Game.height - height));
+            setX(Game.clamp(nextPosX, 0, Game.width - getCurrentAnimationSet().getSprites().spriteWidth));
+            setY(Game.clamp(nextPosY, 0, Game.height - getCurrentAnimationSet().getSprites().spriteHeigth));
         }
     }
 
@@ -86,7 +110,7 @@ public class Player extends Entity {
     }
 
     private Animation getAnimation() {
-        return this.moveAnimation.getCurrentAnimation();
+        return this.animationSets[this.currentAnimation.getValue()].getCurrentAnimation();
     }
 
     @Override
@@ -102,15 +126,14 @@ public class Player extends Entity {
         this.movingRate = movingRate;
     }
 
-    public IAnimationSet getMoveAnimation() {
-        return moveAnimation;
+    public void setCurrentAnimation(PlayerAnimations currentAnimation) {
+        this.currentAnimation = currentAnimation;
     }
 
-    public void setMoveAnimation(IAnimationSet moveAnimation) {
-        this.width = moveAnimation.getSprites().spriteWidth;
-        this.height = moveAnimation.getSprites().spriteHeigth;
-        this.moveAnimation = moveAnimation;
+    public IAnimationSet getCurrentAnimationSet() {
+        return this.animationSets[this.currentAnimation.getValue()];
     }
+
 }
 
 
