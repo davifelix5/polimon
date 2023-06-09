@@ -17,7 +17,7 @@ public class Bienio implements IState {
     KeyHandler keyHandler;
     Player player;
     IStateManager stateManager;
-    private final TileManager tm = new TileManager();
+    private final TileManager tm = new TileManager(20, 30);
     private BufferedImage background;
 
     public Bienio(KeyHandler keyHandler, IStateManager stateManager) {

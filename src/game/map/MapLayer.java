@@ -13,20 +13,21 @@ public class MapLayer {
     private final ArrayList<ArrayList<Integer>> tileNumbers = new ArrayList<>();
     private final SpriteSheet spritesheet;
     private final boolean solid;
-    private final Tile[][] tileMap = new Tile[Game.maxScreenRow][Game.maxScreenCol];
+    private int rows, cols;
+    private Tile[][] tileMap;
 
     public MapLayer(BufferedReader tilemapFile, SpriteSheet spriteSheet, boolean solid) {
         this.tilemapFile = tilemapFile;
         this.spritesheet = spriteSheet;
         this.solid = solid;
-        parseTileMap();
     }
 
     public void render(Graphics g) {
         int x, y = 0;
-        for (int i = 0; i < Game.maxScreenRow; i++) {
+        tileMap = new Tile[rows][cols];
+        for (int i = 0; i < rows; i++) {
             x = 0;
-            for (int j = 0; j < Game.maxScreenCol; j ++) {
+            for (int j = 0; j < cols; j ++) {
                 int tileNumber = tileNumbers.get(i).get(j);
                 if (tileNumber >= 0) {
                     BufferedImage tileImage = spritesheet.getSprite(tileNumber);
@@ -42,10 +43,10 @@ public class MapLayer {
 
     public void parseTileMap() {
         try {
-            for (int i = 0; i < Game.maxScreenRow; i++) {
+            for (int i = 0; i < rows; i++) {
                 String[] numbers = tilemapFile.readLine().split(",");
                 ArrayList<Integer> line = new ArrayList<>();
-                for (int j = 0; j < Game.maxScreenCol; j++) {
+                for (int j = 0; j < cols; j++) {
                     int tileNumber = Integer.parseInt(numbers[j]);
                     line.add(tileNumber);
                 }
@@ -58,5 +59,13 @@ public class MapLayer {
 
     public Tile[][] getTileMap() {
         return tileMap;
+    }
+
+    public void setRows(int rows) {
+        this.rows = rows;
+    }
+
+    public void setCols(int cols) {
+        this.cols = cols;
     }
 }

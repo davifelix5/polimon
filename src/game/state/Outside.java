@@ -16,7 +16,7 @@ import java.io.FileReader;
 
 public class Outside implements IState {
 
-    private final TileManager tm = new TileManager();
+    private final TileManager tm = new TileManager(60, 70);
     private final Player player;
     private final StateManager gameStateManager;
     private BufferedImage backgroundImage;

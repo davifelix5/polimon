@@ -96,17 +96,17 @@ public class Player extends Entity {
 
         if (!coliding) {
             getAnimation().tick();
-            int nextPosX = getX() + getVelX();
-            int nextPosY = getY() + getVelY();
-            setX(Game.clamp(nextPosX, 0, Game.width - getCurrentAnimationSet().getSprites().spriteWidth));
-            setY(Game.clamp(nextPosY, 0, Game.height - getCurrentAnimationSet().getSprites().spriteHeigth));
+            int nextPosX = getWorldX() + getVelX();
+            int nextPosY = getWorldY() + getVelY();
+            setWorldX(Game.clamp(nextPosX, 0, Game.width - getWidth()));
+            setWorldY(Game.clamp(nextPosY, 0, Game.height - getHeight()));
         }
     }
 
     @Override
     public void render(Graphics g) {
         BufferedImage image = getAnimation().nextSprite();
-        g.drawImage(image, getX(), getY(), 32, 32, null);
+        g.drawImage(image, getWorldX(), getWorldY(), 32, 32, null);
     }
 
     private Animation getAnimation() {
@@ -132,6 +132,14 @@ public class Player extends Entity {
 
     public IAnimationSet getCurrentAnimationSet() {
         return this.animationSets[this.currentAnimation.getValue()];
+    }
+
+    public int getWidth() {
+        return this.getCurrentAnimationSet().getSprites().spriteWidth;
+    }
+
+    public int getHeight() {
+        return this.getCurrentAnimationSet().getSprites().spriteHeigth;
     }
 
 }

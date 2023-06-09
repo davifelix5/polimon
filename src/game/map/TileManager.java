@@ -9,14 +9,24 @@ import java.util.ArrayList;
 public class TileManager {
     private final ArrayList<MapLayer> layers = new ArrayList<>();
 
+    private final int mapRows, mapCols;
+
+    public TileManager(int mapRows, int mapCols) {
+        this.mapRows = mapRows;
+        this.mapCols = mapCols;
+    }
+
     public void addLayer(MapLayer layer) {
+        layer.setRows(mapRows);
+        layer.setCols(mapCols);
+        layer.parseTileMap();
         this.layers.add(layer);
     }
 
     private boolean checkColision(Entity entity, MapLayer layer) {
-        int left = entity.getX() + entity.getBounds().x;
+        int left = entity.getWorldX() + entity.getBounds().x;
         int right = left + entity.getBounds().width;
-        int up = entity.getY() + entity.getBounds().y;
+        int up = entity.getWorldY() + entity.getBounds().y;
         int down = up + entity.getBounds().width;
 
         int nextColRight = (right + entity.getVelX()) / Game.tileSize;
@@ -24,12 +34,15 @@ public class TileManager {
         int nextRowDown = (up + entity.getVelY()) / Game.tileSize;
         int nextRowUp = (down + entity.getVelY()) / Game.tileSize;
 
-        Tile tile1 = layer.getTileMap()[nextRowDown][nextColRight];
-        Tile tile2 = layer.getTileMap()[nextRowDown][nextColLeft];
-        Tile tile3 = layer.getTileMap()[nextRowUp][nextColRight];
-        Tile tile4 = layer.getTileMap()[nextRowUp][nextColLeft];
+        if (layer.getTileMap() != null) {
+            Tile tile1 = layer.getTileMap()[nextRowDown][nextColRight];
+            Tile tile2 = layer.getTileMap()[nextRowDown][nextColLeft];
+            Tile tile3 = layer.getTileMap()[nextRowUp][nextColRight];
+            Tile tile4 = layer.getTileMap()[nextRowUp][nextColLeft];
+            return (tile1 != null && tile1.isSolid()) || (tile2 != null && tile2.isSolid()) || (tile3 != null && tile3.isSolid()) || (tile4 != null && tile4.isSolid());
+        }
 
-        return (tile1 != null && tile1.isSolid()) || (tile2 != null && tile2.isSolid()) || (tile3 != null && tile3.isSolid()) || (tile4 != null && tile4.isSolid());
+        return false;
 
     }
 
@@ -52,5 +65,4 @@ public class TileManager {
             renderLayer(i, g);
         }
     }
-
 }
