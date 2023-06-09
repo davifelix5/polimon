@@ -3,6 +3,7 @@ package game.entity;
 import game.Game;
 import game.animation.*;
 import game.handlers.KeyHandler;
+import game.map.TileManager;
 
 import javax.imageio.ImageIO;
 import java.awt.*;
@@ -13,16 +14,19 @@ public class Player extends Entity {
 
     private final KeyHandler movementKeyInput;
     private int movingRate;
+    private int positionX, positionY;
     private boolean coliding;
 
     private final IAnimationSet[] animationSets = new IAnimationSet[PlayerAnimations.values().length];
     private PlayerAnimations currentAnimation;
+    private final TileManager tileManager;
 
-    public Player(int x, int y, int movingRate, KeyHandler movementKeyInput, PlayerAnimations currentAnimation) {
+    public Player(int x, int y, int movingRate, KeyHandler movementKeyInput, PlayerAnimations currentAnimation, TileManager tileManager) {
         super(x, y);
         this.movingRate = movingRate;
         this.movementKeyInput = movementKeyInput;
         this.currentAnimation = currentAnimation;
+        this.tileManager = tileManager;
         this.coliding = false;
         loadAnimations();
     }
@@ -42,6 +46,9 @@ public class Player extends Entity {
 
     @Override
     public void tick() {
+        tileManager.setReferenceX(getWorldX() - positionX);
+        tileManager.setReferenceY(getWorldY() - positionY);
+
         int BACKWARD = 0, LEFT = 1,  RIGHT = 2, FOWARD = 3;
 
         if (movementKeyInput.bikeButtonPressed) {
@@ -98,15 +105,17 @@ public class Player extends Entity {
             getAnimation().tick();
             int nextPosX = getWorldX() + getVelX();
             int nextPosY = getWorldY() + getVelY();
-            setWorldX(Game.clamp(nextPosX, 0, Game.width - getWidth()));
-            setWorldY(Game.clamp(nextPosY, 0, Game.height - getHeight()));
+            setWorldX(Game.clamp(nextPosX, 0, tileManager.getMaxWidht() - getWidth()));
+            setWorldY(Game.clamp(nextPosY, 0, tileManager.getMaxHeight() - getHeight()));
         }
     }
 
     @Override
     public void render(Graphics g) {
         BufferedImage image = getAnimation().nextSprite();
-        g.drawImage(image, getWorldX(), getWorldY(), 32, 32, null);
+        this.positionX = Game.width / 2 - getWidth();
+        this.positionY = Game.height / 2 - getHeight();
+        g.drawImage(image, positionX, positionY, 32, 32, null);
     }
 
     private Animation getAnimation() {

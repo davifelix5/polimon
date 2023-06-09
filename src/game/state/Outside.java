@@ -23,7 +23,7 @@ public class Outside implements IState {
 
     public Outside(KeyHandler keyHandler, StateManager gameStateManager) {
         this.gameStateManager = gameStateManager;
-        this.player = new Player(50, 50, 2, keyHandler, PlayerAnimations.Walk);
+        this.player = new Player(50, 50, 2, keyHandler, PlayerAnimations.Walk, tm);
         loadMapLayers();
     }
 
@@ -35,7 +35,7 @@ public class Outside implements IState {
 
     @Override
     public void render(Graphics g) {
-        g.drawImage(this.backgroundImage, 0, 0, null);
+        g.drawImage(this.backgroundImage, -tm.getReferenceX(), - tm.getReferenceY(), null);
         this.tm.renderRange(0, 8, g);
         player.render(g);
         this.tm.renderRange(9, 10, g);

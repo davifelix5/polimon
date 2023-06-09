@@ -10,10 +10,14 @@ public class TileManager {
     private final ArrayList<MapLayer> layers = new ArrayList<>();
 
     private final int mapRows, mapCols;
+    private final int maxWidht, maxHeight;
+    private int referenceX, referenceY;
 
     public TileManager(int mapRows, int mapCols) {
         this.mapRows = mapRows;
         this.mapCols = mapCols;
+        this.maxWidht = this.mapCols*Game.tileSize;
+        this.maxHeight = this.mapRows*Game.tileSize;
     }
 
     public void addLayer(MapLayer layer) {
@@ -57,12 +61,36 @@ public class TileManager {
     }
 
     public void renderLayer(int layerIndex, Graphics g) {
-        this.layers.get(layerIndex).render(g);
+        this.layers.get(layerIndex).render(g, referenceX, referenceY);
     }
 
     public void renderRange(int layerStartIndex, int layerEndIndex, Graphics g) {
         for (int i = layerStartIndex; i <= layerEndIndex; i ++) {
             renderLayer(i, g);
         }
+    }
+
+    public void setReferenceX(int referenceX) {
+        this.referenceX = referenceX;
+    }
+
+    public void setReferenceY(int referenceY) {
+        this.referenceY = referenceY;
+    }
+
+    public int getReferenceX() {
+        return referenceX;
+    }
+
+    public int getReferenceY() {
+        return referenceY;
+    }
+
+    public int getMaxWidht() {
+        return maxWidht;
+    }
+
+    public int getMaxHeight() {
+        return maxHeight;
     }
 }

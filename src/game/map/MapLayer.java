@@ -22,7 +22,7 @@ public class MapLayer {
         this.solid = solid;
     }
 
-    public void render(Graphics g) {
+    public void render(Graphics g, int referenceX, int referenceY) {
         int x, y = 0;
         tileMap = new Tile[rows][cols];
         for (int i = 0; i < rows; i++) {
@@ -32,7 +32,7 @@ public class MapLayer {
                 if (tileNumber >= 0) {
                     BufferedImage tileImage = spritesheet.getSprite(tileNumber);
                     Tile currentTile = new Tile(spritesheet.spriteWidth, spritesheet.spriteHeigth, tileImage, solid);
-                    currentTile.draw(g, x, y);
+                    currentTile.draw(g, x - referenceX, y - referenceY);
                     tileMap[i][j] = currentTile;
                 }
                 x += Game.tileSize;

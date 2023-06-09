@@ -24,7 +24,7 @@ public class Bienio implements IState {
         this.keyHandler = keyHandler;
         this.stateManager = stateManager;
         loadMapLayers();
-        this.player = new Player(70, 50, 2, keyHandler, PlayerAnimations.Walk);
+        this.player = new Player(70, 50, 2, keyHandler, PlayerAnimations.Walk, tm);
     }
 
     public void tick() {
