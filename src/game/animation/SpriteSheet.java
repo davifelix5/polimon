@@ -1,6 +1,9 @@
 package game.animation;
 
+import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
+import java.io.FileInputStream;
+import java.io.IOException;
 import java.util.ArrayList;
 
 public class SpriteSheet {
@@ -8,7 +11,7 @@ public class SpriteSheet {
 
     public int spriteWidth, spriteHeigth, lins, cols;
 
-    public ArrayList<BufferedImage> sprites = new ArrayList<>();
+    public final ArrayList<BufferedImage> sprites = new ArrayList<>();
 
     public SpriteSheet(BufferedImage image, int spriteWidth, int spriteHeigth){
         this.image = image;
@@ -17,6 +20,19 @@ public class SpriteSheet {
         this.lins = (image.getHeight() / spriteHeigth);
         this.cols = (image.getWidth() / spriteWidth);
         this.getSpriteList();
+    }
+
+    public SpriteSheet(String imagePath, int spriteWidth, int spriteHeigth){
+        try {
+            this.image = ImageIO.read(new FileInputStream(imagePath));
+            this.spriteWidth = spriteWidth;
+            this.spriteHeigth = spriteHeigth;
+            this.lins = (image.getHeight() / spriteHeigth);
+            this.cols = (image.getWidth() / spriteWidth);
+            this.getSpriteList();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     /**

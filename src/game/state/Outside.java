@@ -12,9 +12,8 @@ import game.map.TileManager;
 import javax.imageio.ImageIO;
 import java.awt.*;
 import java.awt.image.BufferedImage;
-import java.io.BufferedReader;
 import java.io.FileInputStream;
-import java.io.FileReader;
+import java.io.IOException;
 
 public class Outside implements IState {
 
@@ -46,52 +45,36 @@ public class Outside implements IState {
 
     private void loadMapLayers() {
         try {
+            String spritesBasePath = "src/game/res/sprites/";
+            String tilemapBasePath = "src/game/res/mapas/";
+
             // Spritsheets
-            BufferedImage city2 = ImageIO.read(new FileInputStream("src/game/res/sprites/cityTileSet2.png"));
-            SpriteSheet city2Spritesheet = new SpriteSheet(city2, 32, 32);
-            BufferedImage city3 = ImageIO.read(new FileInputStream("src/game/res/sprites/cityTileSet3.png"));
-            SpriteSheet city3Spritesheet = new SpriteSheet(city3, 32, 32);
-            BufferedImage city5 = ImageIO.read(new FileInputStream("src/game/res/sprites/cityTileSet5.png"));
-            SpriteSheet city5Spritesheet = new SpriteSheet(city5, 32, 32);
-            BufferedImage house = ImageIO.read(new FileInputStream("src/game/res/sprites/houseTileSet.png"));
-            SpriteSheet houseSpritesheet = new SpriteSheet(house, 32, 32);
-            BufferedImage pokemonLike = ImageIO.read(new FileInputStream("src/game/res/sprites/PokemonLike.png"));
-            SpriteSheet pokemonLikeSpritesheet = new SpriteSheet(pokemonLike, 32, 32);
-            BufferedImage ship1 = ImageIO.read(new FileInputStream("src/game/res/sprites/shipTileSet.jpg"));
-            SpriteSheet ship1Spritesheet = new SpriteSheet(ship1, 32, 32);
-            BufferedImage car = ImageIO.read(new FileInputStream("src/game/res/sprites/carTileset.png"));
-            SpriteSheet carSpritesheet = new SpriteSheet(car, 32, 32);
-            BufferedImage tree = ImageIO.read(new FileInputStream("src/game/res/sprites/treeTileSet.png"));
-            SpriteSheet treeTileset = new SpriteSheet(tree, 32, 32);
+            SpriteSheet city2Spritesheet = new SpriteSheet(spritesBasePath+"cityTileSet2.png", 32, 32);
+            SpriteSheet city3Spritesheet = new SpriteSheet(spritesBasePath+"cityTileSet3.png", 32, 32);
+            SpriteSheet city5Spritesheet = new SpriteSheet(spritesBasePath+"cityTileSet5.png", 32, 32);
+            SpriteSheet houseSpritesheet = new SpriteSheet(spritesBasePath+"houseTileSet.png", 32, 32);
+            SpriteSheet pokemonLikeSpritesheet = new SpriteSheet(spritesBasePath+"PokemonLike.png", 32, 32);
+            SpriteSheet ship1Spritesheet = new SpriteSheet(spritesBasePath+"shipTileSet.jpg", 32, 32);
+            SpriteSheet carSpritesheet = new SpriteSheet(spritesBasePath+"carTileset.png", 32, 32);
+            SpriteSheet treeTileset = new SpriteSheet(spritesBasePath+"treeTileSet.png", 32, 32);
+
+            // Chão
             this.backgroundImage = ImageIO.read(new FileInputStream("src/game/res/mapas/MapaRaiaChao.png"));
 
-            // Tilemaps
-            BufferedReader aguaTileMap = new BufferedReader(new FileReader("src/game/res/mapas/Mapa Raia_Agua.csv"));
-            BufferedReader barcosTileMap = new BufferedReader(new FileReader("src/game/res/mapas/Mapa Raia_Barcos.csv"));
-            BufferedReader troncosTileMap = new BufferedReader(new FileReader("src/game/res/mapas/Mapa Raia_troncos.csv"));
-            BufferedReader carrosTileMap = new BufferedReader(new FileReader("src/game/res/mapas/Mapa Raia_Carros.csv"));
-            BufferedReader cruspTileMap = new BufferedReader(new FileReader("src/game/res/mapas/Mapa Raia_Crusp.csv"));
-            BufferedReader muroTileMap = new BufferedReader(new FileReader("src/game/res/mapas/Mapa Raia_Muro.csv"));
-            BufferedReader portasTileMap = new BufferedReader(new FileReader("src/game/res/mapas/Mapa Raia_Portas.csv"));
-            BufferedReader prediosTileMap = new BufferedReader(new FileReader("src/game/res/mapas/Mapa Raia_predios.csv"));
-            BufferedReader folhasTileMap = new BufferedReader(new FileReader("src/game/res/mapas/Mapa Raia_folhas.csv"));
-            BufferedReader postesTileMap = new BufferedReader(new FileReader("src/game/res/mapas/Mapa Raia_topoPoste.csv"));
-            BufferedReader basePostesTileMap = new BufferedReader(new FileReader("src/game/res/mapas/Mapa Raia_BasePoste.csv"));
+            // Tilemaps e layers
+            this.tm.addLayer(new MapLayer(tilemapBasePath+"Mapa Raia_Agua.csv", pokemonLikeSpritesheet, false, LayerType.SWIMABLE));
+            this.tm.addLayer(new MapLayer(tilemapBasePath+"Mapa Raia_troncos.csv", treeTileset, true));
+            this.tm.addLayer(new MapLayer(tilemapBasePath+"Mapa Raia_Barcos.csv", ship1Spritesheet, true));
+            this.tm.addLayer(new MapLayer(tilemapBasePath+"Mapa Raia_Muro.csv", city2Spritesheet, true));
+            this.tm.addLayer(new MapLayer(tilemapBasePath+"Mapa Raia_predios.csv", city5Spritesheet, true));
+            this.tm.addLayer(new MapLayer(tilemapBasePath+"Mapa Raia_Carros.csv", carSpritesheet, true));
+            this.tm.addLayer(new MapLayer(tilemapBasePath+"Mapa Raia_Crusp.csv", houseSpritesheet, true));
+            this.tm.addLayer(new MapLayer(tilemapBasePath+"Mapa Raia_Portas.csv", city5Spritesheet, true));
+            this.tm.addLayer(new MapLayer(tilemapBasePath+"Mapa Raia_BasePoste.csv", city3Spritesheet,true));
+            this.tm.addLayer(new MapLayer(tilemapBasePath+"Mapa Raia_folhas.csv", treeTileset));
+            this.tm.addLayer(new MapLayer(tilemapBasePath+"Mapa Raia_topoPoste.csv", city3Spritesheet));
 
-            // Carregando layers
-            this.tm.addLayer(new MapLayer(aguaTileMap, pokemonLikeSpritesheet, false, LayerType.SWIMABLE));
-            this.tm.addLayer(new MapLayer(troncosTileMap, treeTileset, true));
-            this.tm.addLayer(new MapLayer(barcosTileMap, ship1Spritesheet, true));
-            this.tm.addLayer(new MapLayer(muroTileMap, city2Spritesheet, true));
-            this.tm.addLayer(new MapLayer(prediosTileMap, city5Spritesheet, true));
-            this.tm.addLayer(new MapLayer(carrosTileMap, carSpritesheet, true));
-            this.tm.addLayer(new MapLayer(cruspTileMap, houseSpritesheet, true));
-            this.tm.addLayer(new MapLayer(portasTileMap, city5Spritesheet, true));
-            this.tm.addLayer(new MapLayer(basePostesTileMap, city3Spritesheet,true));
-            this.tm.addLayer(new MapLayer(folhasTileMap, treeTileset));
-            this.tm.addLayer(new MapLayer(postesTileMap, city3Spritesheet));
-
-        } catch (Exception e) {
+        } catch (IOException e) {
             e.printStackTrace();
         }
     }
