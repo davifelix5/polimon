@@ -23,7 +23,7 @@ public class Outside implements IState {
 
     public Outside(KeyHandler keyHandler, StateManager gameStateManager) {
         this.gameStateManager = gameStateManager;
-        this.player = new Player(50, 50, 2, keyHandler, PlayerAnimations.Walk, tm);
+        this.player = new Player(65, 50, 2, keyHandler, PlayerAnimations.Walk, tm);
         loadMapLayers();
     }
 

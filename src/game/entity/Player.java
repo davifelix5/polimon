@@ -48,7 +48,35 @@ public class Player extends Entity {
     public void tick() {
         tileManager.setReferenceX(getWorldX() - positionX);
         tileManager.setReferenceY(getWorldY() - positionY);
+        this.positionX = Game.width / 2 - getWidth();
+        this.positionY = Game.height / 2 - getHeight();
 
+        // Bordas no fim do mapa
+        if (getWorldX() + getWidth() + Game.width / 2 > this.tileManager.getMaxWidht()) {
+            int referenceX = tileManager.getMaxWidht() - Game.width;
+            this.positionX = getWorldX() - referenceX;
+            this.tileManager.setReferenceX(referenceX);
+        }
+
+        if (getWorldY() + getHeight() + Game.height / 2 > this.tileManager.getMaxHeight()) {
+            int referenceY = tileManager.getMaxHeight() - Game.height;
+            this.positionY = getWorldY() - referenceY;
+            this.tileManager.setReferenceY(referenceY);
+
+        }
+
+        // Bordas no começo do mapa
+        if (getWorldX() + getWidth() - Game.width / 2 < 0 && getWorldX() < Game.width / 2) {
+            tileManager.setReferenceX(0);
+            this.positionX = getWorldX();
+        }
+
+        if (getWorldY() + getHeight() - Game.height / 2 < 0 && getWorldY() < Game.height / 2) {
+            tileManager.setReferenceY(0);
+            this.positionY = getWorldY();
+        }
+
+        // Indices das animações
         int BACKWARD = 0, LEFT = 1,  RIGHT = 2, FOWARD = 3;
 
         if (movementKeyInput.bikeButtonPressed) {
@@ -113,8 +141,7 @@ public class Player extends Entity {
     @Override
     public void render(Graphics g) {
         BufferedImage image = getAnimation().nextSprite();
-        this.positionX = Game.width / 2 - getWidth();
-        this.positionY = Game.height / 2 - getHeight();
+
         g.drawImage(image, positionX, positionY, 32, 32, null);
     }
 
