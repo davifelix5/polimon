@@ -86,10 +86,12 @@ public class Player extends Entity {
         if (movementKeyInput.bikeButtonPressed) {
             setCurrentAnimation(PlayerAnimations.Bike);
             this.setMovingRate(3);
-        } else if (tileManager.searchLayers( getWorldRow(), getWorldCol(), LayerType.SWIMABLE) != null){
+        }
+
+        if (tileManager.searchLayers( getWorldRow(), getWorldCol(), LayerType.SWIMABLE) != null){
             setCurrentAnimation(PlayerAnimations.Swimming);
             this.setMovingRate(4);
-        } else {
+        } else if (!movementKeyInput.bikeButtonPressed) {
             setCurrentAnimation(PlayerAnimations.Walk);
             this.setMovingRate(2);
         }
