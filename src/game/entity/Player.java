@@ -3,6 +3,7 @@ package game.entity;
 import game.Game;
 import game.animation.*;
 import game.handlers.KeyHandler;
+import game.map.LayerType;
 import game.map.TileManager;
 
 import javax.imageio.ImageIO;
@@ -35,10 +36,13 @@ public class Player extends Entity {
         try {
             BufferedImage bikeSprites = ImageIO.read(new FileInputStream("src/game/res/sprites/playerBike.png"));
             BufferedImage walkSprites = ImageIO.read(new FileInputStream("src/game/res/sprites/playerSprites.png"));
+            BufferedImage swimSprites = ImageIO.read(new FileInputStream("src/game/res/sprites/playerSwim.png"));
             SpriteSheet bikeSpritesheet = new SpriteSheet(bikeSprites, 48, 48);
             SpriteSheet walkSpriteSheet = new SpriteSheet(walkSprites, 32, 41);
+            SpriteSheet swimSpritesheet = new SpriteSheet(swimSprites, 64, 82);
             this.animationSets[PlayerAnimations.Bike.getValue()] = new MoveAnimationSet(bikeSpritesheet, 0);
             this.animationSets[PlayerAnimations.Walk.getValue()] = new MoveAnimationSet(walkSpriteSheet, 0);
+            this.animationSets[PlayerAnimations.Swimming.getValue()] = new MoveAnimationSet(swimSpritesheet,0);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -82,7 +86,10 @@ public class Player extends Entity {
         if (movementKeyInput.bikeButtonPressed) {
             setCurrentAnimation(PlayerAnimations.Bike);
             this.setMovingRate(3);
-        } else{
+        } else if (tileManager.searchLayers( getWorldRow(), getWorldCol(), LayerType.SWIMABLE) != null){
+            setCurrentAnimation(PlayerAnimations.Swimming);
+            this.setMovingRate(4);
+        } else {
             setCurrentAnimation(PlayerAnimations.Walk);
             this.setMovingRate(2);
         }

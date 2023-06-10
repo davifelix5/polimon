@@ -70,6 +70,20 @@ public class TileManager {
         }
     }
 
+    public Tile searchLayers(int row, int col, LayerType type) {
+        try {
+            for (MapLayer layer: layers) {
+                if (layer.getType() == type) {
+                    return layer.getTileMap()[row][col];
+                }
+            }
+        } catch (RuntimeException e) {
+            return null;
+        }
+
+        return null;
+    }
+
     public void setReferenceX(int referenceX) {
         this.referenceX = referenceX;
     }
