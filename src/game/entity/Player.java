@@ -52,13 +52,13 @@ public class Player extends Entity {
         this.positionY = Game.height / 2 - getHeight();
 
         // Bordas no fim do mapa
-        if (getWorldX() + getWidth() + Game.width / 2 > this.tileManager.getMaxWidht()) {
+        if (getWorldX() + getWidth() + Game.width / 2 >= this.tileManager.getMaxWidht()) {
             int referenceX = tileManager.getMaxWidht() - Game.width;
             this.positionX = getWorldX() - referenceX;
             this.tileManager.setReferenceX(referenceX);
         }
 
-        if (getWorldY() + getHeight() + Game.height / 2 > this.tileManager.getMaxHeight()) {
+        if (getWorldY() + getHeight() + Game.height / 2 >= this.tileManager.getMaxHeight()) {
             int referenceY = tileManager.getMaxHeight() - Game.height;
             this.positionY = getWorldY() - referenceY;
             this.tileManager.setReferenceY(referenceY);
@@ -66,12 +66,12 @@ public class Player extends Entity {
         }
 
         // Bordas no começo do mapa
-        if (getWorldX() + getWidth() - Game.width / 2 < 0 && getWorldX() < Game.width / 2) {
+        if (getWorldX() + getWidth() - Game.width / 2 <= 0 && getWorldX() <= Game.width / 2) {
             tileManager.setReferenceX(0);
             this.positionX = getWorldX();
         }
 
-        if (getWorldY() + getHeight() - Game.height / 2 < 0 && getWorldY() < Game.height / 2) {
+        if (getWorldY() + getHeight() - Game.height / 2 <= 0 && getWorldY() <= Game.height / 2) {
             tileManager.setReferenceY(0);
             this.positionY = getWorldY();
         }
