@@ -15,11 +15,25 @@ public class MapLayer {
     private final boolean solid;
     private int rows, cols;
     private Tile[][] tileMap;
+    private LayerType type;
 
     public MapLayer(BufferedReader tilemapFile, SpriteSheet spriteSheet, boolean solid) {
         this.tilemapFile = tilemapFile;
         this.spritesheet = spriteSheet;
         this.solid = solid;
+    }
+
+    public MapLayer(BufferedReader tilemapFile, SpriteSheet spriteSheet) {
+        this.tilemapFile = tilemapFile;
+        this.spritesheet = spriteSheet;
+        this.solid = false;
+    }
+
+    public MapLayer(BufferedReader tilemapFile, SpriteSheet spriteSheet, boolean solid, LayerType type) {
+        this.tilemapFile = tilemapFile;
+        this.spritesheet = spriteSheet;
+        this.solid = solid;
+        this.type = type;
     }
 
     public void render(Graphics g, int referenceX, int referenceY) {
@@ -67,5 +81,9 @@ public class MapLayer {
 
     public void setCols(int cols) {
         this.cols = cols;
+    }
+
+    public LayerType getType() {
+        return type;
     }
 }

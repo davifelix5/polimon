@@ -2,7 +2,7 @@ package game.entity;
 
 public enum PlayerAnimations {
 
-    Walk(0), Bike(1);
+    Walk(0), Bike(1), Swimming(2);
 
     public final int value;
 

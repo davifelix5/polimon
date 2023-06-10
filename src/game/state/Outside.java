@@ -1,9 +1,11 @@
 package game.state;
 
+import game.Game;
 import game.animation.SpriteSheet;
 import game.entity.Player;
 import game.entity.PlayerAnimations;
 import game.handlers.KeyHandler;
+import game.map.LayerType;
 import game.map.MapLayer;
 import game.map.TileManager;
 
@@ -23,7 +25,7 @@ public class Outside implements IState {
 
     public Outside(KeyHandler keyHandler, StateManager gameStateManager) {
         this.gameStateManager = gameStateManager;
-        this.player = new Player(65, 50, 2, keyHandler, PlayerAnimations.Walk, tm);
+        this.player = new Player(25* Game.tileSize, 10*Game.tileSize, 2, keyHandler, PlayerAnimations.Walk, tm);
         loadMapLayers();
     }
 
@@ -77,7 +79,7 @@ public class Outside implements IState {
             BufferedReader basePostesTileMap = new BufferedReader(new FileReader("src/game/res/mapas/Mapa Raia_BasePoste.csv"));
 
             // Carregando layers
-            this.tm.addLayer(new MapLayer(aguaTileMap, pokemonLikeSpritesheet, false));
+            this.tm.addLayer(new MapLayer(aguaTileMap, pokemonLikeSpritesheet, false, LayerType.SWIMABLE));
             this.tm.addLayer(new MapLayer(troncosTileMap, treeTileset, true));
             this.tm.addLayer(new MapLayer(barcosTileMap, ship1Spritesheet, true));
             this.tm.addLayer(new MapLayer(muroTileMap, city2Spritesheet, true));
@@ -86,8 +88,8 @@ public class Outside implements IState {
             this.tm.addLayer(new MapLayer(cruspTileMap, houseSpritesheet, true));
             this.tm.addLayer(new MapLayer(portasTileMap, city5Spritesheet, true));
             this.tm.addLayer(new MapLayer(basePostesTileMap, city3Spritesheet,true));
-            this.tm.addLayer(new MapLayer(folhasTileMap, treeTileset,false));
-            this.tm.addLayer(new MapLayer(postesTileMap, city3Spritesheet, false));
+            this.tm.addLayer(new MapLayer(folhasTileMap, treeTileset));
+            this.tm.addLayer(new MapLayer(postesTileMap, city3Spritesheet));
 
         } catch (Exception e) {
             e.printStackTrace();

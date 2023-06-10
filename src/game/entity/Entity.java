@@ -1,5 +1,7 @@
 package game.entity;
 
+import game.Game;
+
 import java.awt.*;
 
 public abstract class Entity {
@@ -48,4 +50,12 @@ public abstract class Entity {
         this.velY = velY;
     }
     public abstract Rectangle getBounds();
+
+    public int getWorldRow() {
+        return this.worldY / Game.tileSize;
+    }
+
+    public int getWorldCol() {
+        return this.worldX / Game.tileSize;
+    }
 }
