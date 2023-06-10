@@ -14,13 +14,16 @@ import java.io.FileInputStream;
 public class Player extends Entity {
 
     private final KeyHandler movementKeyInput;
-    private int movingRate;
-    private int positionX, positionY;
+
+    private int movingRate; // Módulo da velocidade do jogador
+
+    private int positionX, positionY; // Posição do jogador na tela
     private boolean coliding;
 
-    private final IAnimationSet[] animationSets = new IAnimationSet[PlayerAnimations.values().length];
+    private final IAnimationSet[] animationSets = new IAnimationSet[PlayerAnimations.values().length]; // Vetor com todas as animações possíveis.
     private PlayerAnimations currentAnimation;
-    private final TileManager tileManager;
+
+    private final TileManager tileManager; // Informação sobre os tiles do mapa.
 
     public Player(int x, int y, int movingRate, KeyHandler movementKeyInput, PlayerAnimations currentAnimation, TileManager tileManager) {
         super(x, y);
@@ -50,44 +53,48 @@ public class Player extends Entity {
 
     @Override
     public void tick() {
+        // Gerencia o movimento da câmera
         tileManager.setReferenceX(getWorldX() - positionX);
         tileManager.setReferenceY(getWorldY() - positionY);
+
+        // Posição do jogador é, por padrão, no centro da tela
         this.positionX = Game.width / 2 - getWidth();
         this.positionY = Game.height / 2 - getHeight();
 
-        // Bordas no fim do mapa
+        // Mudando o comportamento nos extremos do mapa
+        // Extremo direto
         if (getWorldX() + getWidth() + Game.width / 2 >= this.tileManager.getMaxWidht()) {
             int referenceX = tileManager.getMaxWidht() - Game.width;
             this.positionX = getWorldX() - referenceX;
             this.tileManager.setReferenceX(referenceX);
         }
-
+        // Extremo inferior
         if (getWorldY() + getHeight() + Game.height / 2 >= this.tileManager.getMaxHeight()) {
             int referenceY = tileManager.getMaxHeight() - Game.height;
             this.positionY = getWorldY() - referenceY;
             this.tileManager.setReferenceY(referenceY);
 
         }
-
-        // Bordas no começo do mapa
+        // Extremo esquerdo
         if (getWorldX() + getWidth() - Game.width / 2 <= 0 && getWorldX() <= Game.width / 2) {
             tileManager.setReferenceX(0);
             this.positionX = getWorldX();
         }
-
+        // Extremo superior
         if (getWorldY() + getHeight() - Game.height / 2 <= 0 && getWorldY() <= Game.height / 2) {
             tileManager.setReferenceY(0);
             this.positionY = getWorldY();
         }
 
-        // Indices das animações
-        int BACKWARD = 0, LEFT = 1,  RIGHT = 2, FOWARD = 3;
 
+        int BACKWARD = 0, LEFT = 1,  RIGHT = 2, FOWARD = 3; // Indices das animações
+
+        // Gerencia qual será a animação atual do jogador.
         if (movementKeyInput.bikeButtonPressed) {
             setCurrentAnimation(PlayerAnimations.Bike);
             this.setMovingRate(3);
         }
-
+        // A animalçao de nadar deve ser preferencial em relação à da bicicleta.
         if (tileManager.searchLayers( getWorldRow(), getWorldCol(), LayerType.SWIMABLE) != null){
             setCurrentAnimation(PlayerAnimations.Swimming);
             this.setMovingRate(4);
@@ -96,6 +103,7 @@ public class Player extends Entity {
             this.setMovingRate(2);
         }
 
+        // Lidando com a lógica de parada do jogador
         if (!movementKeyInput.downPressed && !movementKeyInput.upPressed || coliding){
             if (getCurrentAnimationSet().getCurrentIndex() == FOWARD || getCurrentAnimationSet().getCurrentIndex() == BACKWARD) {
                 getAnimation().stop();
@@ -103,7 +111,6 @@ public class Player extends Entity {
             }
             setVelY(0);
         }
-
         if (!movementKeyInput.rightPressed && !movementKeyInput.leftPressed || coliding) {
             if (getCurrentAnimationSet().getCurrentIndex() == RIGHT || getCurrentAnimationSet().getCurrentIndex() == LEFT) {
                 getAnimation().stop();
@@ -113,7 +120,7 @@ public class Player extends Entity {
         }
 
         // Movimentação em X
-        if (getVelX() == 0) {
+        if (getVelX() == 0) { // O jogador não pode se movimentar em duas direções ao mesmo tempo
             if (movementKeyInput.upPressed) {
                 getCurrentAnimationSet().setCurrentIndex(FOWARD);
                 getAnimation().start();
@@ -126,7 +133,7 @@ public class Player extends Entity {
         }
 
         // Movimentação em y
-        if (getVelY() == 0) {
+        if (getVelY() == 0) { // O jogador não pode se movimentar em duas direções ao mesmo tempo
             if (movementKeyInput.leftPressed) {
                 getCurrentAnimationSet().setCurrentIndex(LEFT);
                 getAnimation().start();
@@ -154,6 +161,11 @@ public class Player extends Entity {
         g.drawImage(image, positionX, positionY, 32, 32, null);
     }
 
+    /***
+     * Método para identifcar a estratégia de animação atual
+     *
+     * @return a animação que corresponde ao índice atual
+     */
     private Animation getAnimation() {
         return this.animationSets[this.currentAnimation.getValue()].getCurrentAnimation();
     }
@@ -179,10 +191,18 @@ public class Player extends Entity {
         return this.animationSets[this.currentAnimation.getValue()];
     }
 
+    /***
+     * Identifica a largura do jogador a partir dos sprites da animação atual.
+     * @return largura do jogador
+     */
     public int getWidth() {
         return this.getCurrentAnimationSet().getSprites().spriteWidth;
     }
 
+    /***
+     * Identifica a largura do jogador a partir dos sprites da animação atual.
+     * @return largura do jogador
+     */
     public int getHeight() {
         return this.getCurrentAnimationSet().getSprites().spriteHeigth;
     }
