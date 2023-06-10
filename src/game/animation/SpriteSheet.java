@@ -19,12 +19,21 @@ public class SpriteSheet {
         this.getSpriteList();
     }
 
+    /**
+     * Retorna uma subimagem do tamanho do sprite na posição especificada
+     * @param lin posição vetical da imagem
+     * @param col posição horizontal da imagem
+     * @return imagem na poisção especificada
+     */
     public BufferedImage grabImage(int lin, int col){
         int x = (col * spriteWidth);
         int y = (lin * spriteHeigth);
         return image.getSubimage(x, y, spriteWidth, spriteHeigth);
     }
 
+    /**
+     * Le os sprites dentro do spritesheet e salva-os em uma lista.
+     */
     public void getSpriteList(){
         for(int i = 0; i < lins; i ++){
             for(int j = 0; j < cols; j ++){
@@ -33,10 +42,21 @@ public class SpriteSheet {
         }
     }
 
+    /**
+     * Retorna um sprite a partir da identificação matricial na imagem
+     * @param lin linha em que o sprite está posicionado
+     * @param col coluna em que o sprite está posicionado
+     * @return imagem do sprite correspondente
+     */
     public BufferedImage getSprite(int lin, int col){
         return sprites.get((lin*this.cols) + col);
     }
 
+    /**
+     * Retorna o sprite na lista correspondente ao índice passado
+     * @param index índice do sprite
+     * @return sprite corresondente ao índice passado
+     */
     public BufferedImage getSprite(int index) {
         return sprites.get(index);
     }

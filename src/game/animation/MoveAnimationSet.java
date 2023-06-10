@@ -3,18 +3,24 @@ package game.animation;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 
+/**
+ * Abstração para um conjunto de animações que indicam movimento do jogador
+ */
 public class MoveAnimationSet implements IAnimationSet {
-    private int currentIndex;
-    private ArrayList<Animation> animations;
-    private final SpriteSheet movingSprites;
+    private int currentIndex; // Animação atual
+    private ArrayList<Animation> animations; // Todas as animações na ordem: frente, esquerda, direita, cima
+    private final SpriteSheet movingSprites; // spritesheet com as animações
 
     public MoveAnimationSet(SpriteSheet movingSprites, int initialIndex) {
         this.movingSprites = movingSprites;
         this.currentIndex = initialIndex;
-        updateAnimations();
+        loadAnimations();
     }
 
-    public void updateAnimations() {
+    /**
+     * Carrega o spritesheet com as animações para dentro da lista de animações, seguindo a ordem estipulada acima
+     */
+    public void loadAnimations() {
         ArrayList<Animation> animations = new ArrayList<>();
         for (int i = 0; i < movingSprites.lins; i++) {
             ArrayList<BufferedImage> frames = new ArrayList<>();

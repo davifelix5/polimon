@@ -9,12 +9,12 @@ import java.io.BufferedReader;
 import java.util.ArrayList;
 
 public class MapLayer {
-    private final BufferedReader tilemapFile;
-    private final ArrayList<ArrayList<Integer>> tileNumbers = new ArrayList<>();
-    private final SpriteSheet spritesheet;
-    private final boolean solid;
+    private final BufferedReader tilemapFile; // Arquivo csv com a posição dos tiles
+    private final ArrayList<ArrayList<Integer>> tileNumbers = new ArrayList<>(); // matriz com os números do tilemapFile
+    private final SpriteSheet spritesheet; // Tilset correspondente
+    private final boolean solid; // indica se os tiles da camada serão colidíveis
     private int rows, cols;
-    private Tile[][] tileMap;
+    private Tile[][] tileMap; // tilemap com todos os tiles da camada em suas respectivas posições
     private LayerType type;
 
     public MapLayer(BufferedReader tilemapFile, SpriteSheet spriteSheet, boolean solid) {
@@ -36,6 +36,12 @@ public class MapLayer {
         this.type = type;
     }
 
+    /**
+     * Renficação os tiles do em suas devidas posições na tela a partir de um ponto de referência
+     * @param g gráficos sendo utilizados no jogo
+     * @param referenceX posição de referência para renderização em x
+     * @param referenceY posição de referência para renderização em y
+     */
     public void render(Graphics g, int referenceX, int referenceY) {
         int x, y = 0;
         tileMap = new Tile[rows][cols];
@@ -55,6 +61,9 @@ public class MapLayer {
         }
     }
 
+    /**
+     * Percorre o arquivo csv com os tiles e forma uma matriz de inteiros correspondendo ao números dos tiles
+     */
     public void parseTileMap() {
         try {
             for (int i = 0; i < rows; i++) {
