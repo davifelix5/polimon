@@ -8,6 +8,6 @@ public class PlayButtonStrategy implements MouseInteractionStrategy {
 
     @Override
     public void onPress(Game game) {
-        game.getStateManager().setState(StateID.Bienio);
+        game.getStateManager().setState(StateID.Outside);
     }
 }
