@@ -11,7 +11,14 @@ public class Pokemon {
     final PokemonType type;
     PokemonID evolvesTo;
 
-    public Pokemon(PokemonID ID) {
+    public Pokemon(PokemonID ID, int baseHP, int baseAttack, int baseDefence, int baseSpAtk, int baseSpDef, int baseSpeed, PokemonType type) {
         this.ID = ID;
+        this.baseHP = baseHP;
+        this.baseAttack = baseAttack;
+        this.baseDefence = baseDefence;
+        this.baseSpAtk = baseSpAtk;
+        this.baseSpDef = baseSpDef;
+        this.baseSpeed = baseSpeed;
+        this.type = type;
     }
 }

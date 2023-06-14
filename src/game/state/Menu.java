@@ -31,7 +31,7 @@ public class Menu implements IState{
 
 		g.drawImage(backgroundImage, 0, 0, null);
 		play = new Button("Play", 180, 150, 600, 80, mouse, new PlayButtonStrategy());
-		options = new Button("Options", 180, 250, 600, 80, mouse, new OptionsButtonStrategy());
+		options = new Button("Combat", 180, 250, 600, 80, mouse, new OptionsButtonStrategy());
 		credits = new Button("Credits", 180, 350, 600, 80, mouse, new CreditsButtonStrategy());
 		exit = new Button("Exit", 180, 450, 600, 80, mouse, new ExitButtonStrategy());
 
