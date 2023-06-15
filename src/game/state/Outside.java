@@ -50,12 +50,12 @@ public class Outside implements IState {
 
             // Spritsheets
             SpriteSheet city2Spritesheet = new SpriteSheet(spritesBasePath+"cityTileSet2.png", 32, 32);
-            SpriteSheet city3Spritesheet = new SpriteSheet(spritesBasePath+"cityTileSet3.png", 32, 32);
+            SpriteSheet city3Spritesheet = new SpriteSheet(spritesBasePath+"cityTIleSet3.png", 32, 32);
             SpriteSheet city5Spritesheet = new SpriteSheet(spritesBasePath+"cityTileSet5.png", 32, 32);
             SpriteSheet houseSpritesheet = new SpriteSheet(spritesBasePath+"houseTileSet.png", 32, 32);
             SpriteSheet pokemonLikeSpritesheet = new SpriteSheet(spritesBasePath+"PokemonLike.png", 32, 32);
             SpriteSheet ship1Spritesheet = new SpriteSheet(spritesBasePath+"shipTileSet.jpg", 32, 32);
-            SpriteSheet carSpritesheet = new SpriteSheet(spritesBasePath+"carTileset.png", 32, 32);
+            SpriteSheet carSpritesheet = new SpriteSheet(spritesBasePath+"carTileSet.png", 32, 32);
             SpriteSheet treeTileset = new SpriteSheet(spritesBasePath+"treeTileSet.png", 32, 32);
 
             // Chão
@@ -66,7 +66,7 @@ public class Outside implements IState {
             this.tm.addLayer(new MapLayer(tilemapBasePath+"Mapa Raia_troncos.csv", treeTileset, true));
             this.tm.addLayer(new MapLayer(tilemapBasePath+"Mapa Raia_Barcos.csv", ship1Spritesheet, true));
             this.tm.addLayer(new MapLayer(tilemapBasePath+"Mapa Raia_Muro.csv", city2Spritesheet, true));
-            this.tm.addLayer(new MapLayer(tilemapBasePath+"Mapa Raia_predios.csv", city5Spritesheet, true));
+            this.tm.addLayer(new MapLayer(tilemapBasePath+"Mapa Raia_Predios.csv", city5Spritesheet, true));
             this.tm.addLayer(new MapLayer(tilemapBasePath+"Mapa Raia_Carros.csv", carSpritesheet, true));
             this.tm.addLayer(new MapLayer(tilemapBasePath+"Mapa Raia_Crusp.csv", houseSpritesheet, true));
             this.tm.addLayer(new MapLayer(tilemapBasePath+"Mapa Raia_Portas.csv", city5Spritesheet, true));
