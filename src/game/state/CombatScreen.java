@@ -8,6 +8,7 @@ import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.FileInputStream;
 import java.io.IOException;
+import game.combate.Healthbar;
 
 public class CombatScreen implements IState {
     IStateManager stateManager;
@@ -20,6 +21,7 @@ public class CombatScreen implements IState {
     BufferedImage enemyPokemon;
 
     Button fight, bag, pokemon, run;
+    Healthbar enemyHP, alliedHP;
     public CombatScreen(MouseHandler mouse, IStateManager stateManager) {
         this.mouse = mouse;
         this.stateManager = stateManager;
@@ -33,20 +35,16 @@ public class CombatScreen implements IState {
     public void render(Graphics g) {
     g.drawImage(backgroundImage, 0,0, null);
     g.setColor(Color.green);
-    g.drawImage(alliedPokemon,160, 320, null);
-        //g.fillRect(200, 340, 120, 120);
+    g.drawImage(alliedPokemon,80, 180, null);
     g.drawImage(combatHUD,0, 640-196,null);
-    g.drawImage(enemyPokemon, 620, 130, null);
-        //g.fillRect(640, 150, 120, 120);
-    fight = new Button("Fight",20 ,960 / 2 + 10, 640 - 176, 210, 78, mouse ,new ExitButtonStrategy());
-    bag = new Button("Bag",20 ,960 / 2 + 240, 640 - 176, 210, 78, mouse, new ExitButtonStrategy());
-    pokemon = new Button("Pokemon",20 ,960 / 2 + 10, 640 - 100, 210, 80, mouse, new ExitButtonStrategy());
-    run = new Button("Run",20 ,960 / 2 + 240, 640 - 100, 210, 78, mouse, new ExitButtonStrategy());
+    g.drawImage(enemyPokemon, 520, 0, null);
 
     fight.render(g);
     bag.render(g);
     pokemon.render(g);
     run.render(g);
+    enemyHP.render(g);
+    alliedHP.render(g);
     g.setColor(Color.white);
     g.fillRoundRect(30, 640 - 176, 400, 156, 30,30);
     g.setColor(Color.black);
@@ -55,14 +53,22 @@ public class CombatScreen implements IState {
     g.setFont(h2);
     g.drawString("Texto de Exemplo", 100, 640 - 156);
 
+
     }
 
     public void loadImages() {
         try {
             this.backgroundImage = ImageIO.read(new FileInputStream("src/game/res/fotos/combatScreen.jpg"));
             this.combatHUD = ImageIO.read(new FileInputStream("src/game/res/fotos/combatHUD.jpg"));
-            this.alliedPokemon = ImageIO.read(new FileInputStream("src/game/res/sprites/pokemon/treeckoBack.png"));
-            this.enemyPokemon = ImageIO.read(new FileInputStream("src/game/res/sprites/pokemon/treecko.png"));
+            this.alliedPokemon = ImageIO.read(new FileInputStream("src/game/res/sprites/pokemon/treeckoBack2.png"));
+            this.enemyPokemon = ImageIO.read(new FileInputStream("src/game/res/sprites/pokemon/treecko2.png"));
+            fight = new Button("Fight",20 ,960 / 2 + 10, 640 - 176, 210, 78, mouse ,new ExitButtonStrategy());
+            bag = new Button("Bag",20 ,960 / 2 + 240, 640 - 176, 210, 78, mouse, new ExitButtonStrategy());
+            pokemon = new Button("Pokemon",20 ,960 / 2 + 10, 640 - 100, 210, 80, mouse, new ExitButtonStrategy());
+            run = new Button("Run",20 ,960 / 2 + 240, 640 - 100, 210, 78, mouse, new ExitButtonStrategy());
+            enemyHP = new Healthbar(210, 135, 402 - 210, 143-135, 100); //depois trocar para vida max dos pokemons
+            alliedHP = new Healthbar(698,363, 890-698, 371-363, 100);
+
         } catch (IOException e) {
             e.printStackTrace();
         }
