@@ -13,13 +13,13 @@ public class TileManager {
     private final ArrayList<MapLayer> layers = new ArrayList<>(); // Todas as camadas renderizadas no momento
 
     private final int mapRows, mapCols; // Linhas e colunas do mapa
-    private final int maxWidht, maxHeight; // Largura e altura do mapa
+    private final int maxWidth, maxHeight; // Largura e altura do mapa
     private int referenceX, referenceY; // Posição de referência
 
     public TileManager(int mapRows, int mapCols) {
         this.mapRows = mapRows;
         this.mapCols = mapCols;
-        this.maxWidht = this.mapCols*Game.tileSize;
+        this.maxWidth = this.mapCols*Game.tileSize;
         this.maxHeight = this.mapRows*Game.tileSize;
     }
 
@@ -32,11 +32,11 @@ public class TileManager {
 
     /**
      * Verifica se a entidade passada está colidindo com algum tile sólido da camada passada
-     * @param entity endidade passada
+     * @param entity entidade passada
      * @param layer camada passada
      * @return verdadeiro se há colisão e falso se não há
      */
-    private boolean checkColision(Entity entity, MapLayer layer) {
+    private boolean checkCollision(Entity entity, MapLayer layer) {
         // Pega os limites de colisão da entidade
         int left = entity.getWorldX() + entity.getBounds().x;
         int right = left + entity.getBounds().width;
@@ -71,7 +71,7 @@ public class TileManager {
         boolean hasColision = false;
         int i = 0;
         while (!hasColision && i < layers.size()) {
-            hasColision = checkColision(entity, layers.get(i));
+            hasColision = checkCollision(entity, layers.get(i));
             i++;
         }
         return hasColision;
@@ -135,8 +135,8 @@ public class TileManager {
         return referenceY;
     }
 
-    public int getMaxWidht() {
-        return maxWidht;
+    public int getMaxWidth() {
+        return maxWidth;
     }
 
     public int getMaxHeight() {

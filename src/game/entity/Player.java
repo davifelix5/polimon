@@ -18,7 +18,7 @@ public class Player extends Entity {
     private int movingRate; // Módulo da velocidade do jogador
 
     private int positionX, positionY; // Posição do jogador na tela
-    private boolean coliding;
+    private boolean colliding;
 
     private final IAnimationSet[] animationSets = new IAnimationSet[PlayerAnimations.values().length]; // Vetor com todas as animações possíveis.
     private PlayerAnimations currentAnimation;
@@ -31,8 +31,15 @@ public class Player extends Entity {
         this.movementKeyInput = movementKeyInput;
         this.currentAnimation = currentAnimation;
         this.tileManager = tileManager;
-        this.coliding = false;
+        this.colliding = false;
+
         loadAnimations();
+
+        // Inicializando a câmera
+        this.positionX = Game.width / 2 - getWidth();
+        this.positionY = Game.height / 2 - getHeight();
+        tileManager.setReferenceX(getWorldX() - positionX);
+        tileManager.setReferenceY(getWorldY() - positionY);
     }
 
     private void loadAnimations() {
@@ -63,8 +70,8 @@ public class Player extends Entity {
 
         // Mudando o comportamento nos extremos do mapa
         // Extremo direto
-        if (getWorldX() + getWidth() + Game.width / 2 >= this.tileManager.getMaxWidht()) {
-            int referenceX = tileManager.getMaxWidht() - Game.width;
+        if (getWorldX() + getWidth() + Game.width / 2 >= this.tileManager.getMaxWidth()) {
+            int referenceX = tileManager.getMaxWidth() - Game.width;
             this.positionX = getWorldX() - referenceX;
             this.tileManager.setReferenceX(referenceX);
         }
@@ -104,14 +111,14 @@ public class Player extends Entity {
         }
 
         // Lidando com a lógica de parada do jogador
-        if (!movementKeyInput.downPressed && !movementKeyInput.upPressed || coliding){
+        if (!movementKeyInput.downPressed && !movementKeyInput.upPressed || colliding){
             if (getCurrentAnimationSet().getCurrentIndex() == FOWARD || getCurrentAnimationSet().getCurrentIndex() == BACKWARD) {
                 getAnimation().stop();
                 getAnimation().reset();
             }
             setVelY(0);
         }
-        if (!movementKeyInput.rightPressed && !movementKeyInput.leftPressed || coliding) {
+        if (!movementKeyInput.rightPressed && !movementKeyInput.leftPressed || colliding) {
             if (getCurrentAnimationSet().getCurrentIndex() == RIGHT || getCurrentAnimationSet().getCurrentIndex() == LEFT) {
                 getAnimation().stop();
                 getAnimation().reset();
@@ -120,7 +127,7 @@ public class Player extends Entity {
         }
 
         // Movimentação em X
-        if (getVelX() == 0) { // O jogador não pode se movimentar em duas direções ao mesmo tempo
+        if (getVelX() == 0) { // O jogador não pode se movimentar em duas direções simultaneamente
             if (movementKeyInput.upPressed) {
                 getCurrentAnimationSet().setCurrentIndex(FOWARD);
                 getAnimation().start();
@@ -133,7 +140,7 @@ public class Player extends Entity {
         }
 
         // Movimentação em y
-        if (getVelY() == 0) { // O jogador não pode se movimentar em duas direções ao mesmo tempo
+        if (getVelY() == 0) { // O jogador não pode se movimentar em duas direções simultaneamente
             if (movementKeyInput.leftPressed) {
                 getCurrentAnimationSet().setCurrentIndex(LEFT);
                 getAnimation().start();
@@ -145,11 +152,11 @@ public class Player extends Entity {
             }
         }
 
-        if (!coliding) {
+        if (!colliding) {
             getAnimation().tick();
             int nextPosX = getWorldX() + getVelX();
             int nextPosY = getWorldY() + getVelY();
-            setWorldX(Game.clamp(nextPosX, 0, tileManager.getMaxWidht() - getWidth()));
+            setWorldX(Game.clamp(nextPosX, 0, tileManager.getMaxWidth() - getWidth()));
             setWorldY(Game.clamp(nextPosY, 0, tileManager.getMaxHeight() - getHeight()));
         }
     }
@@ -175,8 +182,8 @@ public class Player extends Entity {
         return new Rectangle(10, 20, 10, 10);
     }
 
-    public void setColiding(boolean coliding) {
-        this.coliding = coliding;
+    public void setColliding(boolean colliding) {
+        this.colliding = colliding;
     }
 
     public void setMovingRate(int movingRate) {
