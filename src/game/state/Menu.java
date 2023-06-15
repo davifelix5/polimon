@@ -30,10 +30,10 @@ public class Menu implements IState{
 	public void render(Graphics g) {
 
 		g.drawImage(backgroundImage, 0, 0, null);
-		play = new Button("Play", 180, 150, 600, 80, mouse, new PlayButtonStrategy());
-		options = new Button("Combat", 180, 250, 600, 80, mouse, new OptionsButtonStrategy());
-		credits = new Button("Credits", 180, 350, 600, 80, mouse, new CreditsButtonStrategy());
-		exit = new Button("Exit", 180, 450, 600, 80, mouse, new ExitButtonStrategy());
+		play = new Button("Play",35 ,180, 150, 600, 80, mouse, new PlayButtonStrategy());
+		options = new Button("Combat ",35 ,180, 250, 600, 80, mouse, new OptionsButtonStrategy());
+		credits = new Button("Credits", 35,180, 350, 600, 80, mouse, new CreditsButtonStrategy());
+		exit = new Button("Exit",35 ,180, 450, 600, 80, mouse, new ExitButtonStrategy());
 
 		Font h1 = new Font("arial", Font.BOLD, 48);
 

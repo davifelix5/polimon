@@ -9,13 +9,15 @@ import game.handlers.MouseInteractionStrategy;
 public class Button implements MouseInteraction {
 
     String title;
+    int fontSize;
     private final int posX, posY;
     private final int width, height;
 
     private final MouseInteractionStrategy pressStrategy;
 
 
-    public Button(String title, int posX, int posY, int width, int height, MouseHandler mouse, MouseInteractionStrategy pressStrategy) {
+    public Button(String title,int fontSize, int posX, int posY, int width, int height, MouseHandler mouse, MouseInteractionStrategy pressStrategy) {
+        this.fontSize = fontSize;
         this.title = title;
         this.width = width;
         this.height = height;
@@ -50,8 +52,6 @@ public class Button implements MouseInteraction {
     }
 
     public void render(Graphics g) {
-
-        int fontSize = 35;
         int strLength = title.length();
 
         Font h2 = new Font("arial", Font.PLAIN, fontSize);
@@ -61,7 +61,7 @@ public class Button implements MouseInteraction {
 
         g.setColor(Color.white);
 
-        g.drawString(title, ((960 - (strLength * h2.getSize()) / 2) / 2), (posY + height / 2) + fontSize / 2);
+        g.drawString(title, (posX + width / 2 ) - strLength * (fontSize / 2) / 2, (posY + height / 2) + fontSize / 2);
         g.drawRect(posX, posY, width, height);
 
     }
