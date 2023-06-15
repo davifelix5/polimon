@@ -1,5 +1,7 @@
 package game.pokemon;
 
+import java.awt.*;
+
 public class Pokemon {
     PokemonID ID;
     final int baseHP;

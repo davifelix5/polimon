@@ -8,7 +8,7 @@ import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.FileInputStream;
 import java.io.IOException;
-import game.combate.Healthbar;
+import game.combate.StatBar;
 
 public class CombatScreen implements IState {
     IStateManager stateManager;
@@ -21,7 +21,7 @@ public class CombatScreen implements IState {
     BufferedImage enemyPokemon;
 
     Button fight, bag, pokemon, run;
-    Healthbar enemyHP, alliedHP;
+    StatBar enemyHP, alliedHP, alliedXP;
     public CombatScreen(MouseHandler mouse, IStateManager stateManager) {
         this.mouse = mouse;
         this.stateManager = stateManager;
@@ -45,6 +45,7 @@ public class CombatScreen implements IState {
     run.render(g);
     enemyHP.render(g);
     alliedHP.render(g);
+    alliedXP.render(g);
     g.setColor(Color.white);
     g.fillRoundRect(30, 640 - 176, 400, 156, 30,30);
     g.setColor(Color.black);
@@ -66,9 +67,9 @@ public class CombatScreen implements IState {
             bag = new Button("Bag",20 ,960 / 2 + 240, 640 - 176, 210, 78, mouse, new ExitButtonStrategy());
             pokemon = new Button("Pokemon",20 ,960 / 2 + 10, 640 - 100, 210, 80, mouse, new ExitButtonStrategy());
             run = new Button("Run",20 ,960 / 2 + 240, 640 - 100, 210, 78, mouse, new ExitButtonStrategy());
-            enemyHP = new Healthbar(210, 135, 402 - 210, 143-135, 100); //depois trocar para vida max dos pokemons
-            alliedHP = new Healthbar(698,363, 890-698, 371-363, 100);
-
+            enemyHP = new StatBar(210, 135, 402 - 210, 143-135, 100, 100, Color.green); //depois trocar para vida max dos pokemons
+            alliedHP = new StatBar(698,363, 890-698, 371-363, 100, 100, Color.green);
+            alliedXP = new StatBar(634, 425, 888-634,436-425,100,30,Color.cyan);
         } catch (IOException e) {
             e.printStackTrace();
         }
