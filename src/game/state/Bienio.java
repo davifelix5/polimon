@@ -29,7 +29,7 @@ public class Bienio implements IState {
 
     public void tick() {
         player.tick();
-        player.setColiding(tm.colides(player));
+        player.setColliding(tm.colides(player));
     }
 
     public void render(Graphics g) {

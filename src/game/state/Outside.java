@@ -1,6 +1,5 @@
 package game.state;
 
-import game.Game;
 import game.animation.SpriteSheet;
 import game.entity.Player;
 import game.entity.PlayerAnimations;
@@ -24,14 +23,14 @@ public class Outside implements IState {
 
     public Outside(KeyHandler keyHandler, StateManager gameStateManager) {
         this.gameStateManager = gameStateManager;
-        this.player = new Player(25* Game.tileSize, 10*Game.tileSize, 2, keyHandler, PlayerAnimations.Walk, tm);
+        this.player = new Player(5, 500 , 2, keyHandler, PlayerAnimations.Walk, tm);
         loadMapLayers();
     }
 
     @Override
     public void tick() {
         player.tick();
-        this.player.setColiding(this.tm.colides(player));
+        this.player.setColliding(this.tm.colides(player));
     }
 
     @Override
