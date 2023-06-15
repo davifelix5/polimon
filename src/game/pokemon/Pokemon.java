@@ -1,5 +1,7 @@
 package game.pokemon;
 
+import java.awt.*;
+
 public class Pokemon {
     PokemonID ID;
     final int baseHP = 2;
@@ -11,7 +13,14 @@ public class Pokemon {
     final PokemonType type = PokemonType.Normal;
     PokemonID evolvesTo;
 
-    public Pokemon(PokemonID ID) {
+    public Pokemon(PokemonID ID, int baseHP, int baseAttack, int baseDefence, int baseSpAtk, int baseSpDef, int baseSpeed, PokemonType type) {
         this.ID = ID;
+        this.baseHP = baseHP;
+        this.baseAttack = baseAttack;
+        this.baseDefence = baseDefence;
+        this.baseSpAtk = baseSpAtk;
+        this.baseSpDef = baseSpDef;
+        this.baseSpeed = baseSpeed;
+        this.type = type;
     }
 }

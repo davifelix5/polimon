@@ -4,6 +4,7 @@ import game.handlers.KeyHandler;
 import game.handlers.MouseHandler;
 import game.state.*;
 import game.state.Menu;
+import game.state.CombatScreen;
 
 import javax.swing.*;
 import java.awt.*;
@@ -29,6 +30,7 @@ public class Game extends JPanel implements Runnable {
         this.gameStateManager.addState(StateID.Menu, new Menu(mouseHandler, gameStateManager));
         this.gameStateManager.addState(StateID.Bienio, new Bienio(keyHandler, gameStateManager));
         this.gameStateManager.addState(StateID.Outside, new Outside(keyHandler, gameStateManager));
+        this.gameStateManager.addState(StateID.Combate, new CombatScreen(mouseHandler,gameStateManager));
         this.gameStateManager.setState(StateID.RestScreen);
 
         this.setPreferredSize(new Dimension(width, height));
