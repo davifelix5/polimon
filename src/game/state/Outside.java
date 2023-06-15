@@ -38,7 +38,7 @@ public class Outside implements IState {
         g.drawImage(this.backgroundImage, -tm.getReferenceX(), - tm.getReferenceY(), null);
         this.tm.renderRange(0, 8, g);
         player.render(g);
-        this.tm.renderRange(9, 10, g);
+        this.tm.renderRange(9, g);
 
     }
 
@@ -70,7 +70,9 @@ public class Outside implements IState {
             this.tm.addLayer(new MapLayer(tilemapBasePath+"Mapa Raia_Crusp.csv", houseSpritesheet, true));
             this.tm.addLayer(new MapLayer(tilemapBasePath+"Mapa Raia_Portas.csv", city5Spritesheet, true));
             this.tm.addLayer(new MapLayer(tilemapBasePath+"Mapa Raia_BasePoste.csv", city3Spritesheet,true));
-            this.tm.addLayer(new MapLayer(tilemapBasePath+"Mapa Raia_folhas.csv", treeTileset));
+            this.tm.addLayer(new MapLayer(tilemapBasePath+"Mapa Raia_topoCarro.csv", carSpritesheet));
+            this.tm.addLayer(new MapLayer(tilemapBasePath+"Mapa Raia_TopoArv.csv", treeTileset));
+            this.tm.addLayer(new MapLayer(tilemapBasePath+"Mapa Raia_TopoPredios.csv", city5Spritesheet));
             this.tm.addLayer(new MapLayer(tilemapBasePath+"Mapa Raia_topoPoste.csv", city3Spritesheet));
 
         } catch (IOException e) {

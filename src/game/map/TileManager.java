@@ -98,6 +98,12 @@ public class TileManager {
         }
     }
 
+    public void renderRange(int layerStartIndex, Graphics g) {
+        for (int i = layerStartIndex; i < layers.size(); i ++) {
+            renderLayer(i, g);
+        }
+    }
+
     /**
      * Retorna o tile na posição passada na primeira cadamada com o tipo especificado
      * @param row linha do tile procurado
