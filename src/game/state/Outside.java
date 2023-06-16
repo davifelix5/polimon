@@ -38,7 +38,7 @@ public class Outside implements IState {
         g.drawImage(this.backgroundImage, -tm.getReferenceX(), - tm.getReferenceY(), null);
         this.tm.renderRange(0, 8, g);
         player.render(g);
-        this.tm.renderRange(9, 10, g);
+        this.tm.renderRange(9, g);
 
     }
 
@@ -61,17 +61,19 @@ public class Outside implements IState {
             this.backgroundImage = ImageIO.read(new FileInputStream("src/game/res/mapas/MapaRaiaChao.png"));
 
             // Tilemaps e layers
-            this.tm.addLayer(new MapLayer(tilemapBasePath+"Mapa Raia_Agua.csv", pokemonLikeSpritesheet, false, LayerType.SWIMABLE));
-            this.tm.addLayer(new MapLayer(tilemapBasePath+"Mapa Raia_troncos.csv", treeTileset, true));
-            this.tm.addLayer(new MapLayer(tilemapBasePath+"Mapa Raia_Barcos.csv", ship1Spritesheet, true));
-            this.tm.addLayer(new MapLayer(tilemapBasePath+"Mapa Raia_Muro.csv", city2Spritesheet, true));
-            this.tm.addLayer(new MapLayer(tilemapBasePath+"Mapa Raia_Predios.csv", city5Spritesheet, true));
-            this.tm.addLayer(new MapLayer(tilemapBasePath+"Mapa Raia_Carros.csv", carSpritesheet, true));
-            this.tm.addLayer(new MapLayer(tilemapBasePath+"Mapa Raia_Crusp.csv", houseSpritesheet, true));
-            this.tm.addLayer(new MapLayer(tilemapBasePath+"Mapa Raia_Portas.csv", city5Spritesheet, true));
-            this.tm.addLayer(new MapLayer(tilemapBasePath+"Mapa Raia_BasePoste.csv", city3Spritesheet,true));
-            this.tm.addLayer(new MapLayer(tilemapBasePath+"Mapa Raia_folhas.csv", treeTileset));
-            this.tm.addLayer(new MapLayer(tilemapBasePath+"Mapa Raia_topoPoste.csv", city3Spritesheet));
+            this.tm.addLayer(new MapLayer(tilemapBasePath+"raia_agua.csv", pokemonLikeSpritesheet, false, LayerType.SWIMABLE));
+            this.tm.addLayer(new MapLayer(tilemapBasePath+"raia_arvores.csv", treeTileset, true));
+            this.tm.addLayer(new MapLayer(tilemapBasePath+"raia_barco.csv", ship1Spritesheet, true));
+            this.tm.addLayer(new MapLayer(tilemapBasePath+"raia_muro.csv", city2Spritesheet, true));
+            this.tm.addLayer(new MapLayer(tilemapBasePath+"raia_predios.csv", city5Spritesheet, true));
+            this.tm.addLayer(new MapLayer(tilemapBasePath+"raia_carro.csv", carSpritesheet, true));
+            this.tm.addLayer(new MapLayer(tilemapBasePath+"raia_crusp.csv", houseSpritesheet, true));
+            this.tm.addLayer(new MapLayer(tilemapBasePath+"raia_portas.csv", city5Spritesheet, false));
+            this.tm.addLayer(new MapLayer(tilemapBasePath+"raia_poste.csv", city3Spritesheet,true));
+            this.tm.addLayer(new MapLayer(tilemapBasePath+"raia_carroN.csv", carSpritesheet));
+            this.tm.addLayer(new MapLayer(tilemapBasePath+"raia_arvoresN.csv", treeTileset));
+            this.tm.addLayer(new MapLayer(tilemapBasePath+"raia_prediosN.csv", city5Spritesheet));
+            this.tm.addLayer(new MapLayer(tilemapBasePath+"raia_posteN.csv", city3Spritesheet));
 
         } catch (IOException e) {
             e.printStackTrace();

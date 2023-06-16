@@ -67,7 +67,7 @@ public class CombatScreen implements IState {
             bag = new Button("Bag",20 ,960 / 2 + 240, 640 - 176, 210, 78, mouse, new ExitButtonStrategy());
             pokemon = new Button("Pokemon",20 ,960 / 2 + 10, 640 - 100, 210, 80, mouse, new ExitButtonStrategy());
             run = new Button("Run",20 ,960 / 2 + 240, 640 - 100, 210, 78, mouse, new ExitButtonStrategy());
-            enemyHP = new StatBar(210, 135, 402 - 210, 143-135, 100, 100, Color.green); //depois trocar para vida max dos pokemons
+            enemyHP = new StatBar(210, 135, 402 - 210, 143-135, 100, 30, Color.green); //depois trocar para vida max dos pokemons
             alliedHP = new StatBar(698,363, 890-698, 371-363, 100, 100, Color.green);
             alliedXP = new StatBar(634, 425, 888-634,436-425,100,30,Color.cyan);
         } catch (IOException e) {
