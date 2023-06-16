@@ -68,7 +68,7 @@ public class Outside implements IState {
             this.tm.addLayer(new MapLayer(tilemapBasePath+"raia_predios.csv", city5Spritesheet, true));
             this.tm.addLayer(new MapLayer(tilemapBasePath+"raia_carro.csv", carSpritesheet, true));
             this.tm.addLayer(new MapLayer(tilemapBasePath+"raia_crusp.csv", houseSpritesheet, true));
-            this.tm.addLayer(new MapLayer(tilemapBasePath+"raia_portas.csv", city5Spritesheet, true));
+            this.tm.addLayer(new MapLayer(tilemapBasePath+"raia_portas.csv", city5Spritesheet, false));
             this.tm.addLayer(new MapLayer(tilemapBasePath+"raia_poste.csv", city3Spritesheet,true));
             this.tm.addLayer(new MapLayer(tilemapBasePath+"raia_carroN.csv", carSpritesheet));
             this.tm.addLayer(new MapLayer(tilemapBasePath+"raia_arvoresN.csv", treeTileset));

@@ -18,12 +18,6 @@ public class Tile {
     }
 
     public void draw(Graphics g, int x, int y) {
-        if (solid) {
-            g.setColor(Color.red);
-        } else {
-            g.setColor(Color.green);
-        }
-        g.drawRect(x, y, width, height);
         g.drawImage(this.image, x, y, width, height, null);
     }
 
