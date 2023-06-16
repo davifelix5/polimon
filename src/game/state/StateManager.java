@@ -11,6 +11,9 @@ public class StateManager implements IStateManager {
 
     @Override
     public void setState(StateID id) {
+        if (this.currentState != null) {
+            this.getCurrentState().destroy();
+        }
         this.currentState = id;
     }
 

@@ -15,7 +15,7 @@ public class MouseHandler extends MouseAdapter {
         this.game = game;
     }
 
-    private final ArrayList<MouseInteraction> mouseElements = new ArrayList<>();
+    private ArrayList<MouseInteraction> mouseElements = new ArrayList<>();
 
     /**
      * Percorre todos os elementos que podem interagir com o mouse e chamam sua estratégia de interação
@@ -48,7 +48,10 @@ public class MouseHandler extends MouseAdapter {
         if(pressedPositionX > x && pressedPositionX < x + width) {
             return pressedPositionY > y && pressedPositionY < y + height;
         }else return false;
+    }
 
+    public void resetElements() {
+        this.mouseElements = new ArrayList<>();
     }
 
     public void addElement(MouseInteraction element) {

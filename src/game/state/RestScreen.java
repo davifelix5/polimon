@@ -47,6 +47,11 @@ public class RestScreen implements IState {
 		g.drawString("Pressione qualquer tecla...", (960 - (25 * subTitle.getSize() / 2)) / 2, 400);
 	}
 
+	@Override
+	public void destroy() {
+
+	}
+
 	public void loadImages() {
 		try {
 			this.backgroundImage = ImageIO.read(new FileInputStream("src/game/res/fotos/bienioBlurred.jpg"));

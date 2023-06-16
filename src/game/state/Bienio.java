@@ -39,6 +39,11 @@ public class Bienio implements IState {
         this.tm.renderLayer(3,g ); // Plantas
     }
 
+    @Override
+    public void destroy() {
+
+    }
+
     private void loadMapLayers() {
         try {
             // Sprites

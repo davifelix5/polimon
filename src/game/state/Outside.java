@@ -42,6 +42,11 @@ public class Outside implements IState {
 
     }
 
+    @Override
+    public void destroy() {
+
+    }
+
     private void loadMapLayers() {
         try {
             String spritesBasePath = "src/game/res/sprites/";

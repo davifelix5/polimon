@@ -47,6 +47,11 @@ public class Menu implements IState{
 		exit.render(g);
 	}
 
+	@Override
+	public void destroy() {
+		mouse.resetElements();
+	}
+
 	public void loadImages() {
 		try {
 			this.backgroundImage = ImageIO.read(new FileInputStream("src/game/res/fotos/imeBlurred.jpg"));
