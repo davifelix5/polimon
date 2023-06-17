@@ -88,7 +88,7 @@ public class Player extends Entity {
         int BACKWARD = 0, LEFT = 1,  RIGHT = 2, FOWARD = 3; // Indices das animações
 
         // Gerencia qual será a animação atual do jogador.
-        if (movementKeyInput.bikeButtonPressed) {
+        if (movementKeyInput.bikeButtonPressed && !swimming) {
             setCurrentAnimation(PlayerAnimations.Bike);
             this.setMovingRate(3);
         } else if (swimming) {
