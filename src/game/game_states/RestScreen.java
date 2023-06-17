@@ -1,5 +1,7 @@
-package game.state;
+package game.game_states;
 
+import game.state.IState;
+import game.state.IStateManager;
 import game.utilities.Fontes;
 import game.handlers.KeyHandler;
 
@@ -25,7 +27,7 @@ public class RestScreen implements IState {
 
 	public void tick() {
 		if (keyHandler.anyKeyPressed) {
-			getStateManager().setState(StateID.Menu);
+			getStateManager().setState(GameState.Menu);
 		}
 	}
 	public void render(Graphics g) {

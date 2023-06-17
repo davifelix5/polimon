@@ -1,5 +1,6 @@
 package game.map;
 
 public enum LayerType {
-    SWIMABLE
+    SWIMABLE,
+    ENTER_BIENIO
 }

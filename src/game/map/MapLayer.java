@@ -18,13 +18,7 @@ public class MapLayer {
     private int rows, cols;
     private Tile[][] tileMap; // tilemap com todos os tiles da camada em suas respectivas posições
     private LayerType type;
-
-    // Construtor com os caminhos do spritesheet
-    public MapLayer(BufferedReader tilemapFile, SpriteSheet spriteSheet, boolean solid) {
-        this.tilemapFile = tilemapFile;
-        this.spritesheet = spriteSheet;
-        this.solid = solid;
-    }
+    protected boolean interactable;
 
     // Construtores recebendo String com o caminho do tilemap
     public MapLayer(String tilemapPath, SpriteSheet spriteSheet, boolean solid, LayerType type) {
@@ -33,6 +27,7 @@ public class MapLayer {
             this.spritesheet = spriteSheet;
             this.solid = solid;
             this.type = type;
+            this.interactable = false;
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -42,15 +37,6 @@ public class MapLayer {
             this.tilemapFile = new BufferedReader(new FileReader(tilemapPath));
             this.spritesheet = spriteSheet;
             this.solid = solid;
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-    public MapLayer(String tilemapPath, SpriteSheet spriteSheet) {
-        try {
-            this.tilemapFile = new BufferedReader(new FileReader(tilemapPath));
-            this.spritesheet = spriteSheet;
-            this.solid = false;
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -115,4 +101,9 @@ public class MapLayer {
     public LayerType getType() {
         return type;
     }
+
+    public boolean isInteractable() {
+        return interactable;
+    }
+
 }

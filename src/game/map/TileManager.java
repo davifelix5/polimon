@@ -2,6 +2,7 @@ package game.map;
 
 import game.Game;
 import game.entity.Entity;
+import game.map.interactions.InteractableLayer;
 
 import java.awt.*;
 import java.util.ArrayList;
@@ -55,7 +56,10 @@ public class TileManager {
             Tile tile2 = layer.getTileMap()[nextRowDown][nextColLeft];
             Tile tile3 = layer.getTileMap()[nextRowUp][nextColRight];
             Tile tile4 = layer.getTileMap()[nextRowUp][nextColLeft];
-            return (tile1 != null && tile1.isSolid()) || (tile2 != null && tile2.isSolid()) || (tile3 != null && tile3.isSolid()) || (tile4 != null && tile4.isSolid());
+            return ((tile1 != null && tile1.isSolid()) ||
+                    (tile2 != null && tile2.isSolid()) ||
+                    (tile3 != null && tile3.isSolid()) ||
+                    (tile4 != null && tile4.isSolid()));
         }
 
         return false;
@@ -76,6 +80,33 @@ public class TileManager {
         }
         return hasColision;
     }
+
+    public void interacts() {
+        for (MapLayer l: layers) {
+            if (!l.isInteractable() || l.getTileMap() == null)
+                continue;
+
+            Entity entity = ((InteractableLayer) l).getElement();
+            int left = entity.getWorldX() + entity.getBounds().x;
+            int right = left + entity.getBounds().width;
+            int up = entity.getWorldY() + entity.getBounds().y;
+            int down = up + entity.getBounds().width;
+
+            int leftCol = left / Game.tileSize;
+            int rightCol = right / Game.tileSize;
+            int downRow = down / Game.tileSize;
+            int upRow = up / Game.tileSize;
+
+            Tile tile1 = l.getTileMap()[upRow][rightCol];
+            Tile tile2 = l.getTileMap()[upRow][leftCol];
+            Tile tile3 = l.getTileMap()[downRow][rightCol];
+            Tile tile4 = l.getTileMap()[downRow][leftCol];
+
+            if (tile1 != null || tile2 != null || tile3 != null || tile4 != null)
+                ((InteractableLayer) l).handleInteraction();
+        }
+    }
+
 
     /**
      * Renderiza uma camada do tilemap

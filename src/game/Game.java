@@ -1,10 +1,11 @@
 package game;
 
+import game.entity.Player;
+import game.game_states.*;
+import game.game_states.Menu;
 import game.handlers.KeyHandler;
 import game.handlers.MouseHandler;
 import game.state.*;
-import game.state.Menu;
-import game.state.CombatScreen;
 
 import javax.swing.*;
 import java.awt.*;
@@ -17,21 +18,24 @@ public class Game extends JPanel implements Runnable {
     final int FPS = 60;
 
     Thread thread;
-    private final StateManager gameStateManager = new StateManager();
+    private final GameStateManager gameStateManager = new GameStateManager();
 
     KeyHandler keyHandler = new KeyHandler();
     MouseHandler mouseHandler = new MouseHandler(this);
+
+    Player player;
 
     public Game() {
         this.addKeyListener(keyHandler);
         this.addMouseListener(mouseHandler);
         this.setDoubleBuffered(true);
-        this.gameStateManager.addState(StateID.RestScreen, new RestScreen(keyHandler, gameStateManager));
-        this.gameStateManager.addState(StateID.Menu, new Menu(mouseHandler, gameStateManager));
-        this.gameStateManager.addState(StateID.Bienio, new Bienio(keyHandler, gameStateManager));
-        this.gameStateManager.addState(StateID.Outside, new Outside(keyHandler, gameStateManager));
-        this.gameStateManager.addState(StateID.Combate, new CombatScreen(mouseHandler,gameStateManager));
-        this.gameStateManager.setState(StateID.RestScreen);
+        this.player = new Player(30*Game.tileSize, 55*Game.tileSize, keyHandler);
+        this.gameStateManager.addState(GameState.RestScreen, new RestScreen(keyHandler, gameStateManager));
+        this.gameStateManager.addState(GameState.Menu, new Menu(mouseHandler, gameStateManager));
+        this.gameStateManager.addState(GameState.Bienio, new Bienio(gameStateManager, player));
+        this.gameStateManager.addState(GameState.Outside, new Outside(gameStateManager, player));
+        this.gameStateManager.addState(GameState.Combate, new CombatScreen(mouseHandler,gameStateManager));
+        this.gameStateManager.setState(GameState.RestScreen);
 
         this.setPreferredSize(new Dimension(width, height));
         this.setDoubleBuffered(true);
