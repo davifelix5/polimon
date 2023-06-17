@@ -1,4 +1,4 @@
-package game.state;
+package game.game_states;
 
 import game.buttons.ExitButtonStrategy;
 import game.handlers.MouseHandler;
@@ -9,6 +9,8 @@ import java.awt.image.BufferedImage;
 import java.io.FileInputStream;
 import java.io.IOException;
 import game.combate.StatBar;
+import game.state.IState;
+import game.state.IStateManager;
 
 public class CombatScreen implements IState {
     IStateManager stateManager;
@@ -54,6 +56,11 @@ public class CombatScreen implements IState {
     g.setFont(h2);
     g.drawString("Texto de Exemplo", 100, 640 - 156);
 
+
+    }
+
+    @Override
+    public void destroy() {
 
     }
 

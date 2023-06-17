@@ -15,7 +15,7 @@ public class Player extends Entity {
 
     private final KeyHandler movementKeyInput;
 
-    private int movingRate; // Módulo da velocidade do jogador
+    private int movingRate = 2; // Módulo da velocidade do jogador
 
     private int positionX, positionY; // Posição do jogador na tela
     private boolean colliding;
@@ -23,23 +23,15 @@ public class Player extends Entity {
     private final IAnimationSet[] animationSets = new IAnimationSet[PlayerAnimations.values().length]; // Vetor com todas as animações possíveis.
     private PlayerAnimations currentAnimation;
 
-    private final TileManager tileManager; // Informação sobre os tiles do mapa.
+    private TileManager tileManager; // Informação sobre os tiles do mapa.
 
-    public Player(int x, int y, int movingRate, KeyHandler movementKeyInput, PlayerAnimations currentAnimation, TileManager tileManager) {
+    public Player(int x, int y, KeyHandler movementKeyInput) {
         super(x, y);
-        this.movingRate = movingRate;
         this.movementKeyInput = movementKeyInput;
-        this.currentAnimation = currentAnimation;
-        this.tileManager = tileManager;
+        this.currentAnimation = PlayerAnimations.Walk;
         this.colliding = false;
 
         loadAnimations();
-
-        // Inicializando a câmera
-        this.positionX = Game.width / 2 - getWidth();
-        this.positionY = Game.height / 2 - getHeight();
-        tileManager.setReferenceX(getWorldX() - positionX);
-        tileManager.setReferenceY(getWorldY() - positionY);
     }
 
     private void loadAnimations() {
@@ -214,6 +206,10 @@ public class Player extends Entity {
         return this.getCurrentAnimationSet().getSprites().spriteHeigth;
     }
 
+
+    public void setTileManager(TileManager tileManager) {
+        this.tileManager = tileManager;
+    }
 }
 
 

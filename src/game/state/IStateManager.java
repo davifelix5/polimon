@@ -1,7 +1,9 @@
 package game.state;
 
+import game.game_states.GameState;
+
 public interface IStateManager {
      IState getCurrentState();
-     void setState(StateID id);
-     void addState(StateID id, IState state);
+     void setState(GameState id);
+     void addState(GameState id, IState state);
 }

@@ -1,8 +1,10 @@
-package game.state;
+package game.game_states;
 
 import game.buttons.*;
 import game.buttons.Button;
 import game.handlers.MouseHandler;
+import game.state.IState;
+import game.state.IStateManager;
 
 import javax.imageio.ImageIO;
 import java.awt.*;
@@ -10,7 +12,7 @@ import java.awt.image.BufferedImage;
 import java.io.FileInputStream;
 import java.io.IOException;
 
-public class Menu implements IState{
+public class Menu implements IState {
 
 	Button play, options, credits, exit;
 	MouseHandler mouse;
@@ -45,6 +47,11 @@ public class Menu implements IState{
 		options.render(g);
 		credits.render(g);
 		exit.render(g);
+	}
+
+	@Override
+	public void destroy() {
+		mouse.resetElements();
 	}
 
 	public void loadImages() {
