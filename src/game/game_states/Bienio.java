@@ -28,7 +28,6 @@ public class Bienio implements IState {
     }
 
     public void tick() {
-        this.player.setTileManager(tm);
         player.tick();
         player.setColliding(tm.colides(player));
         this.tm.interacts();
@@ -44,6 +43,11 @@ public class Bienio implements IState {
     @Override
     public void destroy() {
 
+    }
+
+    @Override
+    public void start() {
+        this.player.setTileManager(tm);
     }
 
     private void loadMapLayers() {

@@ -2,11 +2,11 @@ package game.game_states;
 
 import game.animation.SpriteSheet;
 import game.entity.Player;
-import game.map.LayerType;
 import game.map.MapLayer;
 import game.map.PlayerInteractableLayer;
 import game.map.TileManager;
 import game.map.interactions.BienioEnterStrategy;
+import game.map.interactions.SwimStrategy;
 import game.state.IState;
 import game.state.IStateManager;
 
@@ -32,7 +32,6 @@ public class Outside implements IState {
 
     @Override
     public void tick() {
-        this.player.setTileManager(tm);
         player.tick();
         this.player.setColliding(this.tm.colides(player));
         this.tm.interacts();
@@ -52,6 +51,11 @@ public class Outside implements IState {
 
     }
 
+    @Override
+    public void start() {
+        this.player.setTileManager(tm);
+    }
+
     private void loadMapLayers() {
         try {
             // Spritsheets
@@ -68,7 +72,7 @@ public class Outside implements IState {
             this.backgroundImage = ImageIO.read(new FileInputStream("src/game/res/mapas/MapaRaiaChao.png"));
 
             // Tilemaps e layers
-            this.tm.addLayer(new MapLayer("src/game/res/mapas/raia_agua.csv", pokemonLikeSpritesheet, false, LayerType.SWIMABLE));
+            this.tm.addLayer(new PlayerInteractableLayer("src/game/res/mapas/raia_agua.csv", pokemonLikeSpritesheet, new SwimStrategy(), player));
             this.tm.addLayer(new MapLayer("src/game/res/mapas/raia_barco.csv", ship1Spritesheet, true));
             this.tm.addLayer(new MapLayer("src/game/res/mapas/raia_muro.csv", city2Spritesheet, true));
             this.tm.addLayer(new MapLayer("src/game/res/mapas/raia_predios.csv", city5Spritesheet, true));
