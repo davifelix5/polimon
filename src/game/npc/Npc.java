@@ -2,65 +2,75 @@ package game.npc;
 
 import game.Game;
 import game.animation.Animation;
-import game.animation.IAnimationSet;
 import game.animation.MoveAnimationSet;
 import game.animation.SpriteSheet;
 import game.entity.Entity;
-import game.entity.PlayerAnimations;
 import game.map.TileManager;
 
 import javax.imageio.ImageIO;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.Random;
 
 public class Npc extends Entity {
-    public boolean collision;
-    public String direction;
-    private int positionX, positionY;
-    private final PlayerAnimations currentAnimation;
-    private TileManager tileManager;
-    public int actionLockCounter = 0;
+    private int actionLockCounter = 0;
     private MoveAnimationSet animationSet;
-    private Animation getAnimation() {
-        return this.animationSet.getCurrentAnimation();
-    }
+    private final int initialPositionX, initialPositionY;
+    private final int movingRate;
+    private final Rectangle moveArea;
 
-
-    public Npc( int x, int y) {
+    public Npc(int x, int y, TileManager tm, int movingRate, Rectangle moveArea) {
         super(x, y);
-        this.collision = false;
-        this.currentAnimation = PlayerAnimations.Walk;
-
+        this.tileManager = tm;
+        this.initialPositionX = x;
+        this.initialPositionY = y;
+        this.moveArea = moveArea;
+        this.movingRate = movingRate;
         loadAnimations();
+        this.animationSet.setCurrentIndex(0);
+        setVelY(movingRate);
+        this.animationSet.getCurrentAnimation().start();
     }
 
     @Override
     public void render(Graphics g) {
         //Só pode dar renderer no Npc quando ele estiver dentro da area da camera
         BufferedImage image = getAnimation().nextSprite();
-        g.drawImage(image, positionX, positionY, 32, 32, null);
+        int posX = getWorldX() - tileManager.getReferenceX(), posY = getWorldY() - tileManager.getReferenceY();
+        g.drawImage(image, posX, posY, getWidth(), getHeight(), null);
     }
 
 
     @Override
     public void tick() {
-        this.positionX = (Game.width/2) - getWidth();
-        this.positionY = (Game.height/2) - getHeight();
 
-        if (!collision) {
-            getAnimation().tick();
-            int nextPosX = getWorldX() + getVelX();
-            int nextPosY = getWorldY() + getVelY();
-            setWorldX(Game.clamp(nextPosX, 0, tileManager.getMaxWidth() - getWidth()));
-            setWorldY(Game.clamp(nextPosY, 0, tileManager.getMaxHeight() - getHeight()));
+        int BACKWARD = 0, LEFT = 1,  RIGHT = 2, FORWARD = 3; // Indices das animações
+
+        getAnimation().tick();
+        int nextPosX = getWorldX() + getVelX();
+        int nextPosY = getWorldY() + getVelY();
+        int maxPosX = initialPositionX + (int) moveArea.getWidth() - getWidth(), maxPosY = initialPositionY + (int) moveArea.getHeight() - getHeight();
+        setWorldX(Game.clamp(nextPosX, initialPositionX, maxPosX));
+        setWorldY(Game.clamp(nextPosY, initialPositionY, maxPosY));
+
+        if (getWorldX() == maxPosX && animationSet.getCurrentIndex() == RIGHT ||
+                getWorldX() == initialPositionX && animationSet.getCurrentIndex() == LEFT) {
+            setVelX(0);
+            getAnimation().reset();
+            getAnimation().stop();
+        }
+
+        if (getWorldY() == maxPosY && animationSet.getCurrentIndex() == BACKWARD ||
+                getWorldY() == initialPositionY && animationSet.getCurrentIndex() == FORWARD) {
+            getAnimation().reset();
+            getAnimation().stop();
+            setVelY(0);
         }
 
         setAction();
+        animationSet.getCurrentAnimation().tick();
     }
 
     @Override
@@ -77,16 +87,28 @@ public class Npc extends Entity {
 
         if (actionLockCounter == 120) {
             if (actionNumber <= 25) {
-                direction = "up";
+                animationSet.setCurrentIndex(3);
+                animationSet.getCurrentAnimation().start();
+                setVelX(0);
+                setVelY(-movingRate);
             }
-            if (actionNumber > 25 && actionNumber <= 50) {
-                direction = "down";
+            else if (actionNumber <= 50) {
+                animationSet.setCurrentIndex(0);
+                animationSet.getCurrentAnimation().start();
+                setVelX(0);
+                setVelY(movingRate);
             }
-            if (actionNumber > 50 && actionNumber <= 75) {
-                direction = "left";
+            else if (actionNumber <= 75) {
+                animationSet.setCurrentIndex(1);
+                animationSet.getCurrentAnimation().start();
+                setVelY(0);
+                setVelX(-movingRate);
             }
-            if (actionNumber > 75 && actionNumber <= 100) {
-                direction = "right";
+            else {
+                animationSet.setCurrentIndex(2);
+                animationSet.getCurrentAnimation().start();
+                setVelY(0);
+                setVelX(movingRate );
             }
             actionLockCounter = 0;
         }
@@ -95,19 +117,22 @@ public class Npc extends Entity {
     public void loadAnimations() {
         try {
             BufferedImage npcSprites = ImageIO.read(new FileInputStream("src/game/res/sprites/NpcSprites.png"));
-            SpriteSheet npcSpriteSheet = new SpriteSheet(npcSprites, 32, 32);
-            this.animationSet = new MoveAnimationSet(npcSpriteSheet, 0);
+            SpriteSheet npcSpriteSheet = new SpriteSheet(npcSprites, 51, 54);
+            this.animationSet = new MoveAnimationSet(npcSpriteSheet, 0, 20);
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
 
     public int getWidth() {
-        return 32;
+        return animationSet.getSprites().spriteWidth;
     }
 
     public int getHeight() {
-        return 32;
+        return animationSet.getSprites().spriteHeigth;
+    }
 
+    private Animation getAnimation() {
+        return this.animationSet.getCurrentAnimation();
     }
 }

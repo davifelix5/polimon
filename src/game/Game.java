@@ -23,15 +23,13 @@ public class Game extends JPanel implements Runnable {
 
     KeyHandler keyHandler = new KeyHandler();
     MouseHandler mouseHandler = new MouseHandler(this);
-    Npc npc;
     Player player;
 
     public Game() {
         this.addKeyListener(keyHandler);
         this.addMouseListener(mouseHandler);
         this.setDoubleBuffered(true);
-        this.player = new Player(30*Game.tileSize, 55*Game.tileSize, keyHandler);
-        this.npc = new Npc(40*Game.tileSize, 35*Game.tileSize);
+        this.player = new Player(30*Game.tileSize ,55*Game.tileSize, keyHandler);
         this.gameStateManager.addState(GameState.RestScreen, new RestScreen(keyHandler, gameStateManager));
         this.gameStateManager.addState(GameState.Menu, new Menu(mouseHandler, gameStateManager));
         this.gameStateManager.addState(GameState.Bienio, new Bienio(gameStateManager, player));

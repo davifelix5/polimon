@@ -1,6 +1,7 @@
 package game.entity;
 
 import game.Game;
+import game.map.TileManager;
 
 import java.awt.*;
 
@@ -8,6 +9,7 @@ public abstract class Entity {
 
     protected int worldX, worldY;
     protected int velX, velY;
+    protected TileManager tileManager;
 
     /***
      * Atualiza a entidade
@@ -77,5 +79,9 @@ public abstract class Entity {
      */
     public int getWorldCol() {
         return this.worldX / Game.tileSize;
+    }
+
+    public void setTileManager(TileManager tileManager) {
+        this.tileManager = tileManager;
     }
 }

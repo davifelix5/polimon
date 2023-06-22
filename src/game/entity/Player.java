@@ -4,7 +4,6 @@ import game.Game;
 import game.animation.*;
 import game.handlers.KeyHandler;
 import game.map.LayerType;
-import game.map.TileManager;
 
 import javax.imageio.ImageIO;
 import java.awt.*;
@@ -23,7 +22,6 @@ public class Player extends Entity {
     private final IAnimationSet[] animationSets = new IAnimationSet[PlayerAnimations.values().length]; // Vetor com todas as animações possíveis.
     private PlayerAnimations currentAnimation;
 
-    private TileManager tileManager; // Informação sobre os tiles do mapa.
 
     public Player(int x, int y, KeyHandler movementKeyInput) {
         super(x, y);
@@ -42,9 +40,9 @@ public class Player extends Entity {
             SpriteSheet bikeSpritesheet = new SpriteSheet(bikeSprites, 48, 48);
             SpriteSheet walkSpriteSheet = new SpriteSheet(walkSprites, 32, 41);
             SpriteSheet swimSpritesheet = new SpriteSheet(swimSprites, 64, 82);
-            this.animationSets[PlayerAnimations.Bike.getValue()] = new MoveAnimationSet(bikeSpritesheet, 0);
-            this.animationSets[PlayerAnimations.Walk.getValue()] = new MoveAnimationSet(walkSpriteSheet, 0);
-            this.animationSets[PlayerAnimations.Swimming.getValue()] = new MoveAnimationSet(swimSpritesheet,0);
+            this.animationSets[PlayerAnimations.Bike.getValue()] = new MoveAnimationSet(bikeSpritesheet, 0, 10);
+            this.animationSets[PlayerAnimations.Walk.getValue()] = new MoveAnimationSet(walkSpriteSheet, 0, 10);
+            this.animationSets[PlayerAnimations.Swimming.getValue()] = new MoveAnimationSet(swimSpritesheet,0, 10);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -151,6 +149,7 @@ public class Player extends Entity {
             setWorldX(Game.clamp(nextPosX, 0, tileManager.getMaxWidth() - getWidth()));
             setWorldY(Game.clamp(nextPosY, 0, tileManager.getMaxHeight() - getHeight()));
         }
+
     }
 
     @Override
@@ -204,11 +203,6 @@ public class Player extends Entity {
      */
     public int getHeight() {
         return this.getCurrentAnimationSet().getSprites().spriteHeigth;
-    }
-
-
-    public void setTileManager(TileManager tileManager) {
-        this.tileManager = tileManager;
     }
 }
 

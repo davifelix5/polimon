@@ -1,5 +1,6 @@
 package game.game_states;
 
+import game.Game;
 import game.animation.SpriteSheet;
 import game.entity.Player;
 import game.map.LayerType;
@@ -8,6 +9,7 @@ import game.map.PlayerInteractableLayer;
 import game.map.TileManager;
 import game.map.interactions.BienioEnterStrategy;
 import game.npc.DialogueScreen;
+import game.npc.Npc;
 import game.state.IState;
 import game.state.IStateManager;
 
@@ -21,16 +23,16 @@ public class Outside implements IState {
 
     private final TileManager tm = new TileManager(60, 70);
     private final Player player;
+    private final Npc npc;
     private final GameStateManager gameStateManager;
     private BufferedImage backgroundImage;
-
-    private DialogueScreen dialogue = new DialogueScreen();
 
 
     public Outside(GameStateManager gameStateManager, Player player) {
         this.gameStateManager = gameStateManager;
         this.player = player;
         this.player.setTileManager(tm);
+        this.npc = new Npc(13*Game.tileSize, 27*Game.tileSize, tm, 2, new Rectangle(9*Game.tileSize, 4*Game.tileSize));
         loadMapLayers();
     }
 
@@ -38,6 +40,7 @@ public class Outside implements IState {
     public void tick() {
         this.player.setTileManager(tm);
         player.tick();
+        npc.tick();
         this.player.setColliding(this.tm.colides(player));
         this.tm.interacts();
     }
@@ -47,9 +50,8 @@ public class Outside implements IState {
         g.drawImage(this.backgroundImage, -tm.getReferenceX(), - tm.getReferenceY(), null);
         this.tm.renderRange(0, 7, g);
         player.render(g);
+        npc.render(g);
         this.tm.renderRange(8, g);
-//        dialogue.render(g);
-
     }
 
     @Override
