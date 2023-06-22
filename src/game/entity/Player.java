@@ -86,14 +86,14 @@ public class Player extends Entity {
         }
 
 
-        int BACKWARD = 0, LEFT = 1,  RIGHT = 2, FOWARD = 3; // Indices das animações
+        int BACKWARD = 0, LEFT = 1,  RIGHT = 2, FORWARD = 3; // Indices das animações
 
         // Gerencia qual será a animação atual do jogador.
         if (movementKeyInput.bikeButtonPressed) {
             setCurrentAnimation(PlayerAnimations.Bike);
             this.setMovingRate(3);
         }
-        // A animalçao de nadar deve ser preferencial em relação à da bicicleta.
+        // A animação de nadar deve ser preferencial em relação à da bicicleta.
         if (tileManager.searchLayers( getWorldRow(), getWorldCol(), LayerType.SWIMABLE) != null){
             setCurrentAnimation(PlayerAnimations.Swimming);
             this.setMovingRate(4);
@@ -104,7 +104,7 @@ public class Player extends Entity {
 
         // Lidando com a lógica de parada do jogador
         if (!movementKeyInput.downPressed && !movementKeyInput.upPressed || colliding){
-            if (getCurrentAnimationSet().getCurrentIndex() == FOWARD || getCurrentAnimationSet().getCurrentIndex() == BACKWARD) {
+            if (getCurrentAnimationSet().getCurrentIndex() == FORWARD || getCurrentAnimationSet().getCurrentIndex() == BACKWARD) {
                 getAnimation().stop();
                 getAnimation().reset();
             }
@@ -121,7 +121,7 @@ public class Player extends Entity {
         // Movimentação em X
         if (getVelX() == 0) { // O jogador não pode se movimentar em duas direções simultaneamente
             if (movementKeyInput.upPressed) {
-                getCurrentAnimationSet().setCurrentIndex(FOWARD);
+                getCurrentAnimationSet().setCurrentIndex(FORWARD);
                 getAnimation().start();
                 setVelY(-movingRate);
             } else if (movementKeyInput.downPressed) {
@@ -161,7 +161,7 @@ public class Player extends Entity {
     }
 
     /***
-     * Método para identifcar a estratégia de animação atual
+     * Método para identificar a estratégia de animação atual
      *
      * @return a animação que corresponde ao índice atual
      */

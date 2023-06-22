@@ -5,6 +5,7 @@ import game.game_states.*;
 import game.game_states.Menu;
 import game.handlers.KeyHandler;
 import game.handlers.MouseHandler;
+import game.npc.Npc;
 import game.state.*;
 
 import javax.swing.*;
@@ -22,7 +23,7 @@ public class Game extends JPanel implements Runnable {
 
     KeyHandler keyHandler = new KeyHandler();
     MouseHandler mouseHandler = new MouseHandler(this);
-
+    Npc npc;
     Player player;
 
     public Game() {
@@ -30,6 +31,7 @@ public class Game extends JPanel implements Runnable {
         this.addMouseListener(mouseHandler);
         this.setDoubleBuffered(true);
         this.player = new Player(30*Game.tileSize, 55*Game.tileSize, keyHandler);
+        this.npc = new Npc(40*Game.tileSize, 35*Game.tileSize);
         this.gameStateManager.addState(GameState.RestScreen, new RestScreen(keyHandler, gameStateManager));
         this.gameStateManager.addState(GameState.Menu, new Menu(mouseHandler, gameStateManager));
         this.gameStateManager.addState(GameState.Bienio, new Bienio(gameStateManager, player));

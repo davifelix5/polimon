@@ -7,6 +7,7 @@ import game.map.MapLayer;
 import game.map.PlayerInteractableLayer;
 import game.map.TileManager;
 import game.map.interactions.BienioEnterStrategy;
+import game.npc.DialogueScreen;
 import game.state.IState;
 import game.state.IStateManager;
 
@@ -22,6 +23,9 @@ public class Outside implements IState {
     private final Player player;
     private final GameStateManager gameStateManager;
     private BufferedImage backgroundImage;
+
+    private DialogueScreen dialogue = new DialogueScreen();
+
 
     public Outside(GameStateManager gameStateManager, Player player) {
         this.gameStateManager = gameStateManager;
@@ -44,6 +48,7 @@ public class Outside implements IState {
         this.tm.renderRange(0, 7, g);
         player.render(g);
         this.tm.renderRange(8, g);
+//        dialogue.render(g);
 
     }
 

@@ -17,6 +17,8 @@ public class TileManager {
     private final int maxWidth, maxHeight; // Largura e altura do mapa
     private int referenceX, referenceY; // Posição de referência
 
+
+
     public TileManager(int mapRows, int mapCols) {
         this.mapRows = mapRows;
         this.mapCols = mapCols;
