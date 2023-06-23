@@ -21,6 +21,8 @@ public class Npc extends Entity {
     private final int movingRate;
     private final Rectangle moveArea;
 
+    private final int BACKWARD = 0, LEFT = 1,  RIGHT = 2, FOWARD = 3; // Indices das animações
+
     public Npc(int x, int y, TileManager tm, int movingRate, Rectangle moveArea) {
         super(x, y);
         this.tileManager = tm;
@@ -46,8 +48,6 @@ public class Npc extends Entity {
     @Override
     public void tick() {
 
-        int BACKWARD = 0, LEFT = 1,  RIGHT = 2, FORWARD = 3; // Indices das animações
-
         getAnimation().tick();
         int nextPosX = getWorldX() + getVelX();
         int nextPosY = getWorldY() + getVelY();
@@ -58,12 +58,14 @@ public class Npc extends Entity {
         if (getWorldX() == maxPosX && animationSet.getCurrentIndex() == RIGHT ||
                 getWorldX() == initialPositionX && animationSet.getCurrentIndex() == LEFT) {
             setVelX(0);
+            animationSet.setCurrentIndex(RIGHT);
             getAnimation().reset();
             getAnimation().stop();
         }
 
         if (getWorldY() == maxPosY && animationSet.getCurrentIndex() == BACKWARD ||
-                getWorldY() == initialPositionY && animationSet.getCurrentIndex() == FORWARD) {
+                getWorldY() == initialPositionY && animationSet.getCurrentIndex() == FOWARD) {
+            animationSet.setCurrentIndex(BACKWARD);
             getAnimation().reset();
             getAnimation().stop();
             setVelY(0);
@@ -87,25 +89,25 @@ public class Npc extends Entity {
 
         if (actionLockCounter == 120) {
             if (actionNumber <= 25) {
-                animationSet.setCurrentIndex(3);
+                animationSet.setCurrentIndex(FOWARD);
                 animationSet.getCurrentAnimation().start();
                 setVelX(0);
                 setVelY(-movingRate);
             }
             else if (actionNumber <= 50) {
-                animationSet.setCurrentIndex(0);
+                animationSet.setCurrentIndex(BACKWARD);
                 animationSet.getCurrentAnimation().start();
                 setVelX(0);
                 setVelY(movingRate);
             }
             else if (actionNumber <= 75) {
-                animationSet.setCurrentIndex(1);
+                animationSet.setCurrentIndex(LEFT);
                 animationSet.getCurrentAnimation().start();
                 setVelY(0);
                 setVelX(-movingRate);
             }
             else {
-                animationSet.setCurrentIndex(2);
+                animationSet.setCurrentIndex(RIGHT);
                 animationSet.getCurrentAnimation().start();
                 setVelY(0);
                 setVelX(movingRate );

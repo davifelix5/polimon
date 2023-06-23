@@ -3,7 +3,6 @@ package game.entity;
 import game.Game;
 import game.animation.*;
 import game.handlers.KeyHandler;
-import game.map.TileManager;
 
 import javax.imageio.ImageIO;
 import java.awt.*;
