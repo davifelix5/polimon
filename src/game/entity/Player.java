@@ -3,7 +3,6 @@ package game.entity;
 import game.Game;
 import game.animation.*;
 import game.handlers.KeyHandler;
-import game.map.LayerType;
 import game.map.TileManager;
 
 import javax.imageio.ImageIO;
@@ -19,6 +18,7 @@ public class Player extends Entity {
 
     private int positionX, positionY; // Posição do jogador na tela
     private boolean colliding;
+    private boolean swimming;
 
     private final IAnimationSet[] animationSets = new IAnimationSet[PlayerAnimations.values().length]; // Vetor com todas as animações possíveis.
     private PlayerAnimations currentAnimation;
@@ -85,19 +85,17 @@ public class Player extends Entity {
             this.positionY = getWorldY();
         }
 
-
         int BACKWARD = 0, LEFT = 1,  RIGHT = 2, FOWARD = 3; // Indices das animações
 
         // Gerencia qual será a animação atual do jogador.
-        if (movementKeyInput.bikeButtonPressed) {
+        if (movementKeyInput.bikeButtonPressed && !swimming) {
             setCurrentAnimation(PlayerAnimations.Bike);
             this.setMovingRate(3);
-        }
-        // A animalçao de nadar deve ser preferencial em relação à da bicicleta.
-        if (tileManager.searchLayers( getWorldRow(), getWorldCol(), LayerType.SWIMABLE) != null){
+        } else if (swimming) {
             setCurrentAnimation(PlayerAnimations.Swimming);
             this.setMovingRate(4);
-        } else if (!movementKeyInput.bikeButtonPressed) {
+            setSwimming(false);
+        } else {
             setCurrentAnimation(PlayerAnimations.Walk);
             this.setMovingRate(2);
         }
@@ -160,6 +158,10 @@ public class Player extends Entity {
         g.drawImage(image, positionX, positionY, 32, 32, null);
     }
 
+    public void setSwimming(boolean swimming) {
+        this.swimming = swimming;
+    }
+
     /***
      * Método para identifcar a estratégia de animação atual
      *
@@ -185,6 +187,7 @@ public class Player extends Entity {
     public void setCurrentAnimation(PlayerAnimations currentAnimation) {
         this.currentAnimation = currentAnimation;
     }
+
 
     public IAnimationSet getCurrentAnimationSet() {
         return this.animationSets[this.currentAnimation.getValue()];

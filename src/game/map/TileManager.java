@@ -135,26 +135,6 @@ public class TileManager {
         }
     }
 
-    /**
-     * Retorna o tile na posição passada na primeira cadamada com o tipo especificado
-     * @param row linha do tile procurado
-     * @param col coluna do tile procurado
-     * @param type tipo de camada a procurar
-     * @return tile, caso ele seja encontrado, e null caso contrário
-     */
-    public Tile searchLayers(int row, int col, LayerType type) {
-        try {
-            for (MapLayer layer: layers) {
-                if (layer.getType() == type) {
-                    return layer.getTileMap()[row][col];
-                }
-            }
-        } catch (RuntimeException e) {
-            return null;
-        }
-
-        return null;
-    }
 
     public void setReferenceX(int referenceX) {
         this.referenceX = referenceX;
