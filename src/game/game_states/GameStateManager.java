@@ -18,6 +18,7 @@ public class GameStateManager implements IStateManager {
             this.getCurrentState().destroy();
         }
         this.currentState = id;
+        this.getCurrentState().start();
     }
 
     @Override

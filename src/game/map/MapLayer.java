@@ -16,27 +16,16 @@ public class MapLayer {
     private SpriteSheet spritesheet; // Tilset correspondente
     private boolean solid; // indica se os tiles da camada serão colidíveis
     private int rows, cols;
-    private Tile[][] tileMap; // tilemap com todos os tiles da camada em suas respectivas posições
-    private LayerType type;
+    private Tile[][] tileMap; // tilemap com todos os tiles da camada em suas respectivas posiçõe
     protected boolean interactable;
 
     // Construtores recebendo String com o caminho do tilemap
-    public MapLayer(String tilemapPath, SpriteSheet spriteSheet, boolean solid, LayerType type) {
-        try {
-            this.tilemapFile = new BufferedReader(new FileReader(tilemapPath));
-            this.spritesheet = spriteSheet;
-            this.solid = solid;
-            this.type = type;
-            this.interactable = false;
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
     public MapLayer(String tilemapPath, SpriteSheet spriteSheet, boolean solid) {
         try {
             this.tilemapFile = new BufferedReader(new FileReader(tilemapPath));
             this.spritesheet = spriteSheet;
             this.solid = solid;
+            this.interactable = false;
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -96,10 +85,6 @@ public class MapLayer {
 
     public void setCols(int cols) {
         this.cols = cols;
-    }
-
-    public LayerType getType() {
-        return type;
     }
 
     public boolean isInteractable() {

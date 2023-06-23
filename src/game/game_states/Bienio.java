@@ -28,7 +28,6 @@ public class Bienio implements IState {
     }
 
     public void tick() {
-        this.player.setTileManager(tm);
         player.tick();
         player.setColliding(tm.colides(player));
         this.tm.interacts();
@@ -36,9 +35,9 @@ public class Bienio implements IState {
 
     public void render(Graphics g) {
         g.drawImage(background, 0, 0, null); // Map background
-        this.tm.renderRange(0, 4, g);
+        this.tm.renderRange(0, 2, g);
         player.render(g); // Player
-        this.tm.renderLayer(5,g ); // Plantas
+        this.tm.renderLayer(3,g ); // Plantas
     }
 
     @Override
@@ -46,21 +45,24 @@ public class Bienio implements IState {
 
     }
 
+    @Override
+    public void start() {
+        this.player.setTileManager(tm);
+    }
+
     private void loadMapLayers() {
         try {
             // Sprites
-            SpriteSheet tileset4 = new SpriteSheet("src/game/res/sprites/tileSet4.png", Game.tileSize, Game.tileSize);
-            SpriteSheet tileset5 = new SpriteSheet("src/game/res/sprites/tileSet5.png", Game.tileSize, Game.tileSize);
-            SpriteSheet tileset2 = new SpriteSheet("src/game/res/sprites/tileSet2.png", Game.tileSize, Game.tileSize);
+            SpriteSheet mapSprites = new SpriteSheet("src/game/res/sprites/tileset_mapa.png", Game.tileSize, Game.tileSize);
+
+            // Chao
             this.background = ImageIO.read(new FileInputStream("src/game/res/mapas/bienio1-chao.png"));
 
             // Layers
-            this.tm.addLayer(new PlayerInteractableLayer("src/game/res/mapas/bienio_tapete.csv", tileset2, new BienioExitStrategy(gameStateManager), player));
-            this.tm.addLayer(new MapLayer("src/game/res/mapas/bienio_inicio_tapete.csv", tileset2, false));
-            this.tm.addLayer(new MapLayer("src/game/res/mapas/bienio_mesas.csv", tileset4, true));
-            this.tm.addLayer(new MapLayer("src/game/res/mapas/bienio_bancos.csv", tileset5, true));
-            this.tm.addLayer(new MapLayer("src/game/res/mapas/bienio_cadeiras.csv", tileset4, false));
-            this.tm.addLayer(new MapLayer("src/game/res/mapas/bienio_plantas.csv", tileset4, false));
+            this.tm.addLayer(new MapLayer("src/game/res/mapas/bienio_solidos.csv", mapSprites, true));
+            this.tm.addLayer(new PlayerInteractableLayer("src/game/res/mapas/bienio_tapete.csv", mapSprites, new BienioExitStrategy(gameStateManager), player));
+            this.tm.addLayer(new MapLayer("src/game/res/mapas/bienio_nao_solido_antes.csv", mapSprites, false));
+            this.tm.addLayer(new MapLayer("src/game/res/mapas/bienio_nao_solido.csv", mapSprites, false));
 
         } catch (IOException e) {
             e.printStackTrace();

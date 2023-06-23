@@ -54,6 +54,11 @@ public class RestScreen implements IState {
 
 	}
 
+	@Override
+	public void start() {
+
+	}
+
 	public void loadImages() {
 		try {
 			this.backgroundImage = ImageIO.read(new FileInputStream("src/game/res/fotos/bienioBlurred.jpg"));
