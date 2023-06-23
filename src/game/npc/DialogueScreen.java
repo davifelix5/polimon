@@ -38,6 +38,11 @@ public class DialogueScreen implements IState {
     }
 
     @Override
+    public void start() {
+
+    }
+
+    @Override
     public IStateManager getStateManager() {
         return stateManager;
     }
