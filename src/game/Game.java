@@ -5,6 +5,7 @@ import game.game_states.*;
 import game.game_states.Menu;
 import game.handlers.KeyHandler;
 import game.handlers.MouseHandler;
+import game.npc.DialogueScreen;
 import game.npc.Npc;
 import game.state.*;
 
@@ -25,6 +26,8 @@ public class Game extends JPanel implements Runnable {
     MouseHandler mouseHandler = new MouseHandler(this);
     Player player;
 
+
+
     public Game() {
         this.addKeyListener(keyHandler);
         this.addMouseListener(mouseHandler);
@@ -33,7 +36,7 @@ public class Game extends JPanel implements Runnable {
         this.gameStateManager.addState(GameState.RestScreen, new RestScreen(keyHandler, gameStateManager));
         this.gameStateManager.addState(GameState.Menu, new Menu(mouseHandler, gameStateManager));
         this.gameStateManager.addState(GameState.Bienio, new Bienio(gameStateManager, player));
-        this.gameStateManager.addState(GameState.Outside, new Outside(gameStateManager, player));
+        this.gameStateManager.addState(GameState.Outside, new Outside(gameStateManager, player, keyHandler));
         this.gameStateManager.addState(GameState.Combate, new CombatScreen(mouseHandler,gameStateManager));
         this.gameStateManager.setState(GameState.RestScreen);
 
