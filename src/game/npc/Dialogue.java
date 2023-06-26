@@ -23,22 +23,31 @@ public class Dialogue {
         this.height = height;
         this.dialogueFont = dialogueFont;
     }
+
     private void nextLine(){
        currentLine++;
     }
+
     private void displayDialogue(Graphics g) {
         int a = x + Game.tileSize;
         int b = y + Game.tileSize;
+        double lineSize = 0;
 
-        if (dialogues.get(currentLine).length() * dialogueFont.getSize() > width - Game.tileSize) {
-            for (int i = 0; i < dialogues.get(currentLine).length(); i += 54) {
-                String aux = dialogues.get(currentLine).substring(i, Game.clamp(i + 54, 0, dialogues.get(currentLine).length()));
-                g.drawString(aux, a, b);
-                b += 40;
+        String[] words = dialogues.get(currentLine).split(" ");
+
+        for (String w: words) {
+            String finalWord = w + " ";
+            int wordWidth = g.getFontMetrics().stringWidth(finalWord);
+            lineSize += wordWidth;
+
+            if (lineSize >= width - 32) {
+                lineSize = 0; // zera o controle do espaço ocupado pela fonte
+                b += 40; // pula para a próxima linha
+                a =  x + Game.tileSize; // volta para o começo da linha
             }
-        }
-        else {
-            g.drawString(dialogues.get(currentLine), a, b);
+
+            g.drawString(finalWord, a, b);
+            a += wordWidth;
         }
     }
 
@@ -48,8 +57,7 @@ public class Dialogue {
         g.setColor(color);
         g.fillRoundRect(x, y, width, height, 35, 35);
 
-        Color color2 = new Color(255, 255, 255);
-        g.setColor(color2);
+        g.setColor(Color.white);
         g.drawRoundRect(x + 5, y + 5, width - 10, height - 10, 25, 25);
 
         g.setFont(dialogueFont);

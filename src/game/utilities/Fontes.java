@@ -25,11 +25,11 @@ public class Fontes {
         }
     }
 
-    public static Font getPokemonHollow() {
-        return pokemonHollow.deriveFont(90f);
+    public static Font getPokemonHollow(float size) {
+        return pokemonHollow.deriveFont(size);
     }
-    public static Font getPokemonSolid() {
-        return pokemonSolid.deriveFont(90f);
+    public static Font getPokemonSolid(float size) {
+        return pokemonSolid.deriveFont(size);
     }
 
 }

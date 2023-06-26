@@ -34,8 +34,8 @@ public class RestScreen implements IState {
 
 		g.drawImage(backgroundImage, 0, 0, null);
 
-		Font t1 = Fontes.getPokemonSolid();
-		Font t2 = Fontes.getPokemonHollow();
+		Font t1 = Fontes.getPokemonSolid(90f);
+		Font t2 = Fontes.getPokemonHollow(90f);
 		Font subTitle = new Font("arial", Font.BOLD, 32);
 
 		g.setColor(Color.YELLOW);
