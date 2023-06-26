@@ -13,7 +13,7 @@ public class Dialogue {
     private int currentLine;
     int x, y, width, height;
     Font dialogueFont;
-    private int counter = 0;
+    private boolean changed = false;
     public Dialogue(ArrayList<String> dialogues, KeyHandler keyHandler, int x, int y, int width, int height, Font dialogueFont) {
         this.dialogues = dialogues;
         this.keyHandler = keyHandler;
@@ -58,10 +58,13 @@ public class Dialogue {
     }
 
     public void tick(){
-        if(keyHandler.spacePressed && currentLine < dialogues.size() - 1 && counter < 4000){
-            nextLine();
-            counter = 0;
+        if(keyHandler.spacePressed){
+            if (currentLine < dialogues.size() - 1 && !changed) {
+                nextLine();
+                changed = true;
+            }
+        } else {
+            changed = false;
         }
-        counter++;
     }
 }
