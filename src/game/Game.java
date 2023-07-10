@@ -5,8 +5,6 @@ import game.game_states.*;
 import game.game_states.Menu;
 import game.handlers.KeyHandler;
 import game.handlers.MouseHandler;
-import game.npc.DialogueScreen;
-import game.npc.Npc;
 import game.state.*;
 
 import javax.swing.*;

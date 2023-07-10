@@ -188,7 +188,6 @@ public class Player extends Entity {
         this.currentAnimation = currentAnimation;
     }
 
-
     public IAnimationSet getCurrentAnimationSet() {
         return this.animationSets[this.currentAnimation.getValue()];
     }

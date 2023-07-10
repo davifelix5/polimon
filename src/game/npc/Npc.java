@@ -20,10 +20,10 @@ public class Npc extends Entity {
     private final int initialPositionX, initialPositionY;
     private final int movingRate;
     private final Rectangle moveArea;
-
+    private final Dialogue dialogue;
     private final int BACKWARD = 0, LEFT = 1,  RIGHT = 2, FOWARD = 3; // Indices das animações
 
-    public Npc(int x, int y, TileManager tm, int movingRate, Rectangle moveArea) {
+    public Npc(int x, int y, TileManager tm, int movingRate, Rectangle moveArea, Dialogue dialogue) {
         super(x, y);
         this.tileManager = tm;
         this.initialPositionX = x;
@@ -34,6 +34,11 @@ public class Npc extends Entity {
         this.animationSet.setCurrentIndex(0);
         setVelY(movingRate);
         this.animationSet.getCurrentAnimation().start();
+        this.dialogue = dialogue;
+    }
+
+    public void renderDialogue(Graphics g) {
+        dialogue.render(g);
     }
 
     @Override
@@ -51,28 +56,35 @@ public class Npc extends Entity {
         getAnimation().tick();
         int nextPosX = getWorldX() + getVelX();
         int nextPosY = getWorldY() + getVelY();
-        int maxPosX = initialPositionX + (int) moveArea.getWidth() - getWidth(), maxPosY = initialPositionY + (int) moveArea.getHeight() - getHeight();
-        setWorldX(Game.clamp(nextPosX, initialPositionX, maxPosX));
-        setWorldY(Game.clamp(nextPosY, initialPositionY, maxPosY));
+        int maxPosX = initialPositionX + (int) moveArea.getWidth() - getWidth();
+        int maxPosY = initialPositionY + (int) moveArea.getHeight() - getHeight();
 
-        if (getWorldX() == maxPosX && animationSet.getCurrentIndex() == RIGHT ||
-                getWorldX() == initialPositionX && animationSet.getCurrentIndex() == LEFT) {
+        if (!dialogue.isActivated()) {
+            setWorldX(Game.clamp(nextPosX, initialPositionX, maxPosX));
+            setWorldY(Game.clamp(nextPosY, initialPositionY, maxPosY));
+            setAction();
+        }
+
+        if ((getWorldX() == maxPosX || dialogue.isActivated()) && animationSet.getCurrentIndex() == RIGHT ||
+                (getWorldX() == initialPositionX || dialogue.isActivated()) && animationSet.getCurrentIndex() == LEFT) {
             setVelX(0);
             animationSet.setCurrentIndex(RIGHT);
             getAnimation().reset();
             getAnimation().stop();
         }
 
-        if (getWorldY() == maxPosY && animationSet.getCurrentIndex() == BACKWARD ||
-                getWorldY() == initialPositionY && animationSet.getCurrentIndex() == FOWARD) {
+        if ((getWorldY() == maxPosY || dialogue.isActivated()) && animationSet.getCurrentIndex() == BACKWARD ||
+                (getWorldY() == initialPositionY || dialogue.isActivated()) && animationSet.getCurrentIndex() == FOWARD) {
             animationSet.setCurrentIndex(BACKWARD);
             getAnimation().reset();
             getAnimation().stop();
             setVelY(0);
         }
 
-        setAction();
         animationSet.getCurrentAnimation().tick();
+
+        this.dialogue.tick();
+
     }
 
     @Override
@@ -136,5 +148,13 @@ public class Npc extends Entity {
 
     private Animation getAnimation() {
         return this.animationSet.getCurrentAnimation();
+    }
+
+    public boolean isDialogueActivated() {
+        return dialogue.isActivated();
+    }
+
+    public void setDialogueActivated(boolean dialogueActivated) {
+        this.dialogue.setActivated(dialogueActivated);
     }
 }

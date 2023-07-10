@@ -29,26 +29,33 @@ public class Outside implements IState {
     private final GameStateManager gameStateManager;
     private BufferedImage backgroundImage;
     private final ArrayList<String> dialogues = new ArrayList<>();
-    private final  Dialogue dialogue;
-
+    private final KeyHandler keyHandler;
 
     public Outside(GameStateManager gameStateManager, Player player, KeyHandler keyHandler) {
         this.gameStateManager = gameStateManager;
         this.player = player;
         this.player.setTileManager(tm);
-        this.npc = new Npc(13* Game.tileSize, 27*Game.tileSize, tm, 2, new Rectangle(9*Game.tileSize, 4*Game.tileSize));
+        this.keyHandler = keyHandler;
+        int npcPosX = 13 * Game.tileSize;
+        int npcPosY = 27 * Game.tileSize;
+        Rectangle npcWalkArea = new Rectangle(9*Game.tileSize, 4*Game.tileSize);
+        Dialogue dialogue = new Dialogue(dialogues, keyHandler, new Font("arial", Font.PLAIN, 20));
         loadMapLayers();
         setDialogues();
-        this.dialogue = new Dialogue(dialogues,keyHandler,Game.tileSize * 7, Game.tileSize / 2, Game.width - (Game.tileSize * 12), Game.tileSize * 5, new Font("arial", Font.PLAIN, 20));
+        this.npc = new Npc(npcPosX, npcPosY, tm, 2, npcWalkArea, dialogue);
     }
 
     @Override
     public void tick() {
         player.tick();
         npc.tick();
-        this.player.setColliding(this.tm.colides(player));
+        this.player.setColliding(this.tm.colides(player) || npc.isDialogueActivated());
         this.tm.interacts();
-        this.dialogue.tick();
+        if (player.getWorldRow() == npc.getWorldRow() && player.getWorldCol() == npc.getWorldCol()) {
+            if (keyHandler.enterPressed) {
+                npc.setDialogueActivated(true);
+            }
+        }
     }
 
     @Override
@@ -58,7 +65,7 @@ public class Outside implements IState {
         player.render(g);
         npc.render(g);
         this.tm.renderRange(4, g);
-        this.dialogue.render(g);
+        npc.renderDialogue(g);
     }
     private void setDialogues(){
 
