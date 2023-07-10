@@ -29,6 +29,7 @@ OBS: não foi possível encontrar os mesmos _sprites_ para o _player_ nadando, a
   - Andar
   - Ficarem parados
 - Essas estratégias podem ser definidas do menu inicial do jogo (para voltar oa menu, basta pressionar ESC)
+- Para permitir que diferentes NPCs tenham suas estratégias definidas a partir de uma mesma instância, foi usado o método Prototype.
 
 ## Algumas informações sobre a implementação
 
@@ -37,13 +38,13 @@ OBS: não foi possível encontrar os mesmos _sprites_ para o _player_ nadando, a
 
 - O jogo foi divido em estados (_Padrão State_), sendo possível transitar entre 3 destes estados na presente implementação
   - `RestScreen`: quando o usuário acabou de entrar o jogo.
-  - `Menu`: para acessá-lo novamente basta pressionar **ESP**; no menu é possível escolher a fábrica e a estratégia de NPC desejada
+  - `Menu`: para acessá-lo novamente basta pressionar **ESC**; no menu é possível escolher a fábrica e a estratégia de NPC desejada
   - `Outsite`: estado em que o jogador vai começar o jogo, no mapa da USP.
-
-OBS: também há o estado `Bienio`, como foi dito acima
+  - `Biênio`: este é um estado interior; para acessá-lo, basta entrar no prédio redondo com teto rosado (como mostra a imagem abaixo)
+    - ![Imagem do biênio](assets/img.png)
 
 - Buscamos sempre usar a injeção de dependências para evitar acoplamento excessivo entre classes.
 
-- O padrão Strategy foi usado em 2 contextos:
+- O padrão Strategy foi usado em mais 2 contextos:
   - Alterar entre as animações do Player
   - Diferentes comportamentos para os botões do Menu.
