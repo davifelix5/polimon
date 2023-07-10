@@ -11,13 +11,24 @@
   - Caputurar Pokemóns em batalhas.
 
 ## Instruções para jogabilidade
-- Por enquanto, as únicas coisas implementadas foram a possibilidade de o _player_ se movimentar de diferentes maneiras ao longo do mapa da USP:
-  - Para se movimentar no mapa, as teclas usadas são **W, A, S, D**
-  - Para andas de bicicleta, **basta segurar a tecla B**
-  - Para nadar na raia olímpica, basta apenas se aproximar da área. O jogador nada pelas águas em cima de um Pokémon aquático.
-- O mapa do interior do biênio já foi implementado, mas ainda não é possível entrar no prédio pelo jogo. Caso queira testar o mapa do biênio, basta mudar o estado de `StateID.Outisde` `para StateID.Bienio` no arquivo `src/game/buttons/PlayButtonStrategy`.
+- Para se movimentar no mapa, as teclas usadas são **W, A, S, D**
+- Para andas de bicicleta, **basta segurar a tecla B**
+- Para nadar na raia olímpica, basta apenas se aproximar da área. O jogador nada pelas águas em cima de um Pokémon aquático.
+- O mapa do interior do biênio já foi implementado, basta se aproximar da porta do prédio redondo com teto rosado para poder entrar
+- Para integir com o NPC, basta ficar próximo dele e apertar a tecla **ENTER**; para passar os dálogos, basta pressionar a tecla **ESPAÇO**
 
 OBS: não foi possível encontrar os mesmos _sprites_ para o _player_ nadando, andando e jogando de bicileta
+
+## Looks and feels
+- Para mudar a aparência do jogo, basta escolher o tema desejado no Menu Inicial.
+- As opções são _Clássico_ e _Vintage_, sendo que o segundo deixa o jogo com uma aparência mais antiga e o primeiro com cores mais vivas
+- As aparências mudam os elementos do mapa e o player.
+
+## Estratégias dos NPCs
+- AS estratégias presentes para os NPCS são:
+  - Andar
+  - Ficarem parados
+- Essas estratégias podem ser definidas do menu inicial do jogo.
 
 ## Algumas informações sobre a implementação
 

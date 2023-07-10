@@ -1,6 +1,7 @@
 package game;
 
 import game.entity.Player;
+import game.entity.WalkNPCStrategy;
 import game.game_states.*;
 import game.game_states.Menu;
 import game.handlers.KeyHandler;
@@ -37,6 +38,7 @@ public class Game extends JPanel implements Runnable {
         this.gameStateManager.addState(GameState.Outside, new Outside(gameStateManager, player, keyHandler));
         this.gameStateManager.addState(GameState.Combate, new CombatScreen(mouseHandler,gameStateManager));
         this.gameStateManager.setState(GameState.RestScreen);
+        this.gameStateManager.setNPCStrategy(new WalkNPCStrategy());
 
         this.setPreferredSize(new Dimension(width, height));
         this.setDoubleBuffered(true);
@@ -92,7 +94,11 @@ public class Game extends JPanel implements Runnable {
     }
 
     public void tick() {
-        gameStateManager.getCurrentState().tick();
+        if (keyHandler.escPressed) {
+            gameStateManager.setState(GameState.Menu);
+        } else {
+            gameStateManager.getCurrentState().tick();
+        }
     }
 
     @Override

@@ -2,6 +2,7 @@ package game.game_states;
 
 import game.buttons.*;
 import game.buttons.Button;
+import game.entity.NPCStrategy;
 import game.handlers.MouseHandler;
 import game.state.IState;
 import game.state.IStateManager;
@@ -56,6 +57,11 @@ public class Menu implements IState {
 
 	@Override
 	public void start() {
+
+	}
+
+	@Override
+	public void setNPCStrategy(NPCStrategy strategy) {
 
 	}
 

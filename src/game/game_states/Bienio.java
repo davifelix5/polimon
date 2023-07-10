@@ -2,6 +2,7 @@ package game.game_states;
 
 import game.Game;
 import game.animation.SpriteSheet;
+import game.entity.NPCStrategy;
 import game.entity.Player;
 import game.map.MapLayer;
 import game.map.PlayerInteractableLayer;
@@ -48,6 +49,11 @@ public class Bienio implements IState {
     @Override
     public void start() {
         this.player.setTileManager(tm);
+    }
+
+    @Override
+    public void setNPCStrategy(NPCStrategy strategy) {
+
     }
 
     private void loadMapLayers() {

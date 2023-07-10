@@ -1,5 +1,6 @@
 package game.game_states;
 
+import game.entity.NPCStrategy;
 import game.state.IState;
 import game.state.IStateManager;
 import game.utilities.Fontes;
@@ -56,6 +57,11 @@ public class RestScreen implements IState {
 
 	@Override
 	public void start() {
+
+	}
+
+	@Override
+	public void setNPCStrategy(NPCStrategy strategy) {
 
 	}
 

@@ -5,7 +5,7 @@ import java.awt.event.KeyListener;
 
 public class KeyHandler implements KeyListener {
 
-    public boolean upPressed, downPressed, leftPressed, rightPressed, bikeButtonPressed, enterPressed;
+    public boolean upPressed, downPressed, leftPressed, rightPressed, bikeButtonPressed, enterPressed, escPressed;
     public boolean anyKeyPressed, spacePressed;
 
     @Override
@@ -25,6 +25,7 @@ public class KeyHandler implements KeyListener {
             case KeyEvent.VK_D -> rightPressed = true;
             case KeyEvent.VK_SPACE -> spacePressed = true;
             case KeyEvent.VK_ENTER -> enterPressed = true;
+            case KeyEvent.VK_ESCAPE -> escPressed = true;
         }
     }
 
@@ -40,6 +41,7 @@ public class KeyHandler implements KeyListener {
             case KeyEvent.VK_D -> rightPressed = false;
             case KeyEvent.VK_SPACE -> spacePressed = false;
             case KeyEvent.VK_ENTER -> enterPressed = false;
+            case KeyEvent.VK_ESCAPE -> escPressed = false;
         }
     }
 

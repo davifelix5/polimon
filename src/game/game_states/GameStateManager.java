@@ -1,5 +1,6 @@
 package game.game_states;
 
+import game.entity.NPCStrategy;
 import game.state.IState;
 import game.state.IStateManager;
 
@@ -24,5 +25,14 @@ public class GameStateManager implements IStateManager {
     @Override
     public void addState(GameState id, IState state) {
         this.states[id.getValue()] = state;
+    }
+
+    @Override
+    public void setNPCStrategy(NPCStrategy strategy) {
+        for (IState s: states) {
+            if (s!=null) {
+                s.setNPCStrategy(strategy);
+            }
+        }
     }
 }

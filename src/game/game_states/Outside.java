@@ -2,6 +2,7 @@ package game.game_states;
 
 import game.Game;
 import game.animation.SpriteSheet;
+import game.entity.NPCStrategy;
 import game.entity.Player;
 import game.handlers.KeyHandler;
 import game.map.MapLayer;
@@ -25,11 +26,12 @@ public class Outside implements IState {
 
     private final TileManager tm = new TileManager(60, 70);
     private final Player player;
-    private final Npc npc;
     private final GameStateManager gameStateManager;
     private BufferedImage backgroundImage;
     private final ArrayList<String> dialogues = new ArrayList<>();
     private final KeyHandler keyHandler;
+
+    private final ArrayList<Npc> npcs = new ArrayList<>();
 
     public Outside(GameStateManager gameStateManager, Player player, KeyHandler keyHandler) {
         this.gameStateManager = gameStateManager;
@@ -42,18 +44,28 @@ public class Outside implements IState {
         Dialogue dialogue = new Dialogue(dialogues, keyHandler, new Font("arial", Font.PLAIN, 20));
         loadMapLayers();
         setDialogues();
-        this.npc = new Npc(npcPosX, npcPosY, tm, 2, npcWalkArea, dialogue);
+        this.npcs.add(new Npc(npcPosX, npcPosY, tm, 2, npcWalkArea, dialogue));
     }
 
     @Override
     public void tick() {
         player.tick();
-        npc.tick();
-        this.player.setColliding(this.tm.colides(player) || npc.isDialogueActivated());
+        boolean hasDialogue = false;
+
+        for (Npc npc: npcs) {
+            if (npc.isDialogueActivated()) {
+                hasDialogue = true;
+            }
+            npc.tick();
+        }
+
+        this.player.setColliding(this.tm.colides(player) || hasDialogue);
         this.tm.interacts();
-        if (player.getWorldRow() == npc.getWorldRow() && player.getWorldCol() == npc.getWorldCol()) {
-            if (keyHandler.enterPressed) {
-                npc.setDialogueActivated(true);
+        for (Npc npc: npcs) {
+            if (player.getWorldRow() == npc.getWorldRow() && player.getWorldCol() == npc.getWorldCol()) {
+                if (keyHandler.enterPressed) {
+                    npc.setDialogueActivated(true);
+                }
             }
         }
     }
@@ -63,9 +75,14 @@ public class Outside implements IState {
         g.drawImage(this.backgroundImage, -tm.getReferenceX(), -tm.getReferenceY(), null);
         this.tm.renderRange(0, 3, g);
         player.render(g);
-        npc.render(g);
+
+        for (Npc npc: npcs)
+            npc.render(g);
+
         this.tm.renderRange(4, g);
-        npc.renderDialogue(g);
+
+        for (Npc npc: npcs)
+            npc.renderDialogue(g);
     }
     private void setDialogues(){
 
@@ -84,6 +101,13 @@ public class Outside implements IState {
     @Override
     public void start() {
         this.player.setTileManager(tm);
+    }
+
+    @Override
+    public void setNPCStrategy(NPCStrategy strategy) {
+        for (Npc npc: npcs) {
+            npc.setStrategy(strategy);
+        }
     }
 
     private void loadMapLayers() {

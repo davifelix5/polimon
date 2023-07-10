@@ -1,6 +1,7 @@
 package game.game_states;
 
 import game.buttons.ExitButtonStrategy;
+import game.entity.NPCStrategy;
 import game.handlers.MouseHandler;
 import game.buttons.Button;
 import javax.imageio.ImageIO;
@@ -66,6 +67,11 @@ public class CombatScreen implements IState {
 
     @Override
     public void start() {
+
+    }
+
+    @Override
+    public void setNPCStrategy(NPCStrategy strategy) {
 
     }
 
