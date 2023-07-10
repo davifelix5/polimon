@@ -44,8 +44,8 @@ public class Outside implements IState {
     public void render(Graphics g) {
         g.drawImage(this.backgroundImage, -tm.getReferenceX(), - tm.getReferenceY(), null);
         this.tm.renderRange(0, 3, g);
-        player.render(g);
         this.tm.renderRange(4, g);
+        player.render(g);
 
     }
 
@@ -62,15 +62,16 @@ public class Outside implements IState {
     }
 
     private void loadMapLayers() {
+
         // Chão
         this.backgroundImage = factory.getBackgroundImage();
 
         // Tilemaps e layers
-        this.tm.addLayer(new PlayerInteractableLayer("src/game/res/mapas/raia_agua.csv", factory.getMapTileSet(), new SwimStrategy(), player));
-        this.tm.addLayer(new MapLayer("src/game/res/mapas/raia_solido.csv", factory.getMapTileSet(), true));
         this.tm.addLayer(new PlayerInteractableLayer("src/game/res/mapas/raia_portas.csv", factory.getMapTileSet(), new BienioEnterStrategy(gameStateManager), player));
         this.tm.addLayer(new MapLayer("src/game/res/mapas/raia_base_do_poste.csv", factory.getMapTileSet(),true));
         this.tm.addLayer(new MapLayer("src/game/res/mapas/raia_nao_solido.csv", factory.getMapTileSet(), false));
+        this.tm.addLayer(new PlayerInteractableLayer("src/game/res/mapas/raia_agua.csv", factory.getMapTileSet(), new SwimStrategy(), player));
+        this.tm.addLayer(new MapLayer("src/game/res/mapas/raia_solido.csv", factory.getMapTileSet(), true));
     }
 
     @Override
