@@ -28,7 +28,7 @@ OBS: não foi possível encontrar os mesmos _sprites_ para o _player_ nadando, a
 - AS estratégias presentes para os NPCS são:
   - Andar
   - Ficarem parados
-- Essas estratégias podem ser definidas do menu inicial do jogo.
+- Essas estratégias podem ser definidas do menu inicial do jogo (para voltar oa menu, basta pressionar ESC)
 
 ## Algumas informações sobre a implementação
 
@@ -37,7 +37,7 @@ OBS: não foi possível encontrar os mesmos _sprites_ para o _player_ nadando, a
 
 - O jogo foi divido em estados (_Padrão State_), sendo possível transitar entre 3 destes estados na presente implementação
   - `RestScreen`: quando o usuário acabou de entrar o jogo.
-  - `Menu`: por enquanto, só as opções de sair e jogar funcionam.
+  - `Menu`: para acessá-lo novamente basta pressionar **ESP**; no menu é possível escolher a fábrica e a estratégia de NPC desejada
   - `Outsite`: estado em que o jogador vai começar o jogo, no mapa da USP.
 
 OBS: também há o estado `Bienio`, como foi dito acima

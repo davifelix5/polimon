@@ -15,7 +15,7 @@ import java.io.IOException;
 
 public class Menu implements IState {
 
-	Button play, options, credits, exit;
+	Button play, options, exit, moveNpcs, walkNpcs;
 	MouseHandler mouse;
 	IStateManager stateManager;
 	BufferedImage backgroundImage;
@@ -35,8 +35,9 @@ public class Menu implements IState {
 		g.drawImage(backgroundImage, 0, 0, null);
 		play = new Button("Play",35 ,180, 150, 600, 80, mouse, new PlayButtonStrategy());
 		options = new Button("Combat ",35 ,180, 250, 600, 80, mouse, new OptionsButtonStrategy());
-		credits = new Button("Credits", 35,180, 350, 600, 80, mouse, new CreditsButtonStrategy());
-		exit = new Button("Exit",35 ,180, 450, 600, 80, mouse, new ExitButtonStrategy());
+		exit = new Button("Exit",35 ,180, 350, 600, 80, mouse, new ExitButtonStrategy());
+		moveNpcs = new Button("NPCs andando",35 ,180, 450, 600, 80, mouse, new WalkNPCsButtonStrategy());
+		walkNpcs = new Button("NPCs parados",35 ,180, 550, 600, 80, mouse, new StopNPCsButtonStrategy());
 
 		Font h1 = new Font("arial", Font.BOLD, 48);
 
@@ -46,8 +47,9 @@ public class Menu implements IState {
 
 		play.render(g);
 		options.render(g);
-		credits.render(g);
 		exit.render(g);
+		moveNpcs.render(g);
+		walkNpcs.render(g);
 	}
 
 	@Override
