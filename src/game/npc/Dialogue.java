@@ -4,11 +4,10 @@ import game.Game;
 import game.handlers.KeyHandler;
 
 import java.awt.*;
-import java.util.ArrayList;
 
 public class Dialogue {
 
-    private final ArrayList<String> dialogues;
+    private final String[] dialogues;
     private final KeyHandler keyHandler;
     private int currentLine;
     int x, y, width, height;
@@ -17,7 +16,7 @@ public class Dialogue {
 
     private boolean activated = false;
 
-    public Dialogue(ArrayList<String> dialogues, KeyHandler keyHandler, Font dialogueFont) {
+    public Dialogue(String[] dialogues, KeyHandler keyHandler, Font dialogueFont) {
         this.dialogues = dialogues;
         this.keyHandler = keyHandler;
         this.x = Game.tileSize * 7; // posição do diálogo na posição x
@@ -36,7 +35,7 @@ public class Dialogue {
         int wordY = y + Game.tileSize;
         double lineSize = 0;
 
-        String[] words = dialogues.get(currentLine).split(" ");
+        String[] words = dialogues[currentLine].split(" ");
 
         for (String w: words) {
             String finalWord = w + " ";
@@ -74,9 +73,9 @@ public class Dialogue {
 
             if (!changed) {
                 changed = true;
-                if (currentLine < dialogues.size() - 1)
+                if (currentLine < dialogues.length - 1)
                     nextLine();
-                else if (currentLine == dialogues.size() - 1) {
+                else if (currentLine == dialogues.length - 1) {
                     activated = false;
                     reset();
                 }

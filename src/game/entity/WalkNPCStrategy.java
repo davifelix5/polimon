@@ -44,4 +44,9 @@ public class WalkNPCStrategy implements NPCStrategy {
             actionLockCounter = 0;
         }
     }
+
+    @Override
+    public NPCStrategy copy() {
+        return new WalkNPCStrategy();
+    }
 }

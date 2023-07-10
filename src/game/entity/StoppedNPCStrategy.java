@@ -7,4 +7,9 @@ public class StoppedNPCStrategy implements NPCStrategy{
     public void setAction(Npc npc) {
 
     }
+
+    @Override
+    public NPCStrategy copy() {
+        return new StoppedNPCStrategy();
+    }
 }

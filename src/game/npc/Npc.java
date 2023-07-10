@@ -8,14 +8,11 @@ import game.entity.Entity;
 import game.entity.NPCStrategy;
 import game.map.TileManager;
 
-import javax.imageio.ImageIO;
 import java.awt.*;
 import java.awt.image.BufferedImage;
-import java.io.FileInputStream;
-import java.io.IOException;
 
 public class Npc extends Entity {
-    private MoveAnimationSet animationSet;
+    private final MoveAnimationSet animationSet;
     private final int initialPositionX, initialPositionY;
     private final int movingRate;
     private final Rectangle moveArea;
@@ -23,16 +20,15 @@ public class Npc extends Entity {
 
     private NPCStrategy strategy;
 
-    public Npc(int x, int y, TileManager tm, int movingRate, Rectangle moveArea, Dialogue dialogue) {
+    public Npc(int x, int y, TileManager tm, int movingRate, Rectangle moveArea, Dialogue dialogue, SpriteSheet spriteSheet) {
         super(x, y);
         this.tileManager = tm;
         this.initialPositionX = x;
         this.initialPositionY = y;
         this.moveArea = moveArea;
         this.movingRate = movingRate;
-        loadAnimations();
+        this.animationSet = new MoveAnimationSet(spriteSheet, 0, 20);
         this.animationSet.setCurrentIndex(0);
-        setVelY(movingRate);
         this.animationSet.getCurrentAnimation().start();
         this.dialogue = dialogue;
     }
@@ -91,17 +87,6 @@ public class Npc extends Entity {
     @Override
     public Rectangle getBounds() {
         return new Rectangle(10, 20, 10, 10);
-    }
-
-
-    public void loadAnimations() {
-        try {
-            BufferedImage npcSprites = ImageIO.read(new FileInputStream("src/game/res/sprites/NpcSprites.png"));
-            SpriteSheet npcSpriteSheet = new SpriteSheet(npcSprites, 51, 54);
-            this.animationSet = new MoveAnimationSet(npcSpriteSheet, 0, 20);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
     }
 
     public int getWidth() {
