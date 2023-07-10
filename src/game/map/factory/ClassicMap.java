@@ -1,11 +1,13 @@
 package game.map.factory;
 
 import game.animation.SpriteSheet;
+import game.entity.PlayerAnimations;
 
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.util.Objects;
 
 public class ClassicMap implements MapFactory{
 
@@ -35,17 +37,14 @@ public class ClassicMap implements MapFactory{
         return classicMapTiles;
     }
     @Override
-    public SpriteSheet getPlayerSpriteSheets(String movement) {
-        if (movement == "Swim"){
-            SpriteSheet swimSpritesheet = new SpriteSheet(classicPlayerSwimSprites, 64, 82);
-            return swimSpritesheet;
+    public SpriteSheet getPlayerSpriteSheets(PlayerAnimations movement) {
+        if (movement == PlayerAnimations.Swimming){
+            return new SpriteSheet(classicPlayerSwimSprites, 64, 82);
         }
-        else if(movement == "Bike"){
-            SpriteSheet bikeSpritesheet = new SpriteSheet(classicPlayerBikeSprites, 48, 48);
-            return bikeSpritesheet;
+        else if(movement == PlayerAnimations.Bike){
+            return new SpriteSheet(classicPlayerBikeSprites, 48, 48);
         }
-        SpriteSheet walkSpriteSheet = new SpriteSheet(classicPlayerWalkSprites, 32, 41);
-        return walkSpriteSheet;
+        return new SpriteSheet(classicPlayerWalkSprites, 32, 41);
     }
     @Override
     public BufferedImage getBackgroundImage() {

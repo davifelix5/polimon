@@ -5,6 +5,9 @@ import game.game_states.*;
 import game.game_states.Menu;
 import game.handlers.KeyHandler;
 import game.handlers.MouseHandler;
+import game.map.factory.ClassicMap;
+import game.map.factory.MapFactory;
+import game.map.factory.VintageMap;
 import game.state.*;
 
 import javax.swing.*;
@@ -16,14 +19,14 @@ public class Game extends JPanel implements Runnable {
     public static final int maxScreenRow = 20, maxScreenCol = 30;
     public static final int width = tileSize*maxScreenCol, height = tileSize*maxScreenRow;
     final int FPS = 60;
-
     Thread thread;
     private final GameStateManager gameStateManager = new GameStateManager();
-
     KeyHandler keyHandler = new KeyHandler();
     MouseHandler mouseHandler = new MouseHandler(this);
 
     Player player;
+
+    public static MapFactory mapFactory = new ClassicMap();
 
     public Game() {
         this.addKeyListener(keyHandler);
@@ -110,5 +113,9 @@ public class Game extends JPanel implements Runnable {
         else if (value <= min)
             return min;
         return value;
+    }
+
+    public static void setMapFactory(MapFactory mapFactory) {
+        Game.mapFactory = mapFactory;
     }
 }

@@ -4,6 +4,7 @@ import game.Game;
 import game.animation.*;
 import game.handlers.KeyHandler;
 import game.map.TileManager;
+import game.map.factory.ClassicMap;
 
 import javax.imageio.ImageIO;
 import java.awt.*;
@@ -35,19 +36,9 @@ public class Player extends Entity {
     }
 
     private void loadAnimations() {
-        try {
-            BufferedImage bikeSprites = ImageIO.read(new FileInputStream("src/game/res/sprites/playerBike.png"));
-            BufferedImage walkSprites = ImageIO.read(new FileInputStream("src/game/res/sprites/playerSprites.png"));
-            BufferedImage swimSprites = ImageIO.read(new FileInputStream("src/game/res/sprites/playerSwim.png"));
-            SpriteSheet bikeSpritesheet = new SpriteSheet(bikeSprites, 48, 48);
-            SpriteSheet walkSpriteSheet = new SpriteSheet(walkSprites, 32, 41);
-            SpriteSheet swimSpritesheet = new SpriteSheet(swimSprites, 64, 82);
-            this.animationSets[PlayerAnimations.Bike.getValue()] = new MoveAnimationSet(bikeSpritesheet, 0);
-            this.animationSets[PlayerAnimations.Walk.getValue()] = new MoveAnimationSet(walkSpriteSheet, 0);
-            this.animationSets[PlayerAnimations.Swimming.getValue()] = new MoveAnimationSet(swimSpritesheet,0);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        this.animationSets[PlayerAnimations.Bike.getValue()] = new MoveAnimationSet(Game.mapFactory.getPlayerSpriteSheets(PlayerAnimations.Bike), 0);
+        this.animationSets[PlayerAnimations.Walk.getValue()] = new MoveAnimationSet(Game.mapFactory.getPlayerSpriteSheets(PlayerAnimations.Walk), 0);
+        this.animationSets[PlayerAnimations.Swimming.getValue()] = new MoveAnimationSet(Game.mapFactory.getPlayerSpriteSheets(PlayerAnimations.Swimming),0);
     }
 
     @Override

@@ -2,9 +2,12 @@ package game.buttons;
 
 import java.awt.*;
 
+import game.Game;
 import game.handlers.MouseHandler;
 import game.handlers.MouseInteraction;
 import game.handlers.MouseInteractionStrategy;
+import game.map.factory.MapFactory;
+import game.map.factory.VintageMap;
 
 public class Button implements MouseInteraction {
 
@@ -12,7 +15,6 @@ public class Button implements MouseInteraction {
     int fontSize;
     private final int posX, posY;
     private final int width, height;
-
     private final MouseInteractionStrategy pressStrategy;
 
 

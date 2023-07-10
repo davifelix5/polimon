@@ -1,5 +1,6 @@
 package game.game_states;
 
+import game.Game;
 import game.animation.SpriteSheet;
 import game.entity.Player;
 import game.map.MapLayer;
@@ -10,11 +11,9 @@ import game.map.interactions.SwimStrategy;
 import game.state.IState;
 import game.state.IStateManager;
 
-import javax.imageio.ImageIO;
 import java.awt.*;
 import java.awt.image.BufferedImage;
-import java.io.FileInputStream;
-import java.io.IOException;
+
 
 public class Outside implements IState {
 
@@ -57,23 +56,15 @@ public class Outside implements IState {
     }
 
     private void loadMapLayers() {
-        try {
-            // Spritsheets
-            SpriteSheet mapSritesheet = new SpriteSheet("src/game/res/sprites/tileset_mapa.png", 32, 32);
+        // Chão
+        this.backgroundImage = Game.mapFactory.getBackgroundImage();
 
-            // Chão
-            this.backgroundImage = ImageIO.read(new FileInputStream("src/game/res/mapas/MapaRaiaChao.png"));
-
-            // Tilemaps e layers
-            this.tm.addLayer(new PlayerInteractableLayer("src/game/res/mapas/raia_agua.csv", mapSritesheet, new SwimStrategy(), player));
-            this.tm.addLayer(new MapLayer("src/game/res/mapas/raia_solido.csv", mapSritesheet, true));
-            this.tm.addLayer(new PlayerInteractableLayer("src/game/res/mapas/raia_portas.csv", mapSritesheet, new BienioEnterStrategy(gameStateManager), player));
-            this.tm.addLayer(new MapLayer("src/game/res/mapas/raia_base_do_poste.csv", mapSritesheet,true));
-            this.tm.addLayer(new MapLayer("src/game/res/mapas/raia_nao_solido.csv", mapSritesheet, false));
-
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        // Tilemaps e layers
+        this.tm.addLayer(new PlayerInteractableLayer("src/game/res/mapas/raia_agua.csv", Game.mapFactory.getMapTileSet(), new SwimStrategy(), player));
+        this.tm.addLayer(new MapLayer("src/game/res/mapas/raia_solido.csv", Game.mapFactory.getMapTileSet(), true));
+        this.tm.addLayer(new PlayerInteractableLayer("src/game/res/mapas/raia_portas.csv", Game.mapFactory.getMapTileSet(), new BienioEnterStrategy(gameStateManager), player));
+        this.tm.addLayer(new MapLayer("src/game/res/mapas/raia_base_do_poste.csv", Game.mapFactory.getMapTileSet(),true));
+        this.tm.addLayer(new MapLayer("src/game/res/mapas/raia_nao_solido.csv", Game.mapFactory.getMapTileSet(), false));
     }
 
     @Override
