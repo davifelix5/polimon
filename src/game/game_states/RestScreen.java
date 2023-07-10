@@ -1,5 +1,6 @@
 package game.game_states;
 
+import game.map.factory.MapFactory;
 import game.state.IState;
 import game.state.IStateManager;
 import game.utilities.Fontes;
@@ -70,6 +71,11 @@ public class RestScreen implements IState {
 	@Override
 	public IStateManager getStateManager() {
 		return stateManager;
+	}
+
+	@Override
+	public void setFactory(MapFactory factory) {
+
 	}
 }
 

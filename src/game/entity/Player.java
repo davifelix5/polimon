@@ -4,12 +4,10 @@ import game.Game;
 import game.animation.*;
 import game.handlers.KeyHandler;
 import game.map.TileManager;
-import game.map.factory.ClassicMap;
+import game.map.factory.MapFactory;
 
-import javax.imageio.ImageIO;
 import java.awt.*;
 import java.awt.image.BufferedImage;
-import java.io.FileInputStream;
 
 public class Player extends Entity {
 
@@ -26,19 +24,23 @@ public class Player extends Entity {
 
     private TileManager tileManager; // Informação sobre os tiles do mapa.
 
+    private MapFactory spritesFactory;
+
     public Player(int x, int y, KeyHandler movementKeyInput) {
         super(x, y);
         this.movementKeyInput = movementKeyInput;
         this.currentAnimation = PlayerAnimations.Walk;
         this.colliding = false;
-
-        loadAnimations();
     }
 
-    private void loadAnimations() {
-        this.animationSets[PlayerAnimations.Bike.getValue()] = new MoveAnimationSet(Game.mapFactory.getPlayerSpriteSheets(PlayerAnimations.Bike), 0);
-        this.animationSets[PlayerAnimations.Walk.getValue()] = new MoveAnimationSet(Game.mapFactory.getPlayerSpriteSheets(PlayerAnimations.Walk), 0);
-        this.animationSets[PlayerAnimations.Swimming.getValue()] = new MoveAnimationSet(Game.mapFactory.getPlayerSpriteSheets(PlayerAnimations.Swimming),0);
+    public void setFactory(MapFactory spritesFactory) {
+        this.spritesFactory = spritesFactory;
+    }
+
+    public void loadAnimations() {
+        this.animationSets[PlayerAnimations.Bike.getValue()] = new MoveAnimationSet(spritesFactory.getPlayerSpriteSheets(PlayerAnimations.Bike), 0);
+        this.animationSets[PlayerAnimations.Walk.getValue()] = new MoveAnimationSet(spritesFactory.getPlayerSpriteSheets(PlayerAnimations.Walk), 0);
+        this.animationSets[PlayerAnimations.Swimming.getValue()] = new MoveAnimationSet(spritesFactory.getPlayerSpriteSheets(PlayerAnimations.Swimming),0);
     }
 
     @Override

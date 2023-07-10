@@ -5,9 +5,7 @@ import game.game_states.*;
 import game.game_states.Menu;
 import game.handlers.KeyHandler;
 import game.handlers.MouseHandler;
-import game.map.factory.ClassicMap;
 import game.map.factory.MapFactory;
-import game.map.factory.VintageMap;
 import game.state.*;
 
 import javax.swing.*;
@@ -26,7 +24,7 @@ public class Game extends JPanel implements Runnable {
 
     Player player;
 
-    public static MapFactory mapFactory = new ClassicMap();
+    public MapFactory mapFactory;
 
     public Game() {
         this.addKeyListener(keyHandler);
@@ -115,7 +113,9 @@ public class Game extends JPanel implements Runnable {
         return value;
     }
 
-    public static void setMapFactory(MapFactory mapFactory) {
-        Game.mapFactory = mapFactory;
+    public void setMapFactory(MapFactory mapFactory) {
+        this.mapFactory = mapFactory;
+        this.player.setFactory(mapFactory);
+        gameStateManager.setFactory(mapFactory);
     }
 }

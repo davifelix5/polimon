@@ -3,6 +3,7 @@ package game.game_states;
 import game.buttons.*;
 import game.buttons.Button;
 import game.handlers.MouseHandler;
+import game.map.factory.MapFactory;
 import game.state.IState;
 import game.state.IStateManager;
 
@@ -72,5 +73,10 @@ public class Menu implements IState {
 	@Override
 	public IStateManager getStateManager() {
 		return stateManager;
+	}
+
+	@Override
+	public void setFactory(MapFactory factory) {
+
 	}
 }

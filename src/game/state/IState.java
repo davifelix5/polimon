@@ -1,5 +1,7 @@
 package game.state;
 
+import game.map.factory.MapFactory;
+
 import java.awt.*;
 
 public interface IState {
@@ -8,4 +10,5 @@ public interface IState {
     void destroy();
     void start();
     IStateManager getStateManager();
+    void setFactory(MapFactory factory);
 }
