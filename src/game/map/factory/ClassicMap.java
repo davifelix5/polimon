@@ -50,4 +50,9 @@ public class ClassicMap implements MapFactory{
         return classicBackgroundImage;
     }
 
+    @Override
+    public MapFactory copy() {
+        return this;
+    }
+
 }

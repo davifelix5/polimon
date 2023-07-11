@@ -49,5 +49,10 @@ public class VintageMap implements MapFactory {
         return vintageBackgroundImage;
     }
 
+    @Override
+    public MapFactory copy() {
+        return this;
+    }
+
 
 }

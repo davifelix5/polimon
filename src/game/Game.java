@@ -13,6 +13,8 @@ import game.state.*;
 
 import javax.swing.*;
 import java.awt.*;
+import java.util.HashMap;
+import java.util.Map;
 
 public class Game extends JPanel implements Runnable {
 
@@ -20,17 +22,18 @@ public class Game extends JPanel implements Runnable {
     public static final int maxScreenRow = 20, maxScreenCol = 30;
     public static final int width = tileSize*maxScreenCol, height = tileSize*maxScreenRow;
     final int FPS = 60;
+
     Thread thread;
+
     private final GameStateManager gameStateManager = new GameStateManager();
+
     KeyHandler keyHandler = new KeyHandler();
     MouseHandler mouseHandler = new MouseHandler(this);
 
     Player player;
 
     public MapFactory mapFactory;
-
-    private final MapFactory vintage = new VintageMap();
-    private final MapFactory classic = new ClassicMap();
+    private final Map<String, MapFactory> factoryMap = new HashMap<>();
 
     public Game() {
         this.addKeyListener(keyHandler);
@@ -44,6 +47,9 @@ public class Game extends JPanel implements Runnable {
         this.gameStateManager.addState(GameState.Combate, new CombatScreen(mouseHandler,gameStateManager));
         this.gameStateManager.setState(GameState.RestScreen);
         this.gameStateManager.setNPCStrategy(new WalkNPCStrategy());
+
+        factoryMap.put("Vintage", new VintageMap());
+        factoryMap.put("Classic", new ClassicMap());
 
         this.setPreferredSize(new Dimension(width, height));
         this.setDoubleBuffered(true);
@@ -124,15 +130,9 @@ public class Game extends JPanel implements Runnable {
         return value;
     }
 
-    public void setMapFactory(String factory) {
-        if (factory.equals("Vintage")) {
-            this.mapFactory = vintage;
-            this.player.setFactory(vintage);
-            gameStateManager.setFactory(vintage);
-        } else if (factory.equals("Classic")) {
-            this.mapFactory = classic;
-            this.player.setFactory(classic);
-            gameStateManager.setFactory(classic);
-        }
+    public void setMapFactory(String factoryName) {
+        this.mapFactory = factoryMap.get(factoryName).copy();
+        this.player.setFactory(factoryMap.get(factoryName).copy());
+        gameStateManager.setFactory(factoryMap.get(factoryName).copy());
     }
 }
