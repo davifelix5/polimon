@@ -27,6 +27,7 @@ public class Outside implements IState {
     private final GameStateManager gameStateManager;
     private BufferedImage backgroundImage;
     private final KeyHandler keyHandler;
+    private boolean loaded = false;
 
     private NPCStrategy npcStrategy;
 
@@ -46,6 +47,9 @@ public class Outside implements IState {
 
     @Override
     public void tick() {
+        if (!loaded)
+            return;
+
         player.tick();
 
         boolean hasDialogue = false;
@@ -89,6 +93,7 @@ public class Outside implements IState {
 
     @Override
     public void start() {
+        this.loaded = true;
         this.clearNpcs();
         this.tm.clearLayers();
         this.player.setTileManager(tm);

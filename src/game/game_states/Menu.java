@@ -16,7 +16,7 @@ import java.io.IOException;
 
 public class Menu implements IState {
 
-	Button playClassic, playVintage, options, exit, moveNpcs, walkNpcs;
+	Button playClassic, playVintage, exit, moveNpcs, walkNpcs;
 	MouseHandler mouse;
 	IStateManager stateManager;
 	BufferedImage backgroundImage;
@@ -36,10 +36,9 @@ public class Menu implements IState {
 		g.drawImage(backgroundImage, 0, 0, null);
 		playVintage = new Button("Play Vintage Mode",35 ,180, 150, 600, 60, mouse, new PlayButtonVintageStrategy());
 		playClassic = new Button("Play Classic Mode",35 ,180, 250, 600, 60, mouse, new PlayButtonClassicStrategy());
-		options = new Button("Combat ",35 ,180, 350, 600, 60, mouse, new OptionsButtonStrategy());
-		exit = new Button("Exit",35 ,180, 450, 600, 60, mouse, new ExitButtonStrategy());
-		moveNpcs = new Button("NPCs andando",35 ,180, 550, 600, 80, mouse, new WalkNPCsButtonStrategy());
-		walkNpcs = new Button("NPCs parados",35 ,180, 650, 600, 80, mouse, new StopNPCsButtonStrategy());
+		exit = new Button("Exit",35 ,180, 350, 600, 60, mouse, new ExitButtonStrategy());
+		moveNpcs = new Button("NPCs andando",35 ,180, 450, 600, 80, mouse, new WalkNPCsButtonStrategy());
+		walkNpcs = new Button("NPCs parados",35 ,180, 550, 600, 80, mouse, new StopNPCsButtonStrategy());
 
 		Font h1 = new Font("arial", Font.BOLD, 48);
 
@@ -49,7 +48,6 @@ public class Menu implements IState {
 
 		playVintage.render(g);
 		playClassic.render(g);
-		options.render(g);
 		exit.render(g);
 		moveNpcs.render(g);
 		walkNpcs.render(g);
