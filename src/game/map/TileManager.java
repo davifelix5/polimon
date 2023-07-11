@@ -137,6 +137,10 @@ public class TileManager {
         }
     }
 
+    public void clearLayers() {
+        layers.clear();
+    }
+
 
     public void setReferenceX(int referenceX) {
         this.referenceX = referenceX;
