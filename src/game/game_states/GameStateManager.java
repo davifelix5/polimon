@@ -1,6 +1,7 @@
 package game.game_states;
 
 import game.entity.NPCStrategy;
+import game.map.factory.MapFactory;
 import game.state.IState;
 import game.state.IStateManager;
 
@@ -20,6 +21,15 @@ public class GameStateManager implements IStateManager {
         }
         this.currentState = id;
         this.getCurrentState().start();
+    }
+
+    @Override
+    public void setFactory(MapFactory factory) {
+        for (IState s: states) {
+            if (s!=null) {
+                s.setFactory(factory);
+            }
+        }
     }
 
     @Override

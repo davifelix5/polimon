@@ -3,11 +3,10 @@ package game.entity;
 import game.Game;
 import game.animation.*;
 import game.handlers.KeyHandler;
+import game.map.factory.MapFactory;
 
-import javax.imageio.ImageIO;
 import java.awt.*;
 import java.awt.image.BufferedImage;
-import java.io.FileInputStream;
 
 public class Player extends Entity {
 
@@ -23,29 +22,23 @@ public class Player extends Entity {
     private PlayerAnimations currentAnimation;
 
 
+    private MapFactory spritesFactory;
+
     public Player(int x, int y, KeyHandler movementKeyInput) {
         super(x, y);
         this.movementKeyInput = movementKeyInput;
         this.currentAnimation = PlayerAnimations.Walk;
         this.colliding = false;
-
-        loadAnimations();
     }
 
-    private void loadAnimations() {
-        try {
-            BufferedImage bikeSprites = ImageIO.read(new FileInputStream("src/game/res/sprites/playerBike.png"));
-            BufferedImage walkSprites = ImageIO.read(new FileInputStream("src/game/res/sprites/playerSprites.png"));
-            BufferedImage swimSprites = ImageIO.read(new FileInputStream("src/game/res/sprites/playerSwim.png"));
-            SpriteSheet bikeSpritesheet = new SpriteSheet(bikeSprites, 48, 48);
-            SpriteSheet walkSpriteSheet = new SpriteSheet(walkSprites, 32, 41);
-            SpriteSheet swimSpritesheet = new SpriteSheet(swimSprites, 64, 82);
-            this.animationSets[PlayerAnimations.Bike.getValue()] = new MoveAnimationSet(bikeSpritesheet, 0, 10);
-            this.animationSets[PlayerAnimations.Walk.getValue()] = new MoveAnimationSet(walkSpriteSheet, 0, 10);
-            this.animationSets[PlayerAnimations.Swimming.getValue()] = new MoveAnimationSet(swimSpritesheet,0, 10);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+    public void setFactory(MapFactory spritesFactory) {
+        this.spritesFactory = spritesFactory;
+    }
+
+    public void loadAnimations() {
+        this.animationSets[PlayerAnimations.Bike.getValue()] = new MoveAnimationSet(spritesFactory.getPlayerSpriteSheets(PlayerAnimations.Bike), 0, 10);
+        this.animationSets[PlayerAnimations.Walk.getValue()] = new MoveAnimationSet(spritesFactory.getPlayerSpriteSheets(PlayerAnimations.Walk), 0, 10);
+        this.animationSets[PlayerAnimations.Swimming.getValue()] = new MoveAnimationSet(spritesFactory.getPlayerSpriteSheets(PlayerAnimations.Swimming),0, 10);
     }
 
     @Override
@@ -82,7 +75,6 @@ public class Player extends Entity {
             tileManager.setReferenceY(0);
             this.positionY = getWorldY();
         }
-
 
         int BACKWARD = 0, LEFT = 1,  RIGHT = 2, FOWARD = 3; // Indices das animações
 
@@ -187,6 +179,7 @@ public class Player extends Entity {
     public void setCurrentAnimation(PlayerAnimations currentAnimation) {
         this.currentAnimation = currentAnimation;
     }
+
 
     public IAnimationSet getCurrentAnimationSet() {
         return this.animationSets[this.currentAnimation.getValue()];

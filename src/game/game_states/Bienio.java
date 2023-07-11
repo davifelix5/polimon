@@ -7,6 +7,7 @@ import game.entity.Player;
 import game.map.MapLayer;
 import game.map.PlayerInteractableLayer;
 import game.map.TileManager;
+import game.map.factory.MapFactory;
 import game.map.interactions.BienioExitStrategy;
 import game.state.IState;
 import game.state.IStateManager;
@@ -22,10 +23,10 @@ public class Bienio implements IState {
     private final TileManager tm = new TileManager(20, 30);
     private BufferedImage background;
 
+
     public Bienio(GameStateManager stateManager, Player player) {
         this.gameStateManager = stateManager;
         this.player = player;
-        loadMapLayers();
     }
 
     public void tick() {
@@ -49,6 +50,8 @@ public class Bienio implements IState {
     @Override
     public void start() {
         this.player.setTileManager(tm);
+        this.player.loadAnimations();
+        loadMapLayers();
     }
 
     @Override
@@ -79,5 +82,10 @@ public class Bienio implements IState {
     @Override
     public IStateManager getStateManager() {
         return gameStateManager;
+    }
+
+    @Override
+    public void setFactory(MapFactory factory) {
+
     }
 }

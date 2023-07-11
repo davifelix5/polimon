@@ -10,6 +10,7 @@ import java.awt.image.BufferedImage;
 import java.io.FileInputStream;
 import java.io.IOException;
 import game.combate.StatBar;
+import game.map.factory.MapFactory;
 import game.state.IState;
 import game.state.IStateManager;
 
@@ -98,5 +99,10 @@ public class CombatScreen implements IState {
     @Override
     public IStateManager getStateManager() {
         return stateManager;
+    }
+
+    @Override
+    public void setFactory(MapFactory factory) {
+
     }
 }

@@ -2,6 +2,8 @@ package game.state;
 
 import game.entity.NPCStrategy;
 
+import game.map.factory.MapFactory;
+
 import java.awt.*;
 
 public interface IState {
@@ -11,4 +13,5 @@ public interface IState {
     void start();
     void setNPCStrategy(NPCStrategy strategy);
     IStateManager getStateManager();
+    void setFactory(MapFactory factory);
 }

@@ -12,7 +12,6 @@ public class Button implements MouseInteraction {
     int fontSize;
     private final int posX, posY;
     private final int width, height;
-
     private final MouseInteractionStrategy pressStrategy;
 
 
