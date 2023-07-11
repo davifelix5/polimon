@@ -11,19 +11,22 @@ import java.io.IOException;
 public class VintageMap implements MapFactory {
 
 //  Gera de um mapa com aparência vintage para a implementação do look-and-fells
-    private SpriteSheet vintageMapTiles;
-    private BufferedImage vintagePlayerWalkSprites;
-    private BufferedImage vintagePlayerSwimSprites;
-    private BufferedImage vintagePlayerBikeSprites;
-    private BufferedImage vintageBackgroundImage;
+    private SpriteSheet mapTiles, npcSprites;
+    private BufferedImage playerWalkSprites;
+    private BufferedImage playerSwimSprites;
+    private BufferedImage playerBikeSprites;
+    private BufferedImage bienioBackground;
+    private BufferedImage backgroundImage;
 
     public VintageMap() {
         try{
-            this.vintageBackgroundImage =  ImageIO.read(new FileInputStream("src/game/res/mapas/MapaRaiaChaoVintage.png"));
-            this.vintageMapTiles = new SpriteSheet("src/game/res/sprites/Vintage_tileset_mapa.png", 32,32);
-            this.vintagePlayerWalkSprites = ImageIO.read(new FileInputStream("src/game/res/sprites/VintagePlayerSprites2.png"));
-            this.vintagePlayerSwimSprites = ImageIO.read(new FileInputStream("src/game/res/sprites/playerSwim.png"));
-            this.vintagePlayerBikeSprites = ImageIO.read(new FileInputStream("src/game/res/sprites/VintagePlayerBike.png"));
+            this.backgroundImage =  ImageIO.read(new FileInputStream("src/game/res/mapas/chao_raia_vintage.png"));
+            this.mapTiles = new SpriteSheet("src/game/res/sprites/Vintage_tileset_mapa.png", 32,32);
+            this.playerWalkSprites = ImageIO.read(new FileInputStream("src/game/res/sprites/VintagePlayerSprites2.png"));
+            this.playerSwimSprites = ImageIO.read(new FileInputStream("src/game/res/sprites/playerSwim.png"));
+            this.playerBikeSprites = ImageIO.read(new FileInputStream("src/game/res/sprites/VintagePlayerBike.png"));
+            this.npcSprites = new SpriteSheet("src/game/res/sprites/npc_sprites_vintage.png", 51, 54);
+            this.bienioBackground = ImageIO.read(new FileInputStream("src/game/res/mapas/chao_bienio_vintage.png"));
         }
         catch(IOException e){
             e.printStackTrace();
@@ -32,21 +35,31 @@ public class VintageMap implements MapFactory {
 
     @Override
     public SpriteSheet getMapTileSet() {
-        return vintageMapTiles;
+        return mapTiles;
     }
     @Override
     public SpriteSheet getPlayerSpriteSheets(PlayerAnimations movement) {
         if (movement == PlayerAnimations.Swimming){
-            return new SpriteSheet(vintagePlayerSwimSprites, 64, 82);
+            return new SpriteSheet(playerSwimSprites, 64, 82);
         }
         else if(movement == PlayerAnimations.Bike){
-            return new SpriteSheet(vintagePlayerBikeSprites, 48, 48);
+            return new SpriteSheet(playerBikeSprites, 48, 48);
         }
-        return new SpriteSheet(vintagePlayerWalkSprites, 32, 41);
+        return new SpriteSheet(playerWalkSprites, 32, 41);
     }
     @Override
     public BufferedImage getBackgroundImage() {
-        return vintageBackgroundImage;
+        return backgroundImage;
+    }
+
+    @Override
+    public SpriteSheet getNpcSpritesheet() {
+        return npcSprites;
+    }
+
+    @Override
+    public BufferedImage getBienioBackground() {
+        return bienioBackground;
     }
 
     @Override

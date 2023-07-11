@@ -13,5 +13,7 @@ public interface MapFactory {
     SpriteSheet getMapTileSet();
     SpriteSheet getPlayerSpriteSheets(PlayerAnimations movement);
     BufferedImage getBackgroundImage();
+    SpriteSheet getNpcSpritesheet();
+    BufferedImage getBienioBackground();
     MapFactory copy();
 }

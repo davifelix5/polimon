@@ -11,20 +11,23 @@ import java.io.IOException;
 public class ClassicMap implements MapFactory{
 
     //  Gera o mapa clássico do jogo para a implementação do look-and-fells
-    private BufferedImage classicBackgroundImage;
-    private BufferedImage classicPlayerWalkSprites;
-    private BufferedImage classicPlayerSwimSprites;
-    private BufferedImage classicPlayerBikeSprites;
-    private SpriteSheet classicMapTiles;
+    private BufferedImage outsiteBackgroundImage;
+    private BufferedImage playerWalkSprites;
+    private BufferedImage playerSwimSprites;
+    private BufferedImage playerBikeSprites;
+    private BufferedImage bienioBackground;
+    private SpriteSheet mapTiles, npcSprites;
 
 //    Construtor do mapa
     public ClassicMap() {
         try{
-            this.classicPlayerWalkSprites = ImageIO.read(new FileInputStream("src/game/res/sprites/playerSprites.png"));
-            this.classicPlayerSwimSprites = ImageIO.read(new FileInputStream("src/game/res/sprites/playerSwim.png"));
-            this.classicPlayerBikeSprites = ImageIO.read(new FileInputStream("src/game/res/sprites/playerBike.png"));
-            this.classicBackgroundImage =  ImageIO.read(new FileInputStream("src/game/res/mapas/MapaRaiaChao.png"));
-            this.classicMapTiles = new SpriteSheet("src/game/res/sprites/tileset_mapa.png", 32,32);
+            this.playerWalkSprites = ImageIO.read(new FileInputStream("src/game/res/sprites/playerSprites.png"));
+            this.playerSwimSprites = ImageIO.read(new FileInputStream("src/game/res/sprites/playerSwim.png"));
+            this.playerBikeSprites = ImageIO.read(new FileInputStream("src/game/res/sprites/playerBike.png"));
+            this.outsiteBackgroundImage =  ImageIO.read(new FileInputStream("src/game/res/mapas/chao_raia.png"));
+            this.mapTiles = new SpriteSheet("src/game/res/sprites/tileset_mapa.png", 32,32);
+            this.npcSprites = new SpriteSheet("src/game/res/sprites/npc_sprites.png", 51, 54);
+            this.bienioBackground = ImageIO.read(new FileInputStream("src/game/res/mapas/chao_bienio.png"));
         }
         catch(IOException e){
             e.printStackTrace();
@@ -33,21 +36,31 @@ public class ClassicMap implements MapFactory{
 
     @Override
     public SpriteSheet getMapTileSet() {
-        return classicMapTiles;
+        return mapTiles;
     }
     @Override
     public SpriteSheet getPlayerSpriteSheets(PlayerAnimations movement) {
         if (movement == PlayerAnimations.Swimming){
-            return new SpriteSheet(classicPlayerSwimSprites, 64, 82);
+            return new SpriteSheet(playerSwimSprites, 64, 82);
         }
         else if(movement == PlayerAnimations.Bike){
-            return new SpriteSheet(classicPlayerBikeSprites, 48, 48);
+            return new SpriteSheet(playerBikeSprites, 48, 48);
         }
-        return new SpriteSheet(classicPlayerWalkSprites, 32, 41);
+        return new SpriteSheet(playerWalkSprites, 32, 41);
     }
     @Override
     public BufferedImage getBackgroundImage() {
-        return classicBackgroundImage;
+        return outsiteBackgroundImage;
+    }
+
+    @Override
+    public SpriteSheet getNpcSpritesheet() {
+        return npcSprites;
+    }
+
+    @Override
+    public BufferedImage getBienioBackground() {
+        return bienioBackground;
     }
 
     @Override

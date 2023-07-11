@@ -1,7 +1,6 @@
 package game.game_states;
 
 import game.Game;
-import game.animation.SpriteSheet;
 import game.entity.NPCStrategy;
 import game.entity.Player;
 import game.handlers.KeyHandler;
@@ -16,13 +15,10 @@ import game.npc.Npc;
 import game.state.IState;
 import game.state.IStateManager;
 
-import javax.imageio.ImageIO;
 import java.awt.*;
 import java.awt.image.BufferedImage;
-import java.io.IOException;
 import java.util.ArrayList;
 
-import java.io.FileInputStream;
 
 public class Outside implements IState {
 
@@ -31,7 +27,6 @@ public class Outside implements IState {
     private final GameStateManager gameStateManager;
     private BufferedImage backgroundImage;
     private final KeyHandler keyHandler;
-    private SpriteSheet npcSpriteSheet;
 
     private NPCStrategy npcStrategy;
 
@@ -43,44 +38,6 @@ public class Outside implements IState {
         this.player = player;
         this.player.setTileManager(tm);
         this.keyHandler = keyHandler;
-        loadNPCAnimation();
-
-        Font dialogueFont = new Font("arial", Font.PLAIN, 20);
-
-        String[] dialogues1 = {
-                "Olá, Aventureiro !",
-                "Bem vindo a USP !",
-                "Serei seu guia inicial nessa nova jornada que o aguarda",
-                "Espero que aproveite seu tempo aqui, faça amigos e se divirta",
-                "Podemos começar ?"
-        };
-
-        String[] dialogues2 = {
-                "Olá, caro jogador!",
-                "Bem vindo à Poli !",
-                "Aqui a situação é tensa, mas no fim todos falam que vale a pena",
-                "Será?!",
-                "Fique por aqui e descubra!"
-        };
-
-        this.npcs.add(
-                new Npc(
-                        13 * Game.tileSize, 27 * Game.tileSize, tm, 2,
-                        new Rectangle(9*Game.tileSize, 4*Game.tileSize),
-                        new Dialogue(dialogues1, keyHandler, dialogueFont),
-                        npcSpriteSheet
-                )
-        );
-
-        this.npcs.add(
-                new Npc(
-                        34 * Game.tileSize, 50 * Game.tileSize, tm, 2,
-                        new Rectangle(10*Game.tileSize, 4*Game.tileSize),
-                        new Dialogue(dialogues2, keyHandler, dialogueFont),
-                        npcSpriteSheet
-                )
-        );
-
     }
 
     public void setFactory(MapFactory factory) {
@@ -132,10 +89,47 @@ public class Outside implements IState {
 
     @Override
     public void start() {
+        this.clearNpcs();
         this.tm.clearLayers();
         this.player.setTileManager(tm);
         this.player.loadAnimations();
         this.loadAnimations();
+
+        Font dialogueFont = new Font("arial", Font.PLAIN, 20);
+
+        String[] dialogues1 = {
+                "Olá, Aventureiro !",
+                "Bem vindo a USP !",
+                "Serei seu guia inicial nessa nova jornada que o aguarda",
+                "Espero que aproveite seu tempo aqui, faça amigos e se divirta",
+                "Podemos começar ?"
+        };
+
+        String[] dialogues2 = {
+                "Olá, caro jogador!",
+                "Bem vindo à Poli !",
+                "Aqui a situação é tensa, mas no fim todos falam que vale a pena",
+                "Será?!",
+                "Fique por aqui e descubra!"
+        };
+
+        this.npcs.add(
+                new Npc(
+                        13 * Game.tileSize, 27 * Game.tileSize, tm, 2,
+                        new Rectangle(9*Game.tileSize, 4*Game.tileSize),
+                        new Dialogue(dialogues1, keyHandler, dialogueFont),
+                        factory.getNpcSpritesheet()
+                )
+        );
+
+        this.npcs.add(
+                new Npc(
+                        34 * Game.tileSize, 50 * Game.tileSize, tm, 2,
+                        new Rectangle(10*Game.tileSize, 4*Game.tileSize),
+                        new Dialogue(dialogues2, keyHandler, dialogueFont),
+                        factory.getNpcSpritesheet()
+                )
+        );
 
         this.updateNpcStrategy();
     }
@@ -144,6 +138,10 @@ public class Outside implements IState {
     public void setNPCStrategy(NPCStrategy strategy) {
         npcStrategy = strategy;
         this.updateNpcStrategy();
+    }
+
+    private void clearNpcs() {
+        npcs.clear();
     }
 
     private void updateNpcStrategy() {
@@ -156,21 +154,11 @@ public class Outside implements IState {
         // Background
         this.backgroundImage = factory.getBackgroundImage();
         // Tilemaps e layers
+        this.tm.addLayer(new PlayerInteractableLayer("src/game/res/mapas/raia_agua.csv", factory.getMapTileSet(), new SwimStrategy(), player));
+        this.tm.addLayer(new MapLayer("src/game/res/mapas/raia_solido.csv", factory.getMapTileSet(), true));
         this.tm.addLayer(new PlayerInteractableLayer("src/game/res/mapas/raia_portas.csv", factory.getMapTileSet(), new BienioEnterStrategy(gameStateManager), player));
         this.tm.addLayer(new MapLayer("src/game/res/mapas/raia_base_do_poste.csv", factory.getMapTileSet(),true));
         this.tm.addLayer(new MapLayer("src/game/res/mapas/raia_nao_solido.csv", factory.getMapTileSet(), false));
-        this.tm.addLayer(new PlayerInteractableLayer("src/game/res/mapas/raia_agua.csv", factory.getMapTileSet(), new SwimStrategy(), player));
-        this.tm.addLayer(new MapLayer("src/game/res/mapas/raia_solido.csv", factory.getMapTileSet(), true));
-    }
-
-    private void loadNPCAnimation() {
-        // NPC
-        try {
-            BufferedImage npcSprites = ImageIO.read(new FileInputStream("src/game/res/sprites/NpcSprites.png"));
-            npcSpriteSheet = new SpriteSheet(npcSprites, 51, 54);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
     }
 
     @Override
