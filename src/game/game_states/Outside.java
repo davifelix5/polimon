@@ -132,6 +132,7 @@ public class Outside implements IState {
 
     @Override
     public void start() {
+        System.out.println("OIOIO");
         this.player.setTileManager(tm);
         this.player.loadAnimations();
         this.loadAnimations();
