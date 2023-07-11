@@ -50,13 +50,16 @@ public class Npc extends Entity {
     public void tick() {
         int BACKWARD = 0, LEFT = 1,  RIGHT = 2, FOWARD = 3; // Indices das animações
 
-        getAnimation().tick();
-        int nextPosX = getWorldX() + getVelX();
-        int nextPosY = getWorldY() + getVelY();
         int maxPosX = initialPositionX + (int) moveArea.getWidth() - getWidth();
         int maxPosY = initialPositionY + (int) moveArea.getHeight() - getHeight();
 
-        if (!dialogue.isActivated()) {
+        if (getVelX() != 0 || getVelY() != 0) {
+            getAnimation().tick();
+        }
+
+        if (!isDialogueActivated()) {
+            int nextPosX = getWorldX() + getVelX();
+            int nextPosY = getWorldY() + getVelY();
             setWorldX(Game.clamp(nextPosX, initialPositionX, maxPosX));
             setWorldY(Game.clamp(nextPosY, initialPositionY, maxPosY));
             strategy.setAction(this);
@@ -77,8 +80,6 @@ public class Npc extends Entity {
             getAnimation().stop();
             setVelY(0);
         }
-
-        animationSet.getCurrentAnimation().tick();
 
         this.dialogue.tick();
 
