@@ -19,11 +19,13 @@ public class PokemonGenerator {
         return instance;
     }
 
-    public MapPokemon generatePokemon(PokemonType type) {
+    public MapPokemon generatePokemon(PokemonType type, MapPokemonStrategy strategy) {
         double attempt = (double) random.nextFloat();
         if (attempt <= type.getGenProbability()) {
             PokemonID ID = type.getPokemons().get(random.nextInt(type.getPokemons().size()));
-            return new MapPokemon(35 * Game.tileSize, 28 * Game.tileSize, ID, type);
+            MapPokemon pokemon = new MapPokemon(35 * Game.tileSize, 28 * Game.tileSize, ID, type);
+            pokemon.setStrategy(strategy);
+            return pokemon;
         }
         return null;
     }

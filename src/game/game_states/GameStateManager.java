@@ -2,6 +2,7 @@ package game.game_states;
 
 import game.entity.NPCStrategy;
 import game.map.factory.MapFactory;
+import game.pokemon.MapPokemonStrategy;
 import game.state.IState;
 import game.state.IStateManager;
 
@@ -44,6 +45,15 @@ public class GameStateManager implements IStateManager {
         for (IState s: states) {
             if (s!=null) {
                 s.setNPCStrategy(strategy);
+            }
+        }
+    }
+
+    @Override
+    public void setMapPokemonStrategy(MapPokemonStrategy strategy) {
+        for (IState s: states) {
+            if (s != null) {
+                s.setMapPokemonStrategy(strategy);
             }
         }
     }

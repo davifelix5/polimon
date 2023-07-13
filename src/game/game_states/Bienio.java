@@ -10,6 +10,7 @@ import game.map.factory.MapFactory;
 import game.map.interactions.BienioExitStrategy;
 import game.state.IState;
 import game.state.IStateManager;
+import game.pokemon.MapPokemonStrategy;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
@@ -54,6 +55,11 @@ public class Bienio implements IState {
 
     @Override
     public void setNPCStrategy(NPCStrategy strategy) {
+
+    }
+
+    @Override
+    public void setMapPokemonStrategy(MapPokemonStrategy strategy) {
 
     }
 

@@ -3,6 +3,7 @@ package game.state;
 import game.entity.NPCStrategy;
 
 import game.map.factory.MapFactory;
+import game.pokemon.MapPokemonStrategy;
 
 import java.awt.*;
 
@@ -12,6 +13,7 @@ public interface IState {
     void destroy();
     void start();
     void setNPCStrategy(NPCStrategy strategy);
+    void setMapPokemonStrategy(MapPokemonStrategy strategy);
     IStateManager getStateManager();
     void setFactory(MapFactory factory);
 }

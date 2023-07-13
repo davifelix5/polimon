@@ -6,6 +6,7 @@ import game.state.IState;
 import game.state.IStateManager;
 import game.utilities.Fontes;
 import game.handlers.KeyHandler;
+import game.pokemon.MapPokemonStrategy;
 
 import javax.imageio.ImageIO;
 import java.awt.Color;
@@ -65,6 +66,11 @@ public class RestScreen implements IState {
 	public void setNPCStrategy(NPCStrategy strategy) {
 
 	}
+
+	@Override
+    public void setMapPokemonStrategy(MapPokemonStrategy strategy) {
+
+    }
 
 	public void loadImages() {
 		try {

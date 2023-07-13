@@ -7,6 +7,7 @@ import game.handlers.MouseHandler;
 import game.map.factory.MapFactory;
 import game.state.IState;
 import game.state.IStateManager;
+import game.pokemon.MapPokemonStrategy;
 
 import javax.imageio.ImageIO;
 import java.awt.*;
@@ -37,8 +38,8 @@ public class Menu implements IState {
 		playVintage = new Button("Play Vintage Mode",35 ,180, 150, 600, 60, mouse, new PlayButtonVintageStrategy());
 		playClassic = new Button("Play Classic Mode",35 ,180, 250, 600, 60, mouse, new PlayButtonClassicStrategy());
 		exit = new Button("Exit",35 ,180, 350, 600, 60, mouse, new ExitButtonStrategy());
-		moveNpcs = new Button("NPCs andando",35 ,180, 450, 600, 80, mouse, new WalkNPCsButtonStrategy());
-		walkNpcs = new Button("NPCs parados",35 ,180, 550, 600, 80, mouse, new StopNPCsButtonStrategy());
+		moveNpcs = new Button("NPCs & Pokemons andando",35 ,180, 450, 600, 80, mouse, new WalkNPCPokemonButtonStrategy());
+		walkNpcs = new Button("NPCs & Pokemons parados",35 ,180, 550, 600, 80, mouse, new FixedNPCPokemonButtonStrategy());
 
 		Font h1 = new Font("arial", Font.BOLD, 48);
 
@@ -67,6 +68,11 @@ public class Menu implements IState {
 	public void setNPCStrategy(NPCStrategy strategy) {
 
 	}
+
+	@Override
+    public void setMapPokemonStrategy(MapPokemonStrategy strategy) {
+
+    }
 
 	public void loadImages() {
 		try {

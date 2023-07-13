@@ -9,6 +9,7 @@ import game.handlers.MouseHandler;
 import game.map.factory.ClassicMap;
 import game.map.factory.MapFactory;
 import game.map.factory.VintageMap;
+import game.pokemon.WalkPokemonStrategy;
 import game.state.*;
 
 import javax.swing.*;
@@ -47,6 +48,7 @@ public class Game extends JPanel implements Runnable {
         this.gameStateManager.addState(GameState.Combate, new CombatScreen(mouseHandler,gameStateManager));
         this.gameStateManager.setState(GameState.RestScreen);
         this.gameStateManager.setNPCStrategy(new WalkNPCStrategy());
+        this.gameStateManager.setMapPokemonStrategy(new WalkPokemonStrategy());
 
         factoryMap.put("Vintage", new VintageMap());
         factoryMap.put("Classic", new ClassicMap());

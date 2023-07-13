@@ -17,6 +17,7 @@ import game.pokemon.PokemonType;
 import game.state.IState;
 import game.state.IStateManager;
 import game.pokemon.MapPokemon;
+import game.pokemon.MapPokemonStrategy;
 import game.pokemon.PokemonGenerator;
 
 import java.awt.*;
@@ -36,6 +37,7 @@ public class Outside implements IState {
     private boolean loaded = false;
 
     private NPCStrategy npcStrategy;
+    private MapPokemonStrategy mapPokemonStrategy;
 
     private final ArrayList<Npc> npcs = new ArrayList<>();
     private MapFactory factory;
@@ -63,7 +65,7 @@ public class Outside implements IState {
         this.newTime = Instant.now();
         if (this.oldTime == null) this.oldTime = this.newTime;
         long elapsedTime = Duration.between(oldTime, newTime).toMillis();
-        if (elapsedTime >= 30000) {
+        if (elapsedTime >= 20000) {
             this.clearPokemons();
             this.generatePokemons();
             this.oldTime = this.newTime;
@@ -200,11 +202,23 @@ public class Outside implements IState {
         for (MapLayer layer : this.tm.getLayers()) {
             if (layer.isPokemonLayer()) {
                 PokemonGenerator generator = PokemonGenerator.getInstance();
-                MapPokemon newPokemon = generator.generatePokemon(layer.getPokemonType());
+                MapPokemon newPokemon = generator.generatePokemon(layer.getPokemonType(), this.mapPokemonStrategy);
                 if (newPokemon != null) {
                     this.addPokemon(newPokemon);
                 }
             }
+        }
+    }
+
+    @Override
+    public void setMapPokemonStrategy(MapPokemonStrategy strategy) {
+        this.mapPokemonStrategy = strategy;
+        this.updateMapPokemonStrategy();
+    }
+
+    public void updateMapPokemonStrategy() {
+        for (MapPokemon pokemon : this.pokemons) {
+            pokemon.setStrategy(this.mapPokemonStrategy);
         }
     }
 

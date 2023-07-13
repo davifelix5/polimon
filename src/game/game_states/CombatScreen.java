@@ -11,6 +11,7 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import game.combate.StatBar;
 import game.map.factory.MapFactory;
+import game.pokemon.MapPokemonStrategy;
 import game.state.IState;
 import game.state.IStateManager;
 
@@ -82,6 +83,11 @@ public class CombatScreen implements IState {
 
     @Override
     public void setNPCStrategy(NPCStrategy strategy) {
+
+    }
+
+    @Override
+    public void setMapPokemonStrategy(MapPokemonStrategy strategy) {
 
     }
 

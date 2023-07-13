@@ -2,7 +2,7 @@ package game.entity;
 
 import game.npc.Npc;
 
-public class StoppedNPCStrategy implements NPCStrategy{
+public class FixedNPCStrategy implements NPCStrategy{
     @Override
     public void setAction(Npc npc) {
 
@@ -10,6 +10,6 @@ public class StoppedNPCStrategy implements NPCStrategy{
 
     @Override
     public NPCStrategy copy() {
-        return new StoppedNPCStrategy();
+        return new FixedNPCStrategy();
     }
 }
