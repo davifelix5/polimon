@@ -22,7 +22,7 @@ public enum PokemonType {
     Ghost(1, new ArrayList<PokemonID>(), 35, 41, 28, 30),
     Dragon(1, new ArrayList<PokemonID>(), 35, 41, 28, 30),
     Dark(1, new ArrayList<PokemonID>(), 35, 41, 28, 30),
-    Steel(0.6, new ArrayList<PokemonID>(Arrays.asList(PokemonID.Silcoon)), 5, 9, 44, 46);
+    Steel(0.8, new ArrayList<PokemonID>(Arrays.asList(PokemonID.Silcoon)), 5, 9, 44, 46);
 
     private final double genProbability;
     private final ArrayList<PokemonID> pokemonsList;

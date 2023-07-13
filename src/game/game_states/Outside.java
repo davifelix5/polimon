@@ -78,7 +78,7 @@ public class Outside implements IState {
 
         foundPokemon = this.findPokemonWithinPlayer();
         if (foundPokemon != null) {
-            System.out.println("O player achou um " + foundPokemon.getName() + "!");
+            System.out.println("Você achou um " + foundPokemon.getName() + "!");
         }
 
         boolean hasDialogue = false;
