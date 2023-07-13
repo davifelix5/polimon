@@ -1,14 +1,21 @@
 package game;
 
 import game.entity.Player;
+import game.entity.WalkNPCStrategy;
 import game.game_states.*;
 import game.game_states.Menu;
 import game.handlers.KeyHandler;
 import game.handlers.MouseHandler;
+import game.map.factory.ClassicMap;
+import game.map.factory.MapFactory;
+import game.map.factory.VintageMap;
+import game.pokemon.WalkPokemonStrategy;
 import game.state.*;
 
 import javax.swing.*;
 import java.awt.*;
+import java.util.HashMap;
+import java.util.Map;
 
 public class Game extends JPanel implements Runnable {
 
@@ -18,6 +25,7 @@ public class Game extends JPanel implements Runnable {
     final int FPS = 60;
 
     Thread thread;
+
     private final GameStateManager gameStateManager = new GameStateManager();
 
     KeyHandler keyHandler = new KeyHandler();
@@ -25,17 +33,25 @@ public class Game extends JPanel implements Runnable {
 
     Player player;
 
+    public MapFactory mapFactory;
+    private final Map<String, MapFactory> factoryMap = new HashMap<>();
+
     public Game() {
         this.addKeyListener(keyHandler);
         this.addMouseListener(mouseHandler);
         this.setDoubleBuffered(true);
-        this.player = new Player(30*Game.tileSize, 55*Game.tileSize, keyHandler);
+        this.player = new Player(30*Game.tileSize ,55*Game.tileSize, keyHandler);
         this.gameStateManager.addState(GameState.RestScreen, new RestScreen(keyHandler, gameStateManager));
         this.gameStateManager.addState(GameState.Menu, new Menu(mouseHandler, gameStateManager));
         this.gameStateManager.addState(GameState.Bienio, new Bienio(gameStateManager, player));
-        this.gameStateManager.addState(GameState.Outside, new Outside(gameStateManager, player));
+        this.gameStateManager.addState(GameState.Outside, new Outside(gameStateManager, player, keyHandler));
         this.gameStateManager.addState(GameState.Combate, new CombatScreen(mouseHandler,gameStateManager));
         this.gameStateManager.setState(GameState.RestScreen);
+        this.gameStateManager.setNPCStrategy(new WalkNPCStrategy());
+        this.gameStateManager.setMapPokemonStrategy(new WalkPokemonStrategy());
+
+        factoryMap.put("Vintage", new VintageMap());
+        factoryMap.put("Classic", new ClassicMap());
 
         this.setPreferredSize(new Dimension(width, height));
         this.setDoubleBuffered(true);
@@ -91,7 +107,11 @@ public class Game extends JPanel implements Runnable {
     }
 
     public void tick() {
-        gameStateManager.getCurrentState().tick();
+        if (keyHandler.escPressed) {
+            gameStateManager.setState(GameState.Menu);
+        } else {
+            gameStateManager.getCurrentState().tick();
+        }
     }
 
     @Override
@@ -110,5 +130,11 @@ public class Game extends JPanel implements Runnable {
         else if (value <= min)
             return min;
         return value;
+    }
+
+    public void setMapFactory(String factoryName) {
+        this.mapFactory = factoryMap.get(factoryName).copy();
+        this.player.setFactory(factoryMap.get(factoryName).copy());
+        gameStateManager.setFactory(factoryMap.get(factoryName).copy());
     }
 }

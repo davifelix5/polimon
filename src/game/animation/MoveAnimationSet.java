@@ -11,9 +11,12 @@ public class MoveAnimationSet implements IAnimationSet {
     private ArrayList<Animation> animations; // Todas as animações na ordem: frente, esquerda, direita, cima
     private final SpriteSheet movingSprites; // spritesheet com as animações
 
-    public MoveAnimationSet(SpriteSheet movingSprites, int initialIndex) {
+    private int ticksPerFrame;
+
+    public MoveAnimationSet(SpriteSheet movingSprites, int initialIndex, int ticksPerFrame) {
         this.movingSprites = movingSprites;
         this.currentIndex = initialIndex;
+        this.ticksPerFrame = ticksPerFrame;
         loadAnimations();
     }
 
@@ -26,7 +29,7 @@ public class MoveAnimationSet implements IAnimationSet {
             ArrayList<BufferedImage> frames = new ArrayList<>();
             for (int j = 0; j < movingSprites.cols; j++)
                 frames.add(movingSprites.getSprite(i, j));
-            animations.add(new Animation(frames, 10));
+            animations.add(new Animation(frames, ticksPerFrame));
         }
         this.animations = animations;
     }

@@ -1,8 +1,6 @@
 package game.pokemon;
 
-import java.awt.*;
-
-public class Pokemon {
+public class CombatPokemon {
     PokemonID ID;
     final int baseHP;
     final int baseAttack;
@@ -13,7 +11,7 @@ public class Pokemon {
     final PokemonType type;
     PokemonID evolvesTo;
 
-    public Pokemon(PokemonID ID, int baseHP, int baseAttack, int baseDefence, int baseSpAtk, int baseSpDef, int baseSpeed, PokemonType type) {
+    public CombatPokemon(PokemonID ID, int baseHP, int baseAttack, int baseDefence, int baseSpAtk, int baseSpDef, int baseSpeed, PokemonType type) {
         this.ID = ID;
         this.baseHP = baseHP;
         this.baseAttack = baseAttack;

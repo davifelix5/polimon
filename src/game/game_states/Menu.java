@@ -2,9 +2,12 @@ package game.game_states;
 
 import game.buttons.*;
 import game.buttons.Button;
+import game.entity.NPCStrategy;
 import game.handlers.MouseHandler;
+import game.map.factory.MapFactory;
 import game.state.IState;
 import game.state.IStateManager;
+import game.pokemon.MapPokemonStrategy;
 
 import javax.imageio.ImageIO;
 import java.awt.*;
@@ -14,7 +17,7 @@ import java.io.IOException;
 
 public class Menu implements IState {
 
-	Button play, options, credits, exit;
+	Button playClassic, playVintage, exit, moveNpcs, walkNpcs;
 	MouseHandler mouse;
 	IStateManager stateManager;
 	BufferedImage backgroundImage;
@@ -32,10 +35,11 @@ public class Menu implements IState {
 	public void render(Graphics g) {
 
 		g.drawImage(backgroundImage, 0, 0, null);
-		play = new Button("Play",35 ,180, 150, 600, 80, mouse, new PlayButtonStrategy());
-		options = new Button("Combat ",35 ,180, 250, 600, 80, mouse, new OptionsButtonStrategy());
-		credits = new Button("Credits", 35,180, 350, 600, 80, mouse, new CreditsButtonStrategy());
-		exit = new Button("Exit",35 ,180, 450, 600, 80, mouse, new ExitButtonStrategy());
+		playVintage = new Button("Play Vintage Mode",35 ,180, 150, 600, 60, mouse, new PlayButtonVintageStrategy());
+		playClassic = new Button("Play Classic Mode",35 ,180, 250, 600, 60, mouse, new PlayButtonClassicStrategy());
+		exit = new Button("Exit",35 ,180, 350, 600, 60, mouse, new ExitButtonStrategy());
+		moveNpcs = new Button("NPCs & Pokemons andando",35 ,180, 450, 600, 80, mouse, new WalkNPCPokemonButtonStrategy());
+		walkNpcs = new Button("NPCs & Pokemons parados",35 ,180, 550, 600, 80, mouse, new FixedNPCPokemonButtonStrategy());
 
 		Font h1 = new Font("arial", Font.BOLD, 48);
 
@@ -43,10 +47,11 @@ public class Menu implements IState {
 		g.setColor(Color.white);
 		g.drawString("Main Menu", (960 - (9 * h1.getSize() / 2)) / 2, 100);
 
-		play.render(g);
-		options.render(g);
-		credits.render(g);
+		playVintage.render(g);
+		playClassic.render(g);
 		exit.render(g);
+		moveNpcs.render(g);
+		walkNpcs.render(g);
 	}
 
 	@Override
@@ -59,6 +64,16 @@ public class Menu implements IState {
 
 	}
 
+	@Override
+	public void setNPCStrategy(NPCStrategy strategy) {
+
+	}
+
+	@Override
+    public void setMapPokemonStrategy(MapPokemonStrategy strategy) {
+
+    }
+
 	public void loadImages() {
 		try {
 			this.backgroundImage = ImageIO.read(new FileInputStream("src/game/res/fotos/imeBlurred.jpg"));
@@ -70,5 +85,10 @@ public class Menu implements IState {
 	@Override
 	public IStateManager getStateManager() {
 		return stateManager;
+	}
+
+	@Override
+	public void setFactory(MapFactory factory) {
+
 	}
 }

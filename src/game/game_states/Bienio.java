@@ -1,30 +1,31 @@
 package game.game_states;
 
-import game.Game;
 import game.animation.SpriteSheet;
+import game.entity.NPCStrategy;
 import game.entity.Player;
 import game.map.MapLayer;
 import game.map.PlayerInteractableLayer;
 import game.map.TileManager;
+import game.map.factory.MapFactory;
 import game.map.interactions.BienioExitStrategy;
 import game.state.IState;
 import game.state.IStateManager;
+import game.pokemon.MapPokemonStrategy;
 
-import javax.imageio.ImageIO;
 import java.awt.*;
 import java.awt.image.BufferedImage;
-import java.io.*;
 
 public class Bienio implements IState {
-    Player player;
-    GameStateManager gameStateManager;
+    private MapFactory factory;
+    private final Player player;
+    private final GameStateManager gameStateManager;
     private final TileManager tm = new TileManager(20, 30);
     private BufferedImage background;
+
 
     public Bienio(GameStateManager stateManager, Player player) {
         this.gameStateManager = stateManager;
         this.player = player;
-        loadMapLayers();
     }
 
     public void tick() {
@@ -48,30 +49,43 @@ public class Bienio implements IState {
     @Override
     public void start() {
         this.player.setTileManager(tm);
+        this.player.loadAnimations();
+        loadMapLayers();
+    }
+
+    @Override
+    public void setNPCStrategy(NPCStrategy strategy) {
+
+    }
+
+    @Override
+    public void setMapPokemonStrategy(MapPokemonStrategy strategy) {
+
     }
 
     private void loadMapLayers() {
-        try {
-            // Sprites
-            SpriteSheet mapSprites = new SpriteSheet("src/game/res/sprites/tileset_mapa.png", Game.tileSize, Game.tileSize);
+        // Sprites
+        SpriteSheet mapSprites = factory.getMapTileSet();
 
-            // Chao
-            this.background = ImageIO.read(new FileInputStream("src/game/res/mapas/bienio1-chao.png"));
+        // Chao
+        this.background = factory.getBienioBackground();
 
-            // Layers
-            this.tm.addLayer(new MapLayer("src/game/res/mapas/bienio_solidos.csv", mapSprites, true));
-            this.tm.addLayer(new PlayerInteractableLayer("src/game/res/mapas/bienio_tapete.csv", mapSprites, new BienioExitStrategy(gameStateManager), player));
-            this.tm.addLayer(new MapLayer("src/game/res/mapas/bienio_nao_solido_antes.csv", mapSprites, false));
-            this.tm.addLayer(new MapLayer("src/game/res/mapas/bienio_nao_solido.csv", mapSprites, false));
+        // Layers
+        this.tm.addLayer(new MapLayer("src/game/res/mapas/bienio_solidos.csv", mapSprites, true));
+        this.tm.addLayer(new PlayerInteractableLayer("src/game/res/mapas/bienio_tapete.csv", mapSprites, new BienioExitStrategy(gameStateManager), player));
+        this.tm.addLayer(new MapLayer("src/game/res/mapas/bienio_nao_solido_antes.csv", mapSprites, false));
+        this.tm.addLayer(new MapLayer("src/game/res/mapas/bienio_nao_solido.csv", mapSprites, false));
 
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
     }
 
 
     @Override
     public IStateManager getStateManager() {
         return gameStateManager;
+    }
+
+    @Override
+    public void setFactory(MapFactory factory) {
+        this.factory = factory;
     }
 }

@@ -1,9 +1,12 @@
 package game.game_states;
 
+import game.entity.NPCStrategy;
+import game.map.factory.MapFactory;
 import game.state.IState;
 import game.state.IStateManager;
 import game.utilities.Fontes;
 import game.handlers.KeyHandler;
+import game.pokemon.MapPokemonStrategy;
 
 import javax.imageio.ImageIO;
 import java.awt.Color;
@@ -34,8 +37,8 @@ public class RestScreen implements IState {
 
 		g.drawImage(backgroundImage, 0, 0, null);
 
-		Font t1 = Fontes.getPokemonSolid();
-		Font t2 = Fontes.getPokemonHollow();
+		Font t1 = Fontes.getPokemonSolid(90f);
+		Font t2 = Fontes.getPokemonHollow(90f);
 		Font subTitle = new Font("arial", Font.BOLD, 32);
 
 		g.setColor(Color.YELLOW);
@@ -59,6 +62,16 @@ public class RestScreen implements IState {
 
 	}
 
+	@Override
+	public void setNPCStrategy(NPCStrategy strategy) {
+
+	}
+
+	@Override
+    public void setMapPokemonStrategy(MapPokemonStrategy strategy) {
+
+    }
+
 	public void loadImages() {
 		try {
 			this.backgroundImage = ImageIO.read(new FileInputStream("src/game/res/fotos/bienioBlurred.jpg"));
@@ -70,6 +83,11 @@ public class RestScreen implements IState {
 	@Override
 	public IStateManager getStateManager() {
 		return stateManager;
+	}
+
+	@Override
+	public void setFactory(MapFactory factory) {
+
 	}
 }
 

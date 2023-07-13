@@ -17,6 +17,8 @@ public class TileManager {
     private final int maxWidth, maxHeight; // Largura e altura do mapa
     private int referenceX, referenceY; // Posição de referência
 
+
+
     public TileManager(int mapRows, int mapCols) {
         this.mapRows = mapRows;
         this.mapCols = mapCols;
@@ -29,6 +31,10 @@ public class TileManager {
         layer.setCols(mapCols);
         layer.parseTileMap();
         this.layers.add(layer);
+    }
+
+    public ArrayList<MapLayer> getLayers() {
+        return this.layers;
     }
 
     /**
@@ -133,6 +139,10 @@ public class TileManager {
         for (int i = layerStartIndex; i < layers.size(); i ++) {
             renderLayer(i, g);
         }
+    }
+
+    public void clearLayers() {
+        layers.clear();
     }
 
 
