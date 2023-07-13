@@ -33,6 +33,10 @@ public class TileManager {
         this.layers.add(layer);
     }
 
+    public ArrayList<MapLayer> getLayers() {
+        return this.layers;
+    }
+
     /**
      * Verifica se a entidade passada está colidindo com algum tile sólido da camada passada
      * @param entity entidade passada

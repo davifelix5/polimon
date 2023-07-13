@@ -6,18 +6,24 @@ import game.entity.Player;
 import game.handlers.KeyHandler;
 import game.map.MapLayer;
 import game.map.PlayerInteractableLayer;
+import game.map.PokemonLayer;
 import game.map.TileManager;
 import game.map.factory.MapFactory;
 import game.map.interactions.BienioEnterStrategy;
 import game.map.interactions.SwimStrategy;
 import game.npc.Dialogue;
 import game.npc.Npc;
+import game.pokemon.PokemonType;
 import game.state.IState;
 import game.state.IStateManager;
+import game.pokemon.MapPokemon;
+import game.pokemon.PokemonGenerator;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
+
+import java.time.*;
 
 
 public class Outside implements IState {
@@ -34,6 +40,10 @@ public class Outside implements IState {
     private final ArrayList<Npc> npcs = new ArrayList<>();
     private MapFactory factory;
 
+    private ArrayList<MapPokemon> pokemons = new ArrayList<>();
+    private MapPokemon foundPokemon;
+    private Instant oldTime, newTime;
+
     public Outside(GameStateManager gameStateManager, Player player, KeyHandler keyHandler) {
         this.gameStateManager = gameStateManager;
         this.player = player;
@@ -49,8 +59,25 @@ public class Outside implements IState {
     public void tick() {
         if (!loaded)
             return;
-
+            
+        this.newTime = Instant.now();
+        if (this.oldTime == null) this.oldTime = this.newTime;
+        long elapsedTime = Duration.between(oldTime, newTime).toMillis();
+        if (elapsedTime >= 30000) {
+            this.clearPokemons();
+            this.generatePokemons();
+            this.oldTime = this.newTime;
+        }
+            
         player.tick();
+        for (MapPokemon pokemon : this.pokemons) {
+            pokemon.tick();
+        }
+
+        foundPokemon = this.findPokemonWithinPlayer();
+        if (foundPokemon != null) {
+            System.out.println("O player achou um " + foundPokemon.getName() + "!");
+        }
 
         boolean hasDialogue = false;
         for (Npc npc: npcs) {
@@ -95,10 +122,16 @@ public class Outside implements IState {
     public void start() {
         this.loaded = true;
         this.clearNpcs();
+        this.clearPokemons();
         this.tm.clearLayers();
         this.player.setTileManager(tm);
         this.player.loadAnimations();
         this.loadAnimations();
+
+        this.oldTime = Instant.now();
+
+        this.generatePokemons();
+
 
         Font dialogueFont = new Font("arial", Font.PLAIN, 20);
 
@@ -155,6 +188,35 @@ public class Outside implements IState {
         }
     }
 
+    public void addPokemon(MapPokemon pokemon) {
+        this.pokemons.add(pokemon);
+    }
+
+    public void clearPokemons() {
+        this.pokemons.clear();
+    }
+
+    public void generatePokemons() {
+        for (MapLayer layer : this.tm.getLayers()) {
+            if (layer.isPokemonLayer()) {
+                PokemonGenerator generator = PokemonGenerator.getInstance();
+                MapPokemon newPokemon = generator.generatePokemon(layer.getPokemonType());
+                if (newPokemon != null) {
+                    this.addPokemon(newPokemon);
+                }
+            }
+        }
+    }
+
+    public MapPokemon findPokemonWithinPlayer() {
+        for (MapPokemon pokemon : pokemons) {
+            if (player.getWorldRow() == pokemon.getWorldRow() && player.getWorldCol() == pokemon.getWorldCol()) {
+                return pokemon;
+            }
+        }
+        return null;
+    }
+
     private void loadAnimations() {
         // Background
         this.backgroundImage = factory.getBackgroundImage();
@@ -164,6 +226,8 @@ public class Outside implements IState {
         this.tm.addLayer(new PlayerInteractableLayer("src/game/res/mapas/raia_portas.csv", factory.getMapTileSet(), new BienioEnterStrategy(gameStateManager), player));
         this.tm.addLayer(new MapLayer("src/game/res/mapas/raia_base_do_poste.csv", factory.getMapTileSet(),true));
         this.tm.addLayer(new MapLayer("src/game/res/mapas/raia_nao_solido.csv", factory.getMapTileSet(), false));
+        this.tm.addLayer(new PokemonLayer("src/game/res/mapas/raia_pokemon_normal.csv", factory.getMapTileSet(), PokemonType.Normal));
+
     }
 
     @Override
