@@ -6,9 +6,9 @@ import java.util.Arrays;
 import game.Game;
 
 public enum PokemonType {
-    Normal(1, new ArrayList<PokemonID>(Arrays.asList(PokemonID.Abra)), 35, 41, 28, 30),
+    Normal(1, new ArrayList<PokemonID>(Arrays.asList(PokemonID.Abra, PokemonID.Cascoon)), 35, 41, 28, 30),
     Fire(1, new ArrayList<PokemonID>(), 35, 41, 28, 30),
-    Water(1, new ArrayList<PokemonID>(), 35, 41, 28, 30),
+    Water(1, new ArrayList<PokemonID>(Arrays.asList(PokemonID.Grovyle)), 21, 27, 4, 6),
     Electric(1, new ArrayList<PokemonID>(), 35, 41, 28, 30),
     Grass(1, new ArrayList<PokemonID>(), 35, 41, 28, 30),
     Ice(1, new ArrayList<PokemonID>(), 35, 41, 28, 30),
@@ -22,7 +22,7 @@ public enum PokemonType {
     Ghost(1, new ArrayList<PokemonID>(), 35, 41, 28, 30),
     Dragon(1, new ArrayList<PokemonID>(), 35, 41, 28, 30),
     Dark(1, new ArrayList<PokemonID>(), 35, 41, 28, 30),
-    Steel(1, new ArrayList<PokemonID>(), 35, 41, 28, 30);
+    Steel(0.6, new ArrayList<PokemonID>(Arrays.asList(PokemonID.Silcoon)), 5, 9, 44, 46);
 
     private final double genProbability;
     private final ArrayList<PokemonID> pokemonsList;

@@ -241,6 +241,8 @@ public class Outside implements IState {
         this.tm.addLayer(new MapLayer("src/game/res/mapas/raia_base_do_poste.csv", factory.getMapTileSet(),true));
         this.tm.addLayer(new MapLayer("src/game/res/mapas/raia_nao_solido.csv", factory.getMapTileSet(), false));
         this.tm.addLayer(new PokemonLayer("src/game/res/mapas/raia_pokemon_normal.csv", factory.getMapTileSet(), PokemonType.Normal));
+        this.tm.addLayer(new PokemonLayer("src/game/res/mapas/raia_pokemon_agua.csv", factory.getMapTileSet(), PokemonType.Water));
+        this.tm.addLayer(new PokemonLayer("src/game/res/mapas/raia_pokemon_metal.csv", factory.getMapTileSet(), PokemonType.Steel));
 
     }
 
