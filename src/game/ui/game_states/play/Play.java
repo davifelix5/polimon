@@ -6,7 +6,6 @@ import game.entity.player.Player;
 import game.entity.pokemon.MapPokemon;
 import game.entity.pokemon.MapPokemonStrategy;
 import game.entity.pokemon.PokemonGenerator;
-import game.map.TileManager;
 import game.map.factory.MapFactory;
 import game.ui.game_states.GameStateManager;
 import game.ui.game_states.IState;
@@ -18,8 +17,6 @@ import java.util.ArrayList;
 
 
 public class Play implements IState, ScreenManager {
-
-    private final TileManager tm = new TileManager(60, 70);
     private final Player player;
     private final GameStateManager gameStateManager;
     private NPCStrategy npcStrategy;
@@ -32,7 +29,6 @@ public class Play implements IState, ScreenManager {
     public Play(GameStateManager gameStateManager, Player player, KeyHandler keyHandler) {
         this.gameStateManager = gameStateManager;
         this.player = player;
-        this.player.setTileManager(tm);
         this.currentScreenIndex = 0;
         screens[0] = new Outside(player, keyHandler, npcs, pokemons, this);
         screens[1] = new Bienio(player, this);
@@ -51,7 +47,8 @@ public class Play implements IState, ScreenManager {
     @Override
     public void destroy() {
         this.clearPokemons();
-        this.tm.clearLayers();
+        for (GameScreen screen: screens)
+            screen.getTileManager().clearLayers();
     }
 
     @Override
@@ -110,6 +107,7 @@ public class Play implements IState, ScreenManager {
     }
 
     public void setCurrentScreenIndex(int currentScreenIndex) {
+        screens[currentScreenIndex].getTileManager().clearLayers();
         this.currentScreenIndex = currentScreenIndex;
         this.start();
     }
