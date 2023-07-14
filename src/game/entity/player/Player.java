@@ -150,7 +150,6 @@ public class Player extends Entity {
     @Override
     public void render(Graphics g) {
         BufferedImage image = getAnimation().nextSprite();
-
         g.drawImage(image, positionX, positionY, 32, 32, null);
     }
 

@@ -1,4 +1,4 @@
-package game.state;
+package game.ui.game_states;
 
 import game.entity.npc.NPCStrategy;
 

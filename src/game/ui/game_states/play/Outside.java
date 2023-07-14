@@ -1,23 +1,19 @@
-package game.ui.game_states;
+package game.ui.game_states.play;
 
 import game.Game;
-import game.entity.npc.NPCStrategy;
 import game.entity.player.Player;
+import game.map.interactions.BienioEnterStrategy;
 import game.ui.handlers.KeyHandler;
 import game.map.MapLayer;
 import game.map.PlayerInteractableLayer;
 import game.map.PokemonLayer;
 import game.map.TileManager;
 import game.map.factory.MapFactory;
-import game.map.interactions.BienioEnterStrategy;
 import game.map.interactions.SwimStrategy;
 import game.entity.npc.Dialogue;
 import game.entity.npc.Npc;
 import game.entity.pokemon.PokemonType;
-import game.state.IState;
-import game.state.IStateManager;
 import game.entity.pokemon.MapPokemon;
-import game.entity.pokemon.MapPokemonStrategy;
 import game.entity.pokemon.PokemonGenerator;
 
 import java.awt.*;
@@ -27,29 +23,25 @@ import java.util.ArrayList;
 import java.time.*;
 
 
-public class Outside implements IState {
+public class Outside implements GameScreen {
 
     private final TileManager tm = new TileManager(60, 70);
     private final Player player;
-    private final GameStateManager gameStateManager;
     private BufferedImage backgroundImage;
     private final KeyHandler keyHandler;
-
-    private NPCStrategy npcStrategy;
-    private MapPokemonStrategy mapPokemonStrategy;
-
-    private final ArrayList<Npc> npcs = new ArrayList<>();
     private MapFactory factory;
+    private Instant oldTime;
+    private final ArrayList<Npc> npcs;
+    private final ArrayList<MapPokemon> pokemons;
+    private final ScreenManager screenManager;
 
-    private ArrayList<MapPokemon> pokemons = new ArrayList<>();
-    private MapPokemon foundPokemon;
-    private Instant oldTime, newTime;
-
-    public Outside(GameStateManager gameStateManager, Player player, KeyHandler keyHandler) {
-        this.gameStateManager = gameStateManager;
+    public Outside(Player player, KeyHandler keyHandler, ArrayList<Npc> npcs, ArrayList<MapPokemon> pokemons, ScreenManager screenManager) {
         this.player = player;
         this.player.setTileManager(tm);
         this.keyHandler = keyHandler;
+        this.pokemons = pokemons;
+        this.npcs = npcs;
+        this.screenManager = screenManager;
 
         Font dialogueFont = new Font("arial", Font.PLAIN, 20);
 
@@ -90,35 +82,27 @@ public class Outside implements IState {
 
     @Override
     public void tick() {
-        this.newTime = Instant.now();
-        if (this.oldTime == null) this.oldTime = this.newTime;
+        Instant newTime = Instant.now();
+        if (this.oldTime == null) this.oldTime = newTime;
         long elapsedTime = Duration.between(oldTime, newTime).toMillis();
         if (elapsedTime >= 20000) {
             this.clearPokemons();
             this.generatePokemons();
-            this.oldTime = this.newTime;
-        }
-            
-        player.tick();
-        for (MapPokemon pokemon : this.pokemons) {
-            pokemon.tick();
+            this.oldTime = newTime;
         }
 
-        foundPokemon = this.findPokemonWithinPlayer();
+        player.tick();
+        this.pokemons.forEach(MapPokemon::tick);
+        this.npcs.forEach(Npc::tick);
+
+        player.setColliding(this.tm.colides(player) || npcs.stream().anyMatch(Npc::isDialogueActivated));
+        this.tm.interacts();
+
+        MapPokemon foundPokemon = this.findPokemonWithinPlayer();
         if (foundPokemon != null) {
             System.out.println("Você achou um " + foundPokemon.getName() + "!");
         }
 
-        boolean hasDialogue = false;
-        for (Npc npc: npcs) {
-            if (npc.isDialogueActivated()) {
-                hasDialogue = true;
-            }
-            npc.tick();
-        }
-
-        this.player.setColliding(this.tm.colides(player) || hasDialogue);
-        this.tm.interacts();
         for (Npc npc: npcs) {
             if (player.getWorldRow() == npc.getWorldRow() && player.getWorldCol() == npc.getWorldCol()) {
                 if (keyHandler.enterPressed) {
@@ -132,6 +116,7 @@ public class Outside implements IState {
     public void render(Graphics g) {
         g.drawImage(this.backgroundImage, -tm.getReferenceX(), -tm.getReferenceY(), null);
         this.tm.renderRange(0, 3, g);
+
         player.render(g);
 
         for (Npc npc: npcs)
@@ -144,38 +129,28 @@ public class Outside implements IState {
     }
 
     @Override
-    public void destroy() {
-        this.clearPokemons();
-        this.tm.clearLayers();
+    public void loadAnimations() {
+        // Background
+        this.backgroundImage = factory.getBackgroundImage();
+        // Tilemaps e layers
+        this.tm.addLayer(new PlayerInteractableLayer("src/game/res/mapas/raia_agua.csv", factory.getMapTileSet(), new SwimStrategy(), player));
+        this.tm.addLayer(new MapLayer("src/game/res/mapas/raia_solido.csv", factory.getMapTileSet(), true));
+        this.tm.addLayer(new PlayerInteractableLayer("src/game/res/mapas/raia_portas.csv", factory.getMapTileSet(), new BienioEnterStrategy(screenManager), player));
+        this.tm.addLayer(new MapLayer("src/game/res/mapas/raia_base_do_poste.csv", factory.getMapTileSet(),true));
+        this.tm.addLayer(new MapLayer("src/game/res/mapas/raia_nao_solido.csv", factory.getMapTileSet(), false));
+        this.tm.addLayer(new PokemonLayer("src/game/res/mapas/raia_pokemon_normal.csv", factory.getMapTileSet(), PokemonType.Normal));
+        this.tm.addLayer(new PokemonLayer("src/game/res/mapas/raia_pokemon_agua.csv", factory.getMapTileSet(), PokemonType.Water));
+        this.tm.addLayer(new PokemonLayer("src/game/res/mapas/raia_pokemon_metal.csv", factory.getMapTileSet(), PokemonType.Steel));
     }
 
     @Override
-    public void start() {
-        this.player.setTileManager(tm);
-        this.player.loadAnimations();
-        this.loadAnimations();
-        this.oldTime = Instant.now();
-        this.generatePokemons();
-
-        for (Npc npc: npcs) {
-            npc.setSpritesheet(factory.getNpcSpritesheet());
-        }
-
-
-        this.updateNpcStrategy();
+    public void setMapFactory(MapFactory factory) {
+        this.factory = factory;
     }
 
     @Override
-    public void setNPCStrategy(NPCStrategy strategy) {
-        npcStrategy = strategy;
-        this.updateNpcStrategy();
-    }
-
-
-    private void updateNpcStrategy() {
-        for (Npc npc: npcs) {
-            npc.setStrategy(this.npcStrategy.copy());
-        }
+    public TileManager getTileManager() {
+        return tm;
     }
 
     public void addPokemon(MapPokemon pokemon) {
@@ -190,23 +165,11 @@ public class Outside implements IState {
         for (MapLayer layer : this.tm.getLayers()) {
             if (layer.isPokemonLayer()) {
                 PokemonGenerator generator = PokemonGenerator.getInstance();
-                MapPokemon newPokemon = generator.generatePokemon(layer.getPokemonType(), this.mapPokemonStrategy);
+                MapPokemon newPokemon = generator.generatePokemon(layer.getPokemonType());
                 if (newPokemon != null) {
                     this.addPokemon(newPokemon);
                 }
             }
-        }
-    }
-
-    @Override
-    public void setMapPokemonStrategy(MapPokemonStrategy strategy) {
-        this.mapPokemonStrategy = strategy;
-        this.updateMapPokemonStrategy();
-    }
-
-    public void updateMapPokemonStrategy() {
-        for (MapPokemon pokemon : this.pokemons) {
-            pokemon.setStrategy(this.mapPokemonStrategy);
         }
     }
 
@@ -219,23 +182,4 @@ public class Outside implements IState {
         return null;
     }
 
-    private void loadAnimations() {
-        // Background
-        this.backgroundImage = factory.getBackgroundImage();
-        // Tilemaps e layers
-        this.tm.addLayer(new PlayerInteractableLayer("src/game/res/mapas/raia_agua.csv", factory.getMapTileSet(), new SwimStrategy(), player));
-        this.tm.addLayer(new MapLayer("src/game/res/mapas/raia_solido.csv", factory.getMapTileSet(), true));
-        this.tm.addLayer(new PlayerInteractableLayer("src/game/res/mapas/raia_portas.csv", factory.getMapTileSet(), new BienioEnterStrategy(gameStateManager), player));
-        this.tm.addLayer(new MapLayer("src/game/res/mapas/raia_base_do_poste.csv", factory.getMapTileSet(),true));
-        this.tm.addLayer(new MapLayer("src/game/res/mapas/raia_nao_solido.csv", factory.getMapTileSet(), false));
-        this.tm.addLayer(new PokemonLayer("src/game/res/mapas/raia_pokemon_normal.csv", factory.getMapTileSet(), PokemonType.Normal));
-        this.tm.addLayer(new PokemonLayer("src/game/res/mapas/raia_pokemon_agua.csv", factory.getMapTileSet(), PokemonType.Water));
-        this.tm.addLayer(new PokemonLayer("src/game/res/mapas/raia_pokemon_metal.csv", factory.getMapTileSet(), PokemonType.Steel));
-
-    }
-
-    @Override
-    public IStateManager getStateManager() {
-        return gameStateManager;
-    }
 }

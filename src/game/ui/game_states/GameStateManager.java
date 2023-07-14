@@ -3,8 +3,6 @@ package game.ui.game_states;
 import game.entity.npc.NPCStrategy;
 import game.map.factory.MapFactory;
 import game.entity.pokemon.MapPokemonStrategy;
-import game.state.IState;
-import game.state.IStateManager;
 
 public class GameStateManager implements IStateManager {
     private final IState[] states = new IState[GameState.values().length];

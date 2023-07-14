@@ -5,8 +5,6 @@ import game.ui.buttons.Button;
 import game.entity.npc.NPCStrategy;
 import game.ui.handlers.MouseHandler;
 import game.map.factory.MapFactory;
-import game.state.IState;
-import game.state.IStateManager;
 import game.entity.pokemon.MapPokemonStrategy;
 
 import javax.imageio.ImageIO;

@@ -16,7 +16,6 @@ public class Npc extends Entity {
     private final int movingRate;
     private final Rectangle moveArea;
     private final Dialogue dialogue;
-
     private NPCStrategy strategy;
 
     public Npc(int x, int y, TileManager tm, int movingRate, Rectangle moveArea, Dialogue dialogue) {
@@ -46,7 +45,6 @@ public class Npc extends Entity {
         int posX = getWorldX() - tileManager.getReferenceX(), posY = getWorldY() - tileManager.getReferenceY();
         g.drawImage(image, posX, posY, getWidth(), getHeight(), null);
     }
-
 
     @Override
     public void tick() {

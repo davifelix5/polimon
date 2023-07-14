@@ -4,13 +4,15 @@ import game.entity.player.Player;
 import game.entity.npc.WalkNPCStrategy;
 import game.ui.game_states.*;
 import game.ui.game_states.Menu;
+import game.ui.game_states.play.Bienio;
+import game.ui.game_states.play.CombatScreen;
+import game.ui.game_states.play.Play;
 import game.ui.handlers.KeyHandler;
 import game.ui.handlers.MouseHandler;
 import game.map.factory.ClassicMap;
 import game.map.factory.MapFactory;
 import game.map.factory.VintageMap;
 import game.entity.pokemon.WalkPokemonStrategy;
-import game.state.*;
 
 import javax.swing.*;
 import java.awt.*;
@@ -43,8 +45,7 @@ public class Game extends JPanel implements Runnable {
         this.player = new Player(30*Game.tileSize ,55*Game.tileSize, keyHandler);
         this.gameStateManager.addState(GameState.RestScreen, new RestScreen(keyHandler, gameStateManager));
         this.gameStateManager.addState(GameState.Menu, new Menu(mouseHandler, gameStateManager));
-        this.gameStateManager.addState(GameState.Bienio, new Bienio(gameStateManager, player));
-        this.gameStateManager.addState(GameState.Outside, new Outside(gameStateManager, player, keyHandler));
+        this.gameStateManager.addState(GameState.Outside, new Play(gameStateManager, player, keyHandler));
         this.gameStateManager.addState(GameState.Combate, new CombatScreen(mouseHandler,gameStateManager));
         this.gameStateManager.setState(GameState.RestScreen);
         this.gameStateManager.setNPCStrategy(new WalkNPCStrategy());

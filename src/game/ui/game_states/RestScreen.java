@@ -2,8 +2,6 @@ package game.ui.game_states;
 
 import game.entity.npc.NPCStrategy;
 import game.map.factory.MapFactory;
-import game.state.IState;
-import game.state.IStateManager;
 import game.utilities.Fontes;
 import game.ui.handlers.KeyHandler;
 import game.entity.pokemon.MapPokemonStrategy;

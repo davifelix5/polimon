@@ -1,4 +1,4 @@
-package game.ui.game_states;
+package game.ui.game_states.play;
 
 import game.ui.buttons.ExitButtonStrategy;
 import game.entity.npc.NPCStrategy;
@@ -12,8 +12,8 @@ import java.io.IOException;
 import game.combate.StatBar;
 import game.map.factory.MapFactory;
 import game.entity.pokemon.MapPokemonStrategy;
-import game.state.IState;
-import game.state.IStateManager;
+import game.ui.game_states.IState;
+import game.ui.game_states.IStateManager;
 
 public class CombatScreen implements IState {
     IStateManager stateManager;

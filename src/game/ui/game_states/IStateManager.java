@@ -1,7 +1,6 @@
-package game.state;
+package game.ui.game_states;
 
 import game.entity.npc.NPCStrategy;
-import game.ui.game_states.GameState;
 import game.map.factory.MapFactory;
 import game.entity.pokemon.MapPokemonStrategy;
 
