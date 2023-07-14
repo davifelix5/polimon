@@ -1,7 +1,7 @@
 package game.map;
 
-import game.animation.SpriteSheet;
-import game.pokemon.PokemonType;
+import game.entity.animation.SpriteSheet;
+import game.entity.pokemon.PokemonType;
 
 public class PokemonLayer extends MapLayer {
     public PokemonLayer(String tilemapPath, SpriteSheet spriteSheet, PokemonType pokemonType) {

@@ -1,7 +1,7 @@
 package game.map.factory;
 
-import game.animation.SpriteSheet;
-import game.entity.PlayerAnimations;
+import game.entity.animation.SpriteSheet;
+import game.entity.player.PlayerAnimations;
 
 import java.awt.image.BufferedImage;
 

@@ -1,9 +1,9 @@
 package game.state;
 
-import game.entity.NPCStrategy;
-import game.game_states.GameState;
+import game.entity.npc.NPCStrategy;
+import game.ui.game_states.GameState;
 import game.map.factory.MapFactory;
-import game.pokemon.MapPokemonStrategy;
+import game.entity.pokemon.MapPokemonStrategy;
 
 
 public interface IStateManager {

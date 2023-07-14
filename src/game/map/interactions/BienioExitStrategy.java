@@ -1,8 +1,8 @@
 package game.map.interactions;
 
-import game.entity.Player;
-import game.game_states.GameState;
-import game.game_states.GameStateManager;
+import game.entity.player.Player;
+import game.ui.game_states.GameState;
+import game.ui.game_states.GameStateManager;
 
 public class BienioExitStrategy implements LayerInteractionStrategy<Player>{
     GameStateManager gameStateManager;

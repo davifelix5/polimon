@@ -1,15 +1,15 @@
 package game;
 
-import game.entity.Player;
-import game.entity.WalkNPCStrategy;
-import game.game_states.*;
-import game.game_states.Menu;
-import game.handlers.KeyHandler;
-import game.handlers.MouseHandler;
+import game.entity.player.Player;
+import game.entity.npc.WalkNPCStrategy;
+import game.ui.game_states.*;
+import game.ui.game_states.Menu;
+import game.ui.handlers.KeyHandler;
+import game.ui.handlers.MouseHandler;
 import game.map.factory.ClassicMap;
 import game.map.factory.MapFactory;
 import game.map.factory.VintageMap;
-import game.pokemon.WalkPokemonStrategy;
+import game.entity.pokemon.WalkPokemonStrategy;
 import game.state.*;
 
 import javax.swing.*;

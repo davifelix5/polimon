@@ -1,8 +1,8 @@
 package game.map;
 
 import game.Game;
-import game.animation.SpriteSheet;
-import game.pokemon.PokemonType;
+import game.entity.animation.SpriteSheet;
+import game.entity.pokemon.PokemonType;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;

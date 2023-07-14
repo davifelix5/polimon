@@ -1,9 +1,9 @@
 package game.state;
 
-import game.entity.NPCStrategy;
+import game.entity.npc.NPCStrategy;
 
 import game.map.factory.MapFactory;
-import game.pokemon.MapPokemonStrategy;
+import game.entity.pokemon.MapPokemonStrategy;
 
 import java.awt.*;
 
