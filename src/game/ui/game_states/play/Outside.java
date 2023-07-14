@@ -86,7 +86,6 @@ public class Outside implements GameScreen {
         if (this.oldTime == null) this.oldTime = newTime;
         long elapsedTime = Duration.between(oldTime, newTime).toMillis();
         if (elapsedTime >= 20000) {
-            this.clearPokemons();
             this.generatePokemons();
             this.oldTime = newTime;
         }
@@ -122,10 +121,15 @@ public class Outside implements GameScreen {
         for (Npc npc: npcs)
             npc.render(g);
 
+        for (MapPokemon poke: pokemons) {
+            poke.render(g);
+        }
+
         this.tm.renderRange(4, g);
 
         for (Npc npc: npcs)
             npc.renderDialogue(g);
+
     }
 
     @Override
@@ -165,7 +169,7 @@ public class Outside implements GameScreen {
         for (MapLayer layer : this.tm.getLayers()) {
             if (layer.isPokemonLayer()) {
                 PokemonGenerator generator = PokemonGenerator.getInstance();
-                MapPokemon newPokemon = generator.generatePokemon(layer.getPokemonType());
+                MapPokemon newPokemon = generator.generatePokemon(layer.getPokemonType(), tm);
                 if (newPokemon != null) {
                     this.addPokemon(newPokemon);
                 }

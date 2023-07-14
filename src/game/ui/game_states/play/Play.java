@@ -46,7 +46,6 @@ public class Play implements IState, ScreenManager {
 
     @Override
     public void destroy() {
-        this.clearPokemons();
         for (GameScreen screen: screens)
             screen.getTileManager().clearLayers();
     }
