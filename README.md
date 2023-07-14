@@ -51,9 +51,11 @@ OBS: não foi possível encontrar os mesmos _sprites_ para o _player_ nadando, a
 - O jogo foi divido em estados (_Padrão State_), sendo possível transitar entre 4 destes estados na presente implementação
   - `RestScreen`: quando o usuário acabou de entrar no jogo.
   - `Menu`: para acessá-lo novamente basta pressionar **ESC**; no menu é possível escolher a fábrica e a estratégia de NPC e Pokémon desejada
-  - `Outside`: estado em que o jogador vai começar o jogo, no mapa da USP.
-  - `Biênio`: este é um estado interior; para acessá-lo, basta entrar no prédio redondo com teto rosado (como mostra a imagem abaixo)
-    - ![Imagem do biênio](assets/img.png)
+  - `Play`: estado em que o jogador vai entrar efetivamente no mapa, podendo explorá-lo e interagir com os elementos dentro dele. Esse estado é subdivido
+em mais estados internos, que indicam os ambientes ou estágios do jogo nos quais o jogador se encontra
+    - `Outside`: mapa externo da USP, com NPCs e _pokemons_
+    - `Biênio`: este é um estado interior; para acessá-lo, basta entrar no prédio redondo com teto rosado (como mostra a imagem abaixo)
+      - ![Imagem do biênio](assets/img.png)
 
 - Buscamos sempre usar a injeção de dependências para evitar acoplamento excessivo entre classes.
 

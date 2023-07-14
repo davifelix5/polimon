@@ -22,22 +22,22 @@ public class PokemonGenerator {
     }
 
     public MapPokemon generatePokemon(PokemonType type) {
-        double attempt = (double) random.nextFloat();
+        double attempt = random.nextFloat();
 
         if (attempt <= type.getGenProbability()) {
             PokemonID ID = type.getPokemons().get(random.nextInt(type.getPokemons().size()));
             MapPokemon pokemon;
 
             switch (type) {
-                case Normal -> {
+                case NORMAL -> {
                     pokemon = new MapPokemon(35 * Game.tileSize, 28 * Game.tileSize, ID, type);
                     pokemon.setStrategy(strategy);
                 }
-                case Water -> {
+                case WATER -> {
                     pokemon = new MapPokemon(21 * Game.tileSize, 4 * Game.tileSize, ID, type);
                     pokemon.setStrategy(strategy);
                 }
-                case Steel -> {
+                case STEEL -> {
                     pokemon = new MapPokemon(5 * Game.tileSize, 44 * Game.tileSize, ID, type);
                     pokemon.setStrategy(strategy);
                 }

@@ -1,36 +1,34 @@
 package game.entity.pokemon;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-
 import game.Game;
 
+import java.util.ArrayList;
+
 public enum PokemonType {
-    Normal(1, new ArrayList<PokemonID>(Arrays.asList(PokemonID.Abra, PokemonID.Cascoon)), 35, 41, 28, 30),
-    Fire(1, new ArrayList<PokemonID>(), 35, 41, 28, 30),
-    Water(1, new ArrayList<PokemonID>(Arrays.asList(PokemonID.Grovyle)), 21, 27, 4, 6),
-    Electric(1, new ArrayList<PokemonID>(), 35, 41, 28, 30),
-    Grass(1, new ArrayList<PokemonID>(), 35, 41, 28, 30),
-    Ice(1, new ArrayList<PokemonID>(), 35, 41, 28, 30),
-    Fighting(1, new ArrayList<PokemonID>(), 35, 41, 28, 30),
-    Poison(1, new ArrayList<PokemonID>(), 35, 41, 28, 30),
-    Ground(1, new ArrayList<PokemonID>(), 35, 41, 28, 30),
-    FLying(1, new ArrayList<PokemonID>(), 35, 41, 28, 30),
-    Psychic(1, new ArrayList<PokemonID>(), 35, 41, 28, 30),
-    Bug(1, new ArrayList<PokemonID>(), 35, 41, 28, 30),
-    Rock(1, new ArrayList<PokemonID>(), 35, 41, 28, 30),
-    Ghost(1, new ArrayList<PokemonID>(), 35, 41, 28, 30),
-    Dragon(1, new ArrayList<PokemonID>(), 35, 41, 28, 30),
-    Dark(1, new ArrayList<PokemonID>(), 35, 41, 28, 30),
-    Steel(0.8, new ArrayList<PokemonID>(Arrays.asList(PokemonID.Silcoon)), 5, 9, 44, 46);
+    NORMAL(1, 35, 41, 28, 30),
+    FIRE(1, 35, 41, 28, 30),
+    WATER(1, 21, 27, 4, 6),
+    ELECTRIC(1, 35, 41, 28, 30),
+    GRASS(1, 35, 41, 28, 30),
+    ICE(1, 35, 41, 28, 30),
+    FIGHTING(1, 35, 41, 28, 30),
+    POISON(1, 35, 41, 28, 30),
+    GROUND(1, 35, 41, 28, 30),
+    FLYING(1, 35, 41, 28, 30),
+    PSYCHIC(1, 35, 41, 28, 30),
+    BUG(1, 35, 41, 28, 30),
+    ROCK(1, 35, 41, 28, 30),
+    GHOST(1, 35, 41, 28, 30),
+    DRAGON(1, 35, 41, 28, 30),
+    DARK(1, 35, 41, 28, 30),
+    STEEL(0.8, 5, 9, 44, 46),
+    FAIRY(0.8, 5, 9, 44, 46);
 
     private final double genProbability;
-    private final ArrayList<PokemonID> pokemonsList;
     private final int minX, maxX, minY, maxY;
 
-    PokemonType(double genProbability, ArrayList<PokemonID> pokemonsList, int minX, int maxX, int minY, int maxY) {
+    PokemonType(double genProbability, int minX, int maxX, int minY, int maxY) {
         this.genProbability = genProbability;
-        this.pokemonsList = pokemonsList;
         this.minX = minX * Game.tileSize;
         this.maxX = maxX * Game.tileSize;
         this.minY = minY * Game.tileSize;
@@ -39,10 +37,6 @@ public enum PokemonType {
 
     public double getGenProbability() {
         return this.genProbability;
-    }
-
-    public ArrayList<PokemonID> getPokemons() {
-        return this.pokemonsList;
     }
 
     public int getMinX() {
@@ -60,4 +54,19 @@ public enum PokemonType {
     public int getMaxY() {
         return this.maxY;
     }
+
+    public ArrayList<PokemonID> getPokemons() {
+        ArrayList<PokemonID> pokemons = new ArrayList<>();
+
+        for (PokemonID poke: PokemonID.values()) {
+            for (PokemonType type: poke.getTypes()) {
+                if (type == this)
+                    pokemons.add(poke);
+            }
+        }
+
+        return pokemons;
+    }
+
 }
+

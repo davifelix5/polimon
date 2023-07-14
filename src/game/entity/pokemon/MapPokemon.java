@@ -8,8 +8,8 @@ import java.awt.Graphics;
 
 public class MapPokemon extends Entity {
 
-    private PokemonID ID;
-    private PokemonType type;
+    private final PokemonID ID;
+    private final PokemonType type;
 
     private int movingRate = 1;
     private boolean colliding;
