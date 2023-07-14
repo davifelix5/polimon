@@ -17,10 +17,10 @@ public class GameStateManager implements IStateManager {
 
     @Override
     public void setState(GameState id) {
-        if (this.currentState != null) {
-            this.getCurrentState().destroy();
-        }
         if (currentState != id) {
+            if (this.currentState != null) {
+                this.getCurrentState().destroy();
+            }
             this.currentState = id;
             this.getCurrentState().start();
         }

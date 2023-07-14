@@ -51,6 +51,38 @@ public class Outside implements IState {
         this.player = player;
         this.player.setTileManager(tm);
         this.keyHandler = keyHandler;
+
+        Font dialogueFont = new Font("arial", Font.PLAIN, 20);
+
+        String[] dialogues1 = {
+                "Olá, Aventureiro !",
+                "Bem vindo a USP !",
+                "Serei seu guia inicial nessa nova jornada que o aguarda",
+                "Espero que aproveite seu tempo aqui, faça amigos e se divirta",
+                "Podemos começar ?"
+        };
+        String[] dialogues2 = {
+                "Olá, caro jogador!",
+                "Bem vindo à Poli !",
+                "Aqui a situação é tensa, mas no fim todos falam que vale a pena",
+                "Será?!",
+                "Fique por aqui e descubra!"
+        };
+
+        this.npcs.add(
+                new Npc(
+                        13 * Game.tileSize, 27 * Game.tileSize, tm, 2,
+                        new Rectangle(9*Game.tileSize, 4*Game.tileSize),
+                        new Dialogue(dialogues1, keyHandler, dialogueFont)
+                )
+        );
+        this.npcs.add(
+                new Npc(
+                        34 * Game.tileSize, 50 * Game.tileSize, tm, 2,
+                        new Rectangle(10*Game.tileSize, 4*Game.tileSize),
+                        new Dialogue(dialogues2, keyHandler, dialogueFont)
+                )
+        );
     }
 
     public void setFactory(MapFactory factory) {
@@ -117,59 +149,23 @@ public class Outside implements IState {
 
     @Override
     public void destroy() {
-
+        this.clearPokemons();
+        this.tm.clearLayers();
     }
 
     @Override
     public void start() {
         this.loaded = true;
-        this.clearNpcs();
-        this.clearPokemons();
-        this.tm.clearLayers();
         this.player.setTileManager(tm);
         this.player.loadAnimations();
         this.loadAnimations();
-
         this.oldTime = Instant.now();
-
         this.generatePokemons();
 
+        for (Npc npc: npcs) {
+            npc.setSpritesheet(factory.getNpcSpritesheet());
+        }
 
-        Font dialogueFont = new Font("arial", Font.PLAIN, 20);
-
-        String[] dialogues1 = {
-                "Olá, Aventureiro !",
-                "Bem vindo a USP !",
-                "Serei seu guia inicial nessa nova jornada que o aguarda",
-                "Espero que aproveite seu tempo aqui, faça amigos e se divirta",
-                "Podemos começar ?"
-        };
-
-        String[] dialogues2 = {
-                "Olá, caro jogador!",
-                "Bem vindo à Poli !",
-                "Aqui a situação é tensa, mas no fim todos falam que vale a pena",
-                "Será?!",
-                "Fique por aqui e descubra!"
-        };
-
-        this.npcs.add(
-                new Npc(
-                        13 * Game.tileSize, 27 * Game.tileSize, tm, 2,
-                        new Rectangle(9*Game.tileSize, 4*Game.tileSize),
-                        new Dialogue(dialogues1, keyHandler, dialogueFont),
-                        factory.getNpcSpritesheet()
-                )
-        );
-
-        this.npcs.add(
-                new Npc(
-                        34 * Game.tileSize, 50 * Game.tileSize, tm, 2,
-                        new Rectangle(10*Game.tileSize, 4*Game.tileSize),
-                        new Dialogue(dialogues2, keyHandler, dialogueFont),
-                        factory.getNpcSpritesheet()
-                )
-        );
 
         this.updateNpcStrategy();
     }
@@ -180,9 +176,6 @@ public class Outside implements IState {
         this.updateNpcStrategy();
     }
 
-    private void clearNpcs() {
-        npcs.clear();
-    }
 
     private void updateNpcStrategy() {
         for (Npc npc: npcs) {

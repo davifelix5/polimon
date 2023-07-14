@@ -12,7 +12,7 @@ import java.awt.*;
 import java.awt.image.BufferedImage;
 
 public class Npc extends Entity {
-    private final MoveAnimationSet animationSet;
+    private MoveAnimationSet animationSet;
     private final int initialPositionX, initialPositionY;
     private final int movingRate;
     private final Rectangle moveArea;
@@ -20,21 +20,24 @@ public class Npc extends Entity {
 
     private NPCStrategy strategy;
 
-    public Npc(int x, int y, TileManager tm, int movingRate, Rectangle moveArea, Dialogue dialogue, SpriteSheet spriteSheet) {
+    public Npc(int x, int y, TileManager tm, int movingRate, Rectangle moveArea, Dialogue dialogue) {
         super(x, y);
         this.tileManager = tm;
         this.initialPositionX = x;
         this.initialPositionY = y;
         this.moveArea = moveArea;
         this.movingRate = movingRate;
-        this.animationSet = new MoveAnimationSet(spriteSheet, 0, 20);
-        this.animationSet.setCurrentIndex(0);
-        this.animationSet.getCurrentAnimation().start();
         this.dialogue = dialogue;
     }
 
     public void renderDialogue(Graphics g) {
         dialogue.render(g);
+    }
+
+    public void setSpritesheet(SpriteSheet sprites) {
+        this.animationSet = new MoveAnimationSet(sprites, 0, 20);
+        this.animationSet.setCurrentIndex(0);
+        this.animationSet.getCurrentAnimation().start();
     }
 
     @Override
@@ -48,6 +51,9 @@ public class Npc extends Entity {
 
     @Override
     public void tick() {
+        if (animationSet == null)
+            return;
+
         int BACKWARD = 0, LEFT = 1,  RIGHT = 2, FOWARD = 3; // Indices das animações
 
         int maxPosX = initialPositionX + (int) moveArea.getWidth() - getWidth();
