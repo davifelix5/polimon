@@ -1,8 +1,8 @@
 package game.ui.game_states.play;
 
+import game.entity.pokemon.MapPokemonStrategy;
 import game.map.TileManager;
 import game.map.factory.MapFactory;
-import game.ui.game_states.IState;
 
 import java.awt.*;
 
@@ -11,5 +11,6 @@ public interface GameScreen {
     void tick();
     void loadAnimations();
     void setMapFactory(MapFactory factory);
+    void setPokemonStrategy(MapPokemonStrategy strategy);
     TileManager getTileManager();
 }

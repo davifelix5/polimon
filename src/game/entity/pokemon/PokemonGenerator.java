@@ -1,5 +1,8 @@
 package game.entity.pokemon;
 
+import java.time.Duration;
+import java.time.Instant;
+import java.util.ArrayList;
 import java.util.Random;
 
 import game.entity.animation.SpriteSheet;
@@ -8,25 +11,30 @@ import game.map.TileManager;
 
 public class PokemonGenerator {
 
-    private MapPokemonStrategy strategy;
-    private static PokemonGenerator instance = null;
+    private Instant oldTime;
+    private MapPokemonStrategy strategy = new WalkPokemonStrategy();
     private final Random random;
-
     private static SpriteSheet pokeSprites;
+    private final int delayInSeconds; // Intervalo de tempo para gerar novos pokemons
+    private final ArrayList<PokemonArea> pokemonAreas = new ArrayList<>();
+    private final ArrayList<MapPokemon> pokemons;
 
-    private PokemonGenerator() {
+    public PokemonGenerator(ArrayList<MapPokemon> pokemons, int delayInSeconds) {
+        pokeSprites = new SpriteSheet("src/game/res/sprites/pokemon/pokemon.png", 64, 64);
         random = new Random();
+        this.pokemons = pokemons;
+        this.delayInSeconds = delayInSeconds;
     }
 
-    public static PokemonGenerator getInstance() {
-        if (instance == null) {
-            pokeSprites = new SpriteSheet("src/game/res/sprites/pokemon/pokemon.png", 64, 64);
-            instance = new PokemonGenerator();
+    public void generatePokemon(TileManager tm) {
+        for (PokemonArea area: pokemonAreas) {
+            MapPokemon pokemon = generatePokemonInArea(area.getType(), tm, area);
+            if (pokemon != null)
+                this.pokemons.add(pokemon);
         }
-        return instance;
     }
 
-    public MapPokemon generatePokemon(PokemonType type, TileManager tm, PokemonArea area) {
+    public MapPokemon generatePokemonInArea(PokemonType type, TileManager tm, PokemonArea area) {
         double attempt = random.nextFloat();
 
         if (attempt <= type.getGenProbability() && area.getPokemonCount() + 1 <= area.getMaximumPokemons()) {
@@ -52,8 +60,22 @@ public class PokemonGenerator {
         return null;
     }
 
+    public void generate(TileManager tm) {
+        Instant newTime = Instant.now();
+        if (this.oldTime == null) this.oldTime = newTime;
+        long elapsedTime = Duration.between(oldTime, newTime).toMillis();
+        if (elapsedTime >= delayInSeconds * 1000L) {
+            this.generatePokemon(tm);
+            this.oldTime = newTime;
+        }
+    }
+
     public void setStrategy(MapPokemonStrategy strategy) {
         this.strategy = strategy;
+    }
+
+    public void addArea(PokemonArea area) {
+        this.pokemonAreas.add(area);
     }
 
 

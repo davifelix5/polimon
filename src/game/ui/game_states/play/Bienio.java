@@ -2,6 +2,7 @@ package game.ui.game_states.play;
 
 import game.entity.animation.SpriteSheet;
 import game.entity.player.Player;
+import game.entity.pokemon.MapPokemonStrategy;
 import game.map.MapLayer;
 import game.map.PlayerInteractableLayer;
 import game.map.TileManager;
@@ -48,6 +49,11 @@ public class Bienio implements GameScreen {
     @Override
     public void setMapFactory(MapFactory factory) {
         this.factory = factory;
+    }
+
+    @Override
+    public void setPokemonStrategy(MapPokemonStrategy strategy) {
+
     }
 
     @Override

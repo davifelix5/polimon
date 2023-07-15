@@ -5,7 +5,6 @@ import game.entity.npc.Npc;
 import game.entity.player.Player;
 import game.entity.pokemon.MapPokemon;
 import game.entity.pokemon.MapPokemonStrategy;
-import game.entity.pokemon.PokemonGenerator;
 import game.map.factory.MapFactory;
 import game.ui.game_states.GameStateManager;
 import game.ui.game_states.IState;
@@ -78,13 +77,14 @@ public class Play implements IState, ScreenManager {
 
     @Override
     public void setMapPokemonStrategy(MapPokemonStrategy strategy) {
-        PokemonGenerator.getInstance().setStrategy(strategy.copy());
         this.updateMapPokemonStrategy(strategy.copy());
+        for (GameScreen screen: screens)
+            screen.setPokemonStrategy(strategy);
     }
 
     public void updateMapPokemonStrategy(MapPokemonStrategy strategy) {
         for (MapPokemon pokemon : this.pokemons) {
-            pokemon.setStrategy(strategy);
+            pokemon.setStrategy(strategy.copy());
         }
     }
 

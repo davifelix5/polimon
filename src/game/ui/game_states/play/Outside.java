@@ -2,6 +2,7 @@ package game.ui.game_states.play;
 
 import game.Game;
 import game.entity.player.Player;
+import game.entity.pokemon.MapPokemonStrategy;
 import game.map.*;
 import game.map.interactions.BienioEnterStrategy;
 import game.ui.handlers.KeyHandler;
@@ -17,9 +18,6 @@ import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 
-import java.time.*;
-
-
 public class Outside implements GameScreen {
 
     private final TileManager tm = new TileManager(60, 70);
@@ -27,14 +25,13 @@ public class Outside implements GameScreen {
     private BufferedImage backgroundImage;
     private final KeyHandler keyHandler;
     private MapFactory factory;
-    private Instant oldTime;
     private final ArrayList<Npc> npcs;
     private final ArrayList<MapPokemon> pokemons;
     private final ScreenManager screenManager;
-
-    private final ArrayList<PokemonArea> pokemonAreas = new ArrayList<>();
+    private final PokemonGenerator pokeGenerator;
 
     public Outside(Player player, KeyHandler keyHandler, ArrayList<Npc> npcs, ArrayList<MapPokemon> pokemons, ScreenManager screenManager) {
+        this.pokeGenerator = new PokemonGenerator(pokemons, 20);
         this.player = player;
         this.player.setTileManager(tm);
         this.keyHandler = keyHandler;
@@ -74,7 +71,7 @@ public class Outside implements GameScreen {
                 )
         );
 
-        this.pokemonAreas.add(
+        this.pokeGenerator.addArea(
                 new PokemonArea(
                         PokemonType.NORMAL,
                         new Rectangle(
@@ -86,7 +83,7 @@ public class Outside implements GameScreen {
         );
 
         // Metal
-        this.pokemonAreas.add(
+        this.pokeGenerator.addArea(
                 new PokemonArea(
                         PokemonType.STEEL,
                         new Rectangle(
@@ -98,7 +95,7 @@ public class Outside implements GameScreen {
         );
 
         // Agua
-        this.pokemonAreas.add(
+        this.pokeGenerator.addArea(
                 new PokemonArea(
                         PokemonType.WATER,
                         new Rectangle(
@@ -117,26 +114,25 @@ public class Outside implements GameScreen {
 
     @Override
     public void tick() {
-        Instant newTime = Instant.now();
-        if (this.oldTime == null) this.oldTime = newTime;
-        long elapsedTime = Duration.between(oldTime, newTime).toMillis();
-        if (elapsedTime >= 20000) {
-            this.generatePokemons();
-            this.oldTime = newTime;
-        }
+        // Gerando pokemons no mapa
+        this.pokeGenerator.generate(tm);
 
+        // Ticking game objects
         player.tick();
         this.pokemons.forEach(MapPokemon::tick);
         this.npcs.forEach(Npc::tick);
 
+        // Lidando com interações e colisões nas camadas
         player.setColliding(this.tm.colides(player) || npcs.stream().anyMatch(Npc::isDialogueActivated));
         this.tm.interacts();
 
+        // Colisão com pokemon
         MapPokemon foundPokemon = this.findPokemonWithinPlayer();
         if (foundPokemon != null) {
             System.out.println("Você achou um " + foundPokemon.getName() + "!");
         }
 
+        // Colisão e diálogo com npcs
         for (Npc npc: npcs) {
             if (player.getWorldRow() == npc.getWorldRow() && player.getWorldCol() == npc.getWorldCol()) {
                 if (keyHandler.enterPressed) {
@@ -185,22 +181,13 @@ public class Outside implements GameScreen {
     }
 
     @Override
+    public void setPokemonStrategy(MapPokemonStrategy strategy) {
+        this.pokeGenerator.setStrategy(strategy);
+    }
+
+    @Override
     public TileManager getTileManager() {
         return tm;
-    }
-
-    public void addPokemon(MapPokemon pokemon) {
-        this.pokemons.add(pokemon);
-    }
-
-    public void generatePokemons() {
-        for (PokemonArea area : pokemonAreas) {
-            PokemonGenerator generator = PokemonGenerator.getInstance();
-            MapPokemon newPokemon = generator.generatePokemon(area.getType(), tm, area);
-            if (newPokemon != null) {
-                this.addPokemon(newPokemon);
-            }
-        }
     }
 
     public MapPokemon findPokemonWithinPlayer() {
