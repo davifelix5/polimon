@@ -4,7 +4,6 @@ import game.entity.player.Player;
 import game.entity.npc.WalkNPCStrategy;
 import game.ui.game_states.*;
 import game.ui.game_states.Menu;
-import game.ui.game_states.play.Bienio;
 import game.ui.game_states.play.CombatScreen;
 import game.ui.game_states.play.Play;
 import game.ui.handlers.KeyHandler;
@@ -13,6 +12,7 @@ import game.map.factory.ClassicMap;
 import game.map.factory.MapFactory;
 import game.map.factory.VintageMap;
 import game.entity.pokemon.WalkPokemonStrategy;
+import game.ui.sounds.SoundClass;
 
 import javax.swing.*;
 import java.awt.*;
@@ -36,7 +36,10 @@ public class Game extends JPanel implements Runnable {
     Player player;
 
     public MapFactory mapFactory;
+
     private final Map<String, MapFactory> factoryMap = new HashMap<>();
+
+    SoundClass mainMenuMusic;
 
     public Game() {
         this.addKeyListener(keyHandler);
@@ -51,6 +54,8 @@ public class Game extends JPanel implements Runnable {
         this.gameStateManager.setNPCStrategy(new WalkNPCStrategy());
         this.gameStateManager.setMapPokemonStrategy(new WalkPokemonStrategy());
 
+        this.mainMenuMusic = new SoundClass();
+
         factoryMap.put("Vintage", new VintageMap());
         factoryMap.put("Classic", new ClassicMap());
 
@@ -63,6 +68,7 @@ public class Game extends JPanel implements Runnable {
     public void start() {
         thread = new Thread(this);
         thread.start();
+        playMainMenuMusic("src/game/ui/sounds/soundFiles/MainMenuMusic2.wav");
     }
 
     @Override
@@ -138,4 +144,14 @@ public class Game extends JPanel implements Runnable {
         this.player.setFactory(factoryMap.get(factoryName).copy());
         gameStateManager.setFactory(factoryMap.get(factoryName).copy());
     }
+
+    public void stopMainMenuMusic(){
+        mainMenuMusic.stopAudio();
+    }
+    public void playMainMenuMusic(String pathName){
+        mainMenuMusic.setAudio(pathName);
+        mainMenuMusic.playAudio();
+        mainMenuMusic.loop();
+    }
+
 }

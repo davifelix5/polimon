@@ -10,6 +10,6 @@ public class PlayButtonClassicStrategy implements MouseInteractionStrategy {
     public void onPress(Game game) {
         game.setMapFactory("Classic");
         game.getStateManager().setState(GameState.Outside);
-
+        game.stopMainMenuMusic();
     }
 }
