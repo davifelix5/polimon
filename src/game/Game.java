@@ -27,14 +27,12 @@ public class Game extends JPanel implements Runnable {
     Thread thread;
 
     private final GameStateManager gameStateManager = new GameStateManager();
-
     KeyHandler keyHandler = new KeyHandler();
     MouseHandler mouseHandler = new MouseHandler(this);
-
     Player player;
 
     public MapFactory mapFactory;
-    private final Map<String, MapFactory> factoryMap = new HashMap<>();
+    public final Map<String, MapFactory> factoryMap = new HashMap<>();
 
     public Game() {
         this.addKeyListener(keyHandler);
@@ -42,7 +40,7 @@ public class Game extends JPanel implements Runnable {
         this.setDoubleBuffered(true);
         this.player = new Player(30*Game.tileSize ,55*Game.tileSize, keyHandler);
         this.gameStateManager.addState(GameState.RestScreen, new RestScreen(keyHandler, gameStateManager));
-        this.gameStateManager.addState(GameState.Menu, new Menu(mouseHandler, gameStateManager));
+        this.gameStateManager.addState(GameState.Menu, new Menu(mouseHandler, gameStateManager, this));
         this.gameStateManager.addState(GameState.Outside, new Play(gameStateManager, player, keyHandler, mouseHandler));
         this.gameStateManager.setState(GameState.RestScreen);
         this.gameStateManager.setNPCStrategy(new WalkNPCStrategy());
@@ -116,10 +114,6 @@ public class Game extends JPanel implements Runnable {
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
         gameStateManager.getCurrentState().render(g);
-    }
-
-    public IStateManager getStateManager() {
-        return this.gameStateManager;
     }
 
     public static int clamp(int value, int min, int max) {

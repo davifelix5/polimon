@@ -1,6 +1,10 @@
 package game.ui.game_states;
 
-import game.ui.buttons.*;
+import game.Game;
+import game.entity.npc.FixedNPCStrategy;
+import game.entity.npc.WalkNPCStrategy;
+import game.entity.pokemon.FixedPokemonStrategy;
+import game.entity.pokemon.WalkPokemonStrategy;
 import game.ui.buttons.Button;
 import game.entity.npc.NPCStrategy;
 import game.ui.handlers.MouseHandler;
@@ -15,14 +19,15 @@ import java.io.IOException;
 
 public class Menu implements IState {
 
-	Button playClassic, playVintage, exit, moveNpcs, walkNpcs;
-	MouseHandler mouse;
-	IStateManager stateManager;
-	BufferedImage backgroundImage;
+	private final MouseHandler mouse;
+	private final IStateManager stateManager;
+	private BufferedImage backgroundImage;
+	private final Game game;
 
-	public Menu(MouseHandler mouse, IStateManager stateManager) {
+	public Menu(MouseHandler mouse, IStateManager stateManager, Game game) {
 		this.mouse = mouse;
 		this.stateManager = stateManager;
+		this.game = game;
 		loadImages();
 	}
 
@@ -33,11 +38,23 @@ public class Menu implements IState {
 	public void render(Graphics g) {
 
 		g.drawImage(backgroundImage, 0, 0, null);
-		playVintage = new Button("Play Vintage Mode",35 ,180, 150, 600, 60, mouse, new PlayButtonVintageStrategy());
-		playClassic = new Button("Play Classic Mode",35 ,180, 250, 600, 60, mouse, new PlayButtonClassicStrategy());
-		exit = new Button("Exit",35 ,180, 350, 600, 60, mouse, new ExitButtonStrategy());
-		moveNpcs = new Button("NPCs & Pokemons andando",35 ,180, 450, 600, 80, mouse, new WalkNPCPokemonButtonStrategy());
-		walkNpcs = new Button("NPCs & Pokemons parados",35 ,180, 550, 600, 80, mouse, new FixedNPCPokemonButtonStrategy());
+		Button playVintage = new Button("Play Vintage Mode",35 ,180, 150, 600, 60, mouse, () -> {
+			game.setMapFactory("Vintage");
+			stateManager.setState(GameState.Outside);
+		});
+		Button playClassic = new Button("Play Classic Mode",35 ,180, 250, 600, 60, mouse, () -> {
+			game.setMapFactory("Classic");
+			stateManager.setState(GameState.Outside);
+		});
+		Button exit = new Button("Exit",35 ,180, 350, 600, 60, mouse, () -> System.exit(0));
+		Button moveNpcs = new Button("NPCs & Pokemons andando",35 ,180, 450, 600, 80, mouse, () -> {
+			stateManager.setNPCStrategy(new WalkNPCStrategy());
+			stateManager.setMapPokemonStrategy(new WalkPokemonStrategy());
+		});
+		Button walkNpcs = new Button("NPCs & Pokemons parados",35 ,180, 550, 600, 80, mouse, () -> {
+			stateManager.setNPCStrategy(new FixedNPCStrategy());
+			stateManager.setMapPokemonStrategy(new FixedPokemonStrategy());
+		});
 
 		Font h1 = new Font("arial", Font.BOLD, 48);
 

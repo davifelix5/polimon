@@ -28,7 +28,7 @@ public class MouseHandler extends MouseAdapter {
 
         for (MouseInteraction el: mouseElements) {
             if (isMouseOverOnPress(el.getPosX(), el.getPosY(),  el.getWidth(), el.getHeight())) {
-                el.getInteractionStrategy().onPress(game);
+                el.getInteractionStrategy().onPress();
             }
         }
     }

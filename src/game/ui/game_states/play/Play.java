@@ -38,6 +38,7 @@ public class Play implements IState, ScreenManager {
 
     @Override
     public void tick() {
+        this.player.setTileManager(screens[currentScreenIndex].getTileManager());
         screens[currentScreenIndex].tick();
     }
 
@@ -57,9 +58,9 @@ public class Play implements IState, ScreenManager {
 
     @Override
     public void start() {
+        System.out.println("START");
         this.player.loadAnimations();
         screens[currentScreenIndex].loadAnimations();
-        this.player.setTileManager(screens[currentScreenIndex].getTileManager());
 
         for (Npc npc: npcs) {
             npc.setSpritesheet(factory.getNpcSpritesheet());
@@ -107,11 +108,14 @@ public class Play implements IState, ScreenManager {
     }
 
     public void setCurrentScreenIndex(int currentScreenIndex) {
-        TileManager tm = screens[currentScreenIndex].getTileManager();
-        if (tm != null)
-            tm.clearLayers();
-        this.currentScreenIndex = currentScreenIndex;
-        this.start();
+        if (currentScreenIndex != this.currentScreenIndex) {
+            TileManager tm = screens[currentScreenIndex].getTileManager();
+            if (tm != null)
+                tm.clearLayers();
+            this.currentScreenIndex = currentScreenIndex;
+            this.start();
+        }
+
     }
 
     @Override

@@ -3,7 +3,6 @@ package game.ui.game_states.play;
 import game.entity.player.PlayerAnimations;
 import game.entity.pokemon.MapPokemon;
 import game.map.TileManager;
-import game.ui.buttons.ExitButtonStrategy;
 import game.ui.handlers.MouseHandler;
 import game.ui.buttons.Button;
 import javax.imageio.ImageIO;
@@ -18,7 +17,7 @@ import game.entity.pokemon.MapPokemonStrategy;
 import game.utilities.Fontes;
 
 public class CombatScreen implements GameScreen {
-    private ScreenManager screenManager;
+    private final ScreenManager screenManager;
     private final MouseHandler mouse;
     private BufferedImage backgroundImage, combatHUD, playerImage;
 
@@ -70,8 +69,8 @@ public class CombatScreen implements GameScreen {
         Font h2 = new Font("arial", Font.PLAIN, 20);
         g.setFont(h2);
 
-        Button pegar = new Button("Pegar", 20, 960 / 2 + 10, 640 - 176, 210, 156, mouse, new ExitButtonStrategy());
-        Button correr = new Button("Correr", 20, 960 / 2 + 240, 640 - 176, 210, 156, mouse, new ExitButtonStrategy());
+        Button pegar = new Button("Pegar", 20, 960 / 2 + 10, 640 - 176, 210, 156, mouse, () -> screenManager.setCurrentScreenIndex(0));
+        Button correr = new Button("Correr", 20, 960 / 2 + 240, 640 - 176, 210, 156, mouse, () -> screenManager.setCurrentScreenIndex(0));
         StatBar enemyHP = new StatBar(210, 135, 402 - 210, 143 - 135, 100, 100, Color.green); //depois trocar para vida max dos pokemons
         StatBar alliedHP = new StatBar(698, 363, 890 - 698, 371 - 363, 100, 100, Color.green);
         StatBar alliedXP = new StatBar(634, 425, 888 - 634, 436 - 425, 100, 100, Color.cyan);
