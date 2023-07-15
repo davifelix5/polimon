@@ -5,6 +5,7 @@ import game.entity.animation.*;
 import game.entity.Entity;
 import game.ui.handlers.KeyHandler;
 import game.map.factory.MapFactory;
+import game.ui.sounds.SoundEffects;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
@@ -21,8 +22,7 @@ public class Player extends Entity {
 
     private final IAnimationSet[] animationSets = new IAnimationSet[PlayerAnimations.values().length]; // Vetor com todas as animações possíveis.
     private PlayerAnimations currentAnimation;
-
-
+    private SoundEffects soundEffect = new SoundEffects();
     private MapFactory spritesFactory;
 
     public Player(int x, int y, KeyHandler movementKeyInput) {
@@ -30,6 +30,15 @@ public class Player extends Entity {
         this.movementKeyInput = movementKeyInput;
         this.currentAnimation = PlayerAnimations.Walk;
         this.colliding = false;
+    }
+
+    public void setSoundEffect(int animation){
+        if(animation == PlayerAnimations.Swimming.getValue()){
+            soundEffect.playSoundEffect("swimmingEffect.wav");
+        }else  if(animation == PlayerAnimations.Bike.getValue()){
+            soundEffect.playSoundEffect("bikeSoundEffect.wav");
+        }
+        soundEffect.playSoundEffect("src/game/ui/sounds/soundFiles/grassWalkEffect.wav");
     }
 
     public void setFactory(MapFactory spritesFactory) {
@@ -122,6 +131,7 @@ public class Player extends Entity {
                 getAnimation().start();
                 setVelY(movingRate);
             }
+
         }
 
         // Movimentação em y

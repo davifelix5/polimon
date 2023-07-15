@@ -13,6 +13,7 @@ import game.entity.npc.Npc;
 import game.entity.pokemon.PokemonType;
 import game.entity.pokemon.MapPokemon;
 import game.entity.pokemon.PokemonGenerator;
+import game.ui.sounds.OutsideMusic;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
@@ -30,6 +31,8 @@ public class Outside implements GameScreen {
     private final ScreenManager screenManager;
     private final PokemonGenerator pokeGenerator;
 
+    OutsideMusic outsideMusic;
+
     public Outside(Player player, KeyHandler keyHandler, ArrayList<Npc> npcs, ArrayList<MapPokemon> pokemons, ScreenManager screenManager) {
         this.pokeGenerator = new PokemonGenerator(pokemons, 20);
         this.player = player;
@@ -39,12 +42,14 @@ public class Outside implements GameScreen {
         this.npcs = npcs;
         this.screenManager = screenManager;
 
+        this.outsideMusic = new OutsideMusic();
+        outsideMusic.playOutsideMusic("src/game/ui/sounds/soundFiles/outsideMusic.wav");
+
         Font dialogueFont = new Font("arial", Font.PLAIN, 20);
 
         String[] dialogues1 = {
                 "Olá, Aventureiro !",
                 "Bem vindo a USP !",
-                "Serei seu guia inicial nessa nova jornada que o aguarda",
                 "Espero que aproveite seu tempo aqui, faça amigos e se divirta",
                 "Podemos começar ?"
         };

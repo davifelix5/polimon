@@ -5,6 +5,7 @@ import game.entity.npc.WalkNPCStrategy;
 import game.ui.game_states.*;
 import game.ui.game_states.Menu;
 import game.ui.game_states.play.CombatScreen;
+import game.ui.game_states.play.Outside;
 import game.ui.game_states.play.Play;
 import game.ui.handlers.KeyHandler;
 import game.ui.handlers.MouseHandler;
@@ -12,6 +13,8 @@ import game.map.factory.ClassicMap;
 import game.map.factory.MapFactory;
 import game.map.factory.VintageMap;
 import game.entity.pokemon.WalkPokemonStrategy;
+import game.ui.sounds.MainMenuMusic;
+import game.ui.sounds.OutsideMusic;
 import game.ui.sounds.SoundClass;
 
 import javax.swing.*;
@@ -39,7 +42,7 @@ public class Game extends JPanel implements Runnable {
 
     private final Map<String, MapFactory> factoryMap = new HashMap<>();
 
-    SoundClass mainMenuMusic;
+    public MainMenuMusic mainMenuMusic;
 
     public Game() {
         this.addKeyListener(keyHandler);
@@ -54,7 +57,7 @@ public class Game extends JPanel implements Runnable {
         this.gameStateManager.setNPCStrategy(new WalkNPCStrategy());
         this.gameStateManager.setMapPokemonStrategy(new WalkPokemonStrategy());
 
-        this.mainMenuMusic = new SoundClass();
+        this.mainMenuMusic = new MainMenuMusic();
 
         factoryMap.put("Vintage", new VintageMap());
         factoryMap.put("Classic", new ClassicMap());
@@ -68,7 +71,7 @@ public class Game extends JPanel implements Runnable {
     public void start() {
         thread = new Thread(this);
         thread.start();
-        playMainMenuMusic("src/game/ui/sounds/soundFiles/MainMenuMusic2.wav");
+        mainMenuMusic.playMainMenuMusic("src/game/ui/sounds/soundFiles/MainMenuMusic2.wav");
     }
 
     @Override
@@ -145,13 +148,5 @@ public class Game extends JPanel implements Runnable {
         gameStateManager.setFactory(factoryMap.get(factoryName).copy());
     }
 
-    public void stopMainMenuMusic(){
-        mainMenuMusic.stopAudio();
-    }
-    public void playMainMenuMusic(String pathName){
-        mainMenuMusic.setAudio(pathName);
-        mainMenuMusic.playAudio();
-        mainMenuMusic.loop();
-    }
 
 }
