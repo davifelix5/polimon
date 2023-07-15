@@ -2,8 +2,8 @@ package game.entity.pokemon;
 
 import java.util.Random;
 
-import game.Game;
 import game.entity.animation.SpriteSheet;
+import game.map.PokemonArea;
 import game.map.TileManager;
 
 public class PokemonGenerator {
@@ -26,30 +26,28 @@ public class PokemonGenerator {
         return instance;
     }
 
-    public MapPokemon generatePokemon(PokemonType type, TileManager tm) {
+    public MapPokemon generatePokemon(PokemonType type, TileManager tm, PokemonArea area) {
         double attempt = random.nextFloat();
 
-        if (attempt <= type.getGenProbability()) {
+        if (attempt <= type.getGenProbability() && area.getPokemonCount() + 1 <= area.getMaximumPokemons()) {
             PokemonID ID = type.getPokemons().get(random.nextInt(type.getPokemons().size()));
             MapPokemon pokemon;
 
-            switch (type) {
-                case NORMAL -> {
-                    pokemon = new MapPokemon(35 * Game.tileSize, 28 * Game.tileSize, ID, type, pokeSprites.getSprite(ID.getValue()), tm);
-                    pokemon.setStrategy(strategy);
-                }
-                case WATER -> {
-                    pokemon = new MapPokemon(21 * Game.tileSize, 4 * Game.tileSize, ID, type, pokeSprites.getSprite(ID.getValue()), tm);
-                    pokemon.setStrategy(strategy);
-                }
-                case STEEL -> {
-                    pokemon = new MapPokemon(5 * Game.tileSize, 44 * Game.tileSize, ID, type, pokeSprites.getSprite(ID.getValue()), tm);
-                    pokemon.setStrategy(strategy);
-                }
-                default -> pokemon = null;
-            }
+            int minX = (int) area.getAppearanceArea().getX();
+            int maxX = minX + (int) area.getAppearanceArea().getWidth();
+            int minY = (int) area.getAppearanceArea().getY();
+            int maxY = minY + (int) area.getAppearanceArea().getHeight();
+
+            int posX = random.nextInt(minX, maxX);
+            int posY = random.nextInt(minY, maxY);
+
+            pokemon = new MapPokemon(posX, posY, ID, type, pokeSprites.getSprite(ID.getValue() - 1), tm);
+            pokemon.setStrategy(strategy.copy());
+
+            area.addPokemon();
 
             return pokemon;
+
         }
         return null;
     }

@@ -76,15 +76,10 @@ public class Play implements IState, ScreenManager {
         }
     }
 
-    public void clearPokemons() {
-        this.pokemons.clear();
-    }
-
-
     @Override
     public void setMapPokemonStrategy(MapPokemonStrategy strategy) {
-        PokemonGenerator.getInstance().setStrategy(strategy);
-        this.updateMapPokemonStrategy(strategy);
+        PokemonGenerator.getInstance().setStrategy(strategy.copy());
+        this.updateMapPokemonStrategy(strategy.copy());
     }
 
     public void updateMapPokemonStrategy(MapPokemonStrategy strategy) {

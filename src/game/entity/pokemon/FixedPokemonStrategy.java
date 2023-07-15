@@ -7,5 +7,9 @@ public class FixedPokemonStrategy implements MapPokemonStrategy {
         pokemon.setVelX(0);
         pokemon.setVelY(0);
     }
+
+    public MapPokemonStrategy copy() {
+        return this;
+    }
     
 }

@@ -2,12 +2,9 @@ package game.ui.game_states.play;
 
 import game.Game;
 import game.entity.player.Player;
+import game.map.*;
 import game.map.interactions.BienioEnterStrategy;
 import game.ui.handlers.KeyHandler;
-import game.map.MapLayer;
-import game.map.PlayerInteractableLayer;
-import game.map.PokemonLayer;
-import game.map.TileManager;
 import game.map.factory.MapFactory;
 import game.map.interactions.SwimStrategy;
 import game.entity.npc.Dialogue;
@@ -34,6 +31,8 @@ public class Outside implements GameScreen {
     private final ArrayList<Npc> npcs;
     private final ArrayList<MapPokemon> pokemons;
     private final ScreenManager screenManager;
+
+    private final ArrayList<PokemonArea> pokemonAreas = new ArrayList<>();
 
     public Outside(Player player, KeyHandler keyHandler, ArrayList<Npc> npcs, ArrayList<MapPokemon> pokemons, ScreenManager screenManager) {
         this.player = player;
@@ -74,6 +73,42 @@ public class Outside implements GameScreen {
                         new Dialogue(dialogues2, keyHandler, dialogueFont)
                 )
         );
+
+        this.pokemonAreas.add(
+                new PokemonArea(
+                        PokemonType.NORMAL,
+                        new Rectangle(
+                            34*Game.tileSize, 26*Game.tileSize,
+                            5*Game.tileSize, 9*Game.tileSize
+                        ),
+                        5
+                )
+        );
+
+        // Metal
+        this.pokemonAreas.add(
+                new PokemonArea(
+                        PokemonType.STEEL,
+                        new Rectangle(
+                            4*Game.tileSize, 43*Game.tileSize,
+                            2*Game.tileSize, 5*Game.tileSize
+                        ),
+                        3
+                )
+        );
+
+        // Agua
+        this.pokemonAreas.add(
+                new PokemonArea(
+                        PokemonType.WATER,
+                        new Rectangle(
+                            18*Game.tileSize, 2*Game.tileSize,
+                            5*Game.tileSize, 10*Game.tileSize
+                        ),
+                        10
+                )
+        );
+
     }
 
     public void setFactory(MapFactory factory) {
@@ -142,9 +177,6 @@ public class Outside implements GameScreen {
         this.tm.addLayer(new PlayerInteractableLayer("src/game/res/mapas/raia_portas.csv", factory.getMapTileSet(), new BienioEnterStrategy(screenManager), player));
         this.tm.addLayer(new MapLayer("src/game/res/mapas/raia_base_do_poste.csv", factory.getMapTileSet(),true));
         this.tm.addLayer(new MapLayer("src/game/res/mapas/raia_nao_solido.csv", factory.getMapTileSet(), false));
-        this.tm.addLayer(new PokemonLayer("src/game/res/mapas/raia_pokemon_normal.csv", factory.getMapTileSet(), PokemonType.NORMAL));
-        this.tm.addLayer(new PokemonLayer("src/game/res/mapas/raia_pokemon_agua.csv", factory.getMapTileSet(), PokemonType.WATER));
-        this.tm.addLayer(new PokemonLayer("src/game/res/mapas/raia_pokemon_metal.csv", factory.getMapTileSet(), PokemonType.STEEL));
     }
 
     @Override
@@ -161,18 +193,12 @@ public class Outside implements GameScreen {
         this.pokemons.add(pokemon);
     }
 
-    public void clearPokemons() {
-        this.pokemons.clear();
-    }
-
     public void generatePokemons() {
-        for (MapLayer layer : this.tm.getLayers()) {
-            if (layer.isPokemonLayer()) {
-                PokemonGenerator generator = PokemonGenerator.getInstance();
-                MapPokemon newPokemon = generator.generatePokemon(layer.getPokemonType(), tm);
-                if (newPokemon != null) {
-                    this.addPokemon(newPokemon);
-                }
+        for (PokemonArea area : pokemonAreas) {
+            PokemonGenerator generator = PokemonGenerator.getInstance();
+            MapPokemon newPokemon = generator.generatePokemon(area.getType(), tm, area);
+            if (newPokemon != null) {
+                this.addPokemon(newPokemon);
             }
         }
     }
