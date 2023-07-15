@@ -73,10 +73,10 @@ public class Outside implements GameScreen {
 
         this.pokeGenerator.addArea(
                 new PokemonArea(
-                        PokemonType.NORMAL,
+                        new PokemonType[]{PokemonType.NORMAL, PokemonType.GRASS, PokemonType.FAIRY},
                         new Rectangle(
-                            34*Game.tileSize, 26*Game.tileSize,
-                            5*Game.tileSize, 9*Game.tileSize
+                            34*Game.tileSize, 27*Game.tileSize,
+                            9*Game.tileSize, 5*Game.tileSize
                         ),
                         5
                 )
@@ -85,10 +85,10 @@ public class Outside implements GameScreen {
         // Metal
         this.pokeGenerator.addArea(
                 new PokemonArea(
-                        PokemonType.STEEL,
+                        new PokemonType[]{PokemonType.STEEL, PokemonType.ROCK, PokemonType.POISON},
                         new Rectangle(
                             4*Game.tileSize, 43*Game.tileSize,
-                            2*Game.tileSize, 5*Game.tileSize
+                            6*Game.tileSize, 4*Game.tileSize
                         ),
                         3
                 )
@@ -97,10 +97,10 @@ public class Outside implements GameScreen {
         // Agua
         this.pokeGenerator.addArea(
                 new PokemonArea(
-                        PokemonType.WATER,
+                        new PokemonType[]{PokemonType.WATER},
                         new Rectangle(
                             18*Game.tileSize, 2*Game.tileSize,
-                            5*Game.tileSize, 10*Game.tileSize
+                            15*Game.tileSize, 5*Game.tileSize
                         ),
                         10
                 )
@@ -160,6 +160,12 @@ public class Outside implements GameScreen {
 
         for (Npc npc: npcs)
             npc.renderDialogue(g);
+
+        g.setColor(Color.RED);
+        for (PokemonArea area: pokeGenerator.getPokemonAreas()) {
+            Rectangle r = area.getAppearanceArea();
+            g.drawRect(r.x - tm.getReferenceX(), r.y - tm.getReferenceY(), r.width, r.height);
+        }
 
     }
 

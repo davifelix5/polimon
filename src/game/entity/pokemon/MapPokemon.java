@@ -11,28 +11,30 @@ import java.awt.image.BufferedImage;
 public class MapPokemon extends Entity {
 
     private final PokemonID ID;
-    private final PokemonType type;
     private final BufferedImage pokeImage;
-    private int movingRate = 1;
-    private boolean colliding;
+    private final int movingRate;
+    private final Rectangle moveArea;
 
     private MapPokemonStrategy strategy;
     
-    public MapPokemon(int x, int y, PokemonID ID, PokemonType type, BufferedImage pokeImage, TileManager tm) {
+    public MapPokemon(int x, int y, PokemonID ID, BufferedImage pokeImage, TileManager tm, Rectangle moveArea) {
         super(x, y);
         this.velX = 0;
         this.velY = 0;
         this.ID = ID;
-        this.type = type;
         this.pokeImage = pokeImage;
         this.tileManager = tm;
+        this.movingRate = 1;
+        this.moveArea = moveArea;
     }
 
     @Override
     public void tick() {
-        if (!this.colliding) {
-            this.setWorldX(Game.clamp(this.getWorldX() + this.getVelX(), this.type.getMinX(), this.type.getMaxX()));
-            this.setWorldY(Game.clamp(this.getWorldY() + this.getVelY(), this.type.getMinY(), this.type.getMaxY()));
+        int minX = moveArea.x, minY = moveArea.y;
+        int maxX = moveArea.x + moveArea.width, maxY = moveArea.y + moveArea.height;
+        if (!this.tileManager.colides(this)) {
+            this.setWorldX(Game.clamp(this.getWorldX() + this.getVelX(), minX, maxX - 64));
+            this.setWorldY(Game.clamp(this.getWorldY() + this.getVelY(), minY, maxY - 64));
         }
 
         this.strategy.setAction(this);

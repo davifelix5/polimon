@@ -6,7 +6,7 @@ import java.awt.*;
 
 public class PokemonArea {
     private int pokemonCount;
-    private final PokemonType type;
+    private final PokemonType[] types;
     private final Rectangle appearanceArea;
     private final int maximumPokemons;
 
@@ -14,9 +14,9 @@ public class PokemonArea {
         this.pokemonCount++;
     }
 
-    public PokemonArea(PokemonType type, Rectangle appearanceArea, int maximumPokemons) {
-        this.type = type;
-        this.appearanceArea = appearanceArea;
+    public PokemonArea(PokemonType[] type, Rectangle area, int maximumPokemons) {
+        this.types = type;
+        this.appearanceArea = area;
         this.maximumPokemons = maximumPokemons;
     }
 
@@ -24,8 +24,8 @@ public class PokemonArea {
         return pokemonCount;
     }
 
-    public PokemonType getType() {
-        return type;
+    public PokemonType[] getTypes() {
+        return types;
     }
 
     public Rectangle getAppearanceArea() {
@@ -35,4 +35,5 @@ public class PokemonArea {
     public int getMaximumPokemons() {
         return maximumPokemons;
     }
+
 }
