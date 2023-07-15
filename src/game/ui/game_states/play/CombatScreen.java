@@ -1,7 +1,9 @@
 package game.ui.game_states.play;
 
+import game.entity.player.PlayerAnimations;
+import game.entity.pokemon.MapPokemon;
+import game.map.TileManager;
 import game.ui.buttons.ExitButtonStrategy;
-import game.entity.npc.NPCStrategy;
 import game.ui.handlers.MouseHandler;
 import game.ui.buttons.Button;
 import javax.imageio.ImageIO;
@@ -9,106 +11,100 @@ import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.FileInputStream;
 import java.io.IOException;
+
 import game.combate.StatBar;
 import game.map.factory.MapFactory;
 import game.entity.pokemon.MapPokemonStrategy;
-import game.ui.game_states.IState;
-import game.ui.game_states.IStateManager;
+import game.utilities.Fontes;
 
-public class CombatScreen implements IState {
-    IStateManager stateManager;
-    MouseHandler mouse;
-    BufferedImage backgroundImage;
-    BufferedImage combatHUD;
+public class CombatScreen implements GameScreen {
+    private ScreenManager screenManager;
+    private final MouseHandler mouse;
+    private BufferedImage backgroundImage, combatHUD, playerImage;
 
-    BufferedImage alliedPokemon;
+    private MapPokemon enemyPokemon;
+    private MapFactory factory;
 
-    BufferedImage enemyPokemon;
-
-    Button fight, bag, pokemon, run;
-    StatBar enemyHP, alliedHP, alliedXP;
-    public CombatScreen(MouseHandler mouse, IStateManager stateManager) {
+    public CombatScreen(MouseHandler mouse, ScreenManager screenManager) {
         this.mouse = mouse;
-        this.stateManager = stateManager;
-        loadImages();
+        this.screenManager = screenManager;
     }
 
+    @Override
     public void tick() {
 
     }
 
-    public void render(Graphics g) {
-
-        fight = new Button("Fight",20 ,960 / 2 + 10, 640 - 176, 210, 78, mouse ,new ExitButtonStrategy());
-        bag = new Button("Bag",20 ,960 / 2 + 240, 640 - 176, 210, 78, mouse, new ExitButtonStrategy());
-        pokemon = new Button("Pokemon",20 ,960 / 2 + 10, 640 - 100, 210, 80, mouse, new ExitButtonStrategy());
-        run = new Button("Run",20 ,960 / 2 + 240, 640 - 100, 210, 78, mouse, new ExitButtonStrategy());
-        enemyHP = new StatBar(210, 135, 402 - 210, 143-135, 100, 30, Color.green); //depois trocar para vida max dos pokemons
-        alliedHP = new StatBar(698,363, 890-698, 371-363, 100, 100, Color.green);
-        alliedXP = new StatBar(634, 425, 888-634,436-425,100,30,Color.cyan);
-
-        g.drawImage(backgroundImage, 0,0, null);
-        g.setColor(Color.green);
-        g.drawImage(alliedPokemon,80, 180, null);
-        g.drawImage(combatHUD,0, 640-196,null);
-        g.drawImage(enemyPokemon, 520, 0, null);
-
-        fight.render(g);
-        bag.render(g);
-        pokemon.render(g);
-        run.render(g);
-        enemyHP.render(g);
-        alliedHP.render(g);
-        alliedXP.render(g);
-        g.setColor(Color.white);
-        g.fillRoundRect(30, 640 - 176, 400, 156, 30,30);
-        g.setColor(Color.black);
-        g.drawRoundRect(30, 640 - 176, 400, 156, 30,30);
-        Font h2 = new Font("arial", Font.PLAIN, 20);
-        g.setFont(h2);
-        g.drawString("Texto de Exemplo", 100, 640 - 156);
-
-
-    }
-
     @Override
-    public void destroy() {
-
-    }
-
-    @Override
-    public void start() {
-
-    }
-
-    @Override
-    public void setNPCStrategy(NPCStrategy strategy) {
-
-    }
-
-    @Override
-    public void setMapPokemonStrategy(MapPokemonStrategy strategy) {
-
-    }
-
-    public void loadImages() {
+    public void loadAnimations() {
         try {
             this.backgroundImage = ImageIO.read(new FileInputStream("src/game/res/fotos/combatScreen.jpg"));
             this.combatHUD = ImageIO.read(new FileInputStream("src/game/res/fotos/combatHUD.jpg"));
-            this.alliedPokemon = ImageIO.read(new FileInputStream("src/game/res/sprites/pokemon/treeckoBack2.png"));
-            this.enemyPokemon = ImageIO.read(new FileInputStream("src/game/res/sprites/pokemon/treecko2.png"));
+            this.playerImage = factory.getPlayerSpriteSheets(PlayerAnimations.Walk).getSprite(12); // Player de costas
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
 
     @Override
-    public IStateManager getStateManager() {
-        return stateManager;
+    public void setMapFactory(MapFactory factory) {
+        this.factory = factory;
     }
 
     @Override
-    public void setFactory(MapFactory factory) {
+    public void setPokemonStrategy(MapPokemonStrategy strategy) {
 
     }
+
+    @Override
+    public TileManager getTileManager() {
+        return null;
+    }
+
+    public void setEnemyPokemon(MapPokemon enemyPokemon) {
+        this.enemyPokemon = enemyPokemon;
+    }
+
+    public void render(Graphics g) {
+
+        Font h2 = new Font("arial", Font.PLAIN, 20);
+        g.setFont(h2);
+
+        Button pegar = new Button("Pegar", 20, 960 / 2 + 10, 640 - 176, 210, 156, mouse, new ExitButtonStrategy());
+        Button correr = new Button("Correr", 20, 960 / 2 + 240, 640 - 176, 210, 156, mouse, new ExitButtonStrategy());
+        StatBar enemyHP = new StatBar(210, 135, 402 - 210, 143 - 135, 100, 100, Color.green); //depois trocar para vida max dos pokemons
+        StatBar alliedHP = new StatBar(698, 363, 890 - 698, 371 - 363, 100, 100, Color.green);
+        StatBar alliedXP = new StatBar(634, 425, 888 - 634, 436 - 425, 100, 100, Color.cyan);
+
+        g.drawImage(backgroundImage, 0, 0, null);
+        g.setColor(Color.green);
+        g.drawImage(playerImage, 100, 230, 220, 220, null);
+        g.drawImage(combatHUD, 0, 640 - 196, null);
+        g.drawImage(enemyPokemon.getPokeImage(), 550, 35, 220,220, null);
+
+        g.setColor(Color.black);
+        g.drawString("Você", 698, 325);
+        g.drawString(enemyPokemon.getName(), 210, 100);
+
+        pegar.render(g);
+        correr.render(g);
+
+        enemyHP.render(g);
+        alliedHP.render(g);
+
+        alliedXP.render(g);
+
+        g.setColor(Color.white);
+        g.fillRoundRect(30, 640 - 176, 400, 156, 30, 30);
+
+        g.setColor(Color.black);
+        g.drawRoundRect(30, 640 - 176, 400, 156, 30, 30);
+
+        Fontes.renderText(
+                g,
+                "Para pegar um Pokemon basta escolher o botão de pegar Dependendo da dificuldade do jogo e da quantidade de bolas de pokemon que você possui esse pokemon será adicionado na sua pokedex",
+                30, 640 - 176, 300
+        );
+    }
+
 }

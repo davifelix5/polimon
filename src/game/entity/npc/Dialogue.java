@@ -2,6 +2,7 @@ package game.entity.npc;
 
 import game.Game;
 import game.ui.handlers.KeyHandler;
+import game.utilities.Fontes;
 
 import java.awt.*;
 
@@ -30,29 +31,6 @@ public class Dialogue {
        currentLine++;
     }
 
-    private void displayDialogue(Graphics g) {
-        int wordX = x + Game.tileSize;
-        int wordY = y + Game.tileSize;
-        double lineSize = 0;
-
-        String[] words = dialogues[currentLine].split(" ");
-
-        for (String w: words) {
-            String finalWord = w + " ";
-            int wordWidth = g.getFontMetrics().stringWidth(finalWord);
-            lineSize += wordWidth;
-
-            if (lineSize >= width - 32) {
-                lineSize = 0; // zera o controle do espaço ocupado pela fonte
-                wordY += 40; // pula para a próxima linha
-                wordX =  x + Game.tileSize; // volta para o começo da linha
-            }
-
-            g.drawString(finalWord, wordX, wordY);
-            wordX += wordWidth;
-        }
-    }
-
     public void render(Graphics g) {
         if (activated) {
             Color color = new Color(25, 25, 25, 200);
@@ -64,7 +42,7 @@ public class Dialogue {
 
             g.setFont(dialogueFont);
 
-            displayDialogue(g);
+            Fontes.renderText(g, dialogues[currentLine], x, y, width);
         }
     }
 

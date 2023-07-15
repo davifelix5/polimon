@@ -5,11 +5,13 @@ import game.entity.npc.Npc;
 import game.entity.player.Player;
 import game.entity.pokemon.MapPokemon;
 import game.entity.pokemon.MapPokemonStrategy;
+import game.map.TileManager;
 import game.map.factory.MapFactory;
 import game.ui.game_states.GameStateManager;
 import game.ui.game_states.IState;
 import game.ui.game_states.IStateManager;
 import game.ui.handlers.KeyHandler;
+import game.ui.handlers.MouseHandler;
 
 import java.awt.*;
 import java.util.ArrayList;
@@ -22,15 +24,16 @@ public class Play implements IState, ScreenManager {
     private final ArrayList<Npc> npcs = new ArrayList<>();
     private MapFactory factory;
     private final ArrayList<MapPokemon> pokemons = new ArrayList<>();
-    private final GameScreen[] screens = new GameScreen[2];
+    private final GameScreen[] screens = new GameScreen[3];
     private int currentScreenIndex;
 
-    public Play(GameStateManager gameStateManager, Player player, KeyHandler keyHandler) {
+    public Play(GameStateManager gameStateManager, Player player, KeyHandler keyHandler, MouseHandler mouseHandler) {
         this.gameStateManager = gameStateManager;
         this.player = player;
         this.currentScreenIndex = 0;
         screens[0] = new Outside(player, keyHandler, npcs, pokemons, this);
         screens[1] = new Bienio(player, this);
+        screens[2] = new CombatScreen(mouseHandler, this);
     }
 
     @Override
@@ -45,8 +48,11 @@ public class Play implements IState, ScreenManager {
 
     @Override
     public void destroy() {
-        for (GameScreen screen: screens)
-            screen.getTileManager().clearLayers();
+        for (GameScreen screen: screens) {
+            TileManager tm = screen.getTileManager();
+            if (tm != null)
+                screen.getTileManager().clearLayers();
+        }
     }
 
     @Override
@@ -101,8 +107,15 @@ public class Play implements IState, ScreenManager {
     }
 
     public void setCurrentScreenIndex(int currentScreenIndex) {
-        screens[currentScreenIndex].getTileManager().clearLayers();
+        TileManager tm = screens[currentScreenIndex].getTileManager();
+        if (tm != null)
+            tm.clearLayers();
         this.currentScreenIndex = currentScreenIndex;
         this.start();
+    }
+
+    @Override
+    public GameScreen getBattleScreen() {
+        return this.screens[2];
     }
 }

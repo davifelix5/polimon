@@ -63,4 +63,7 @@ public class MapPokemon extends Entity {
         return this.ID.getName();
     }
 
+    public BufferedImage getPokeImage() {
+        return pokeImage;
+    }
 }

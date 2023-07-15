@@ -31,7 +31,7 @@ public class Outside implements GameScreen {
     private final PokemonGenerator pokeGenerator;
 
     public Outside(Player player, KeyHandler keyHandler, ArrayList<Npc> npcs, ArrayList<MapPokemon> pokemons, ScreenManager screenManager) {
-        this.pokeGenerator = new PokemonGenerator(pokemons, 20);
+        this.pokeGenerator = new PokemonGenerator(pokemons, 3);
         this.player = player;
         this.player.setTileManager(tm);
         this.keyHandler = keyHandler;
@@ -128,7 +128,9 @@ public class Outside implements GameScreen {
 
         // Colisão com pokemon
         MapPokemon foundPokemon = this.findPokemonWithinPlayer();
-        if (foundPokemon != null) {
+        if (foundPokemon != null & keyHandler.enterPressed) {
+            ((CombatScreen) screenManager.getBattleScreen()).setEnemyPokemon(foundPokemon);
+            screenManager.setCurrentScreenIndex(2);
             System.out.println("Você achou um " + foundPokemon.getName() + "!");
         }
 
