@@ -1,6 +1,7 @@
 package game.ui.game_states.play;
 
 import game.Game;
+import game.combate.GameMode;
 import game.entity.player.Player;
 import game.entity.player.PlayerAnimations;
 import game.entity.pokemon.Pokemon;
@@ -84,11 +85,12 @@ public class CombatScreen implements GameScreen {
     }
 
     private void capturePokemon() {
-        System.out.println(this.game.getGameMode());
-        if (this.player.hasPokeballs() && this.player.getHP() > 0) {
+        GameMode mode = this.game.getGameMode();
+        System.out.println(mode);
+        if (this.player.hasPokeballs() && this.player.getHP() > 0 && mode.capturePokemon()) {
             this.player.removePokeball();
-            this.player.reduceHP(10);
-            this.player.increaseExpeciente(10);
+            this.player.reduceHP(mode.getHPLost());
+            this.player.increaseExpeciente(mode.getXPGained());
             this.pokemons.remove(enemyPokemon);
             enemyPokemon.getPokeArea().removePokemon();
             pegar.setIsActive(false);
@@ -100,6 +102,7 @@ public class CombatScreen implements GameScreen {
             this.message = "Você está muito casado para capturar este pokemon. Tente se curar!";
         }
         else {
+            this.player.removePokeball();
             this.message = this.enemyPokemon.getName() + " não quer ser capturado. Tente novamente!";
         }
     }

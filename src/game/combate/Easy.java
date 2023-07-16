@@ -3,16 +3,16 @@ package game.combate;
 public class Easy implements GameMode {
     @Override
     public boolean capturePokemon() {
-        return false;
+        return true;
     }
 
     @Override
     public int getHPLost() {
-        return 0;
+        return 10;
     }
 
     @Override
     public int getXPGained() {
-        return 0;
+        return 10;
     }
 }
