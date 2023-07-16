@@ -65,7 +65,7 @@ public class CombatScreen implements GameScreen {
         pegar.setIsActive(true);
         correr.setIsActive(true);
         // Inicial message
-        this.message = "Para pegar um Pokemon basta escolher o botão de pegar Dependendo da dificuldade do jogo e da quantidade de bolas de pokemon que você possui esse pokemon será adicionado na sua pokedex";
+        this.message = "Para pegar um Pokemon, basta escolher o botão de pegar. Dependendo da dificuldade do jogo e da quantidade de bolas de pokebolas que você possui, esse pokemon será adicionado na sua pokedex";
         try {
             this.backgroundImage = ImageIO.read(new FileInputStream("src/game/res/fotos/combatScreen.jpg"));
             this.combatHUD = ImageIO.read(new FileInputStream("src/game/res/fotos/combatHUD.jpg"));
