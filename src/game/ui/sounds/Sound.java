@@ -5,6 +5,9 @@ import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.Clip;
 import java.io.File;
 
+/**
+ * Classe para importar e tocar sons
+ */
 public class Sound implements ISound{
     Clip clip;
     public Sound(String pathname) {
@@ -27,11 +30,17 @@ public class Sound implements ISound{
         clip.stop();
     }
 
+    /**
+     * Faz com que a faixa fique em loop, tocando novamente depois que acaba
+     */
     @Override
     public void loop() {
         clip.loop(Clip.LOOP_CONTINUOUSLY);
     }
 
+    /**
+     * Reinicia a faixa
+     */
     @Override
     public void restart() {
         clip.setMicrosecondPosition(0);

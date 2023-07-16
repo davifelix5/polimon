@@ -229,6 +229,10 @@ public class Outside implements GameScreen {
         music.stop();
     }
 
+    /**
+     * Verifica se algum pokemon na tela estão em colisão com o player
+     * @return pokemons que está em contato com o player
+     */
     public Pokemon findPokemonWithinPlayer() {
         for (Pokemon pokemon : pokemons) {
             if (this.intersets(player, pokemon)) {
@@ -238,6 +242,12 @@ public class Outside implements GameScreen {
         return null;
     }
 
+    /**
+     * Verifica se uma entidade está colidindo com outra
+     * @param entity1 primeira entidade
+     * @param entity2 segunda entidade
+     * @return indica se há ou não colisão entre a primeira e a segunda entidade
+     */
     public boolean intersets(Entity entity1, Entity entity2) {
         return tm.getReferencedBounds(entity1).intersects(tm.getReferencedBounds(entity2));
     }

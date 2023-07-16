@@ -6,6 +6,9 @@ import game.map.factory.MapFactory;
 
 import java.awt.*;
 
+/**
+ * Parte do estado de Play, contempla os diferentes ambiente do jogo
+ */
 public interface GameScreen {
     void render(Graphics g);
     void tick();

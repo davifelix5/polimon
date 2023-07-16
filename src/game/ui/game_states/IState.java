@@ -7,6 +7,9 @@ import game.entity.pokemon.MapPokemonStrategy;
 
 import java.awt.*;
 
+/**
+ * Estado de jogo, empacota a lógica de um estágio completo do jogo
+ */
 public interface IState {
     void tick();
     void render(Graphics g);

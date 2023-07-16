@@ -84,6 +84,9 @@ public class CombatScreen implements GameScreen {
         this.enemyPokemon = enemyPokemon;
     }
 
+    /**
+     * Lógica para a captura do Pokemon conforme a situação do Player (HP e pokebolas) e a dificuldade do jogo
+     */
     private void capturePokemon() {
         GameMode mode = this.game.getGameMode();
         System.out.println(mode);

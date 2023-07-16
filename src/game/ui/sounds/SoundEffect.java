@@ -1,5 +1,8 @@
 package game.ui.sounds;
 
+/**
+ * Abstração para o uso de efeitos sonoros, envelopando a classe Sound
+ */
 public class SoundEffect {
 
     private final Sound soundEffect;
@@ -8,11 +11,11 @@ public class SoundEffect {
         this.soundEffect = new Sound(pathname);
     }
 
-    public void stopSoundEffect(){
+    public void stop(){
         soundEffect.stop();
     }
 
-    public void playSoundEffect(){
+    public void play(){
         soundEffect.play();
         soundEffect.loop();
     }

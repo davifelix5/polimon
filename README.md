@@ -73,6 +73,7 @@ OBS: não foi possível encontrar os mesmos _sprites_ para o _player_ nadando, a
   - Dependendo da animação do player, ele emite sons diferentes
 
 ## Dificuldade
+- As dificuldades foram implementadas a partir da interface `src/combate/GameMode.java`
 - Dependendo da dificuldade, será mais fácil ou mais difícil capturar pokemons:
   - Fácil: sempre que tiver _pokebolas_ e vida, captura o Pokemon (ganha 10 de XP, perde 10 de vida)
   - Médio: se tiver _pokebolas_ e vida, chance de 70% para capturar o Pokemon (ganha 5 de XP, perde 15 de vida)

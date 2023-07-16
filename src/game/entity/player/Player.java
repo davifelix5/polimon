@@ -45,9 +45,9 @@ public class Player extends Entity {
     }
 
     public void stopPlayerSoundEffects(){
-        walkSoundEffect.stopSoundEffect();
-        bikeSoundEffect.stopSoundEffect();
-        swimSoundEffect.stopSoundEffect();
+        walkSoundEffect.stop();
+        bikeSoundEffect.stop();
+        swimSoundEffect.stop();
     }
 
     public void setFactory(MapFactory spritesFactory) {
@@ -109,16 +109,16 @@ public class Player extends Entity {
         stopPlayerSoundEffects();
         if (movementKeyInput.bikeButtonPressed && !swimming) {
             setCurrentAnimation(PlayerAnimations.Bike);
-            bikeSoundEffect.playSoundEffect();
+            bikeSoundEffect.play();
             this.setMovingRate(3);
         } else if (swimming) {
             setCurrentAnimation(PlayerAnimations.Swimming);
-            swimSoundEffect.playSoundEffect();
+            swimSoundEffect.play();
             this.setMovingRate(4);
             setSwimming(false);
         } else {
             setCurrentAnimation(PlayerAnimations.Walk);
-            walkSoundEffect.playSoundEffect();
+            walkSoundEffect.play();
             this.setMovingRate(2);
         }
 

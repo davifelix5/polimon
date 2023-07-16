@@ -48,6 +48,9 @@ public class Play implements IState, ScreenManager {
         screens[currentScreenIndex].render(g);
     }
 
+    /**
+     * Encerra o estado, apagando as camadas do mapa de todas a telas para elas poderem ser geradas novamente
+     */
     @Override
     public void destroy() {
         for (GameScreen screen: screens) {
@@ -57,6 +60,9 @@ public class Play implements IState, ScreenManager {
         }
     }
 
+    /**
+     * Inicia o estado tocando a música, carregando os sprites da tela atual e atualizando os sprites dos NPCs
+     */
     @Override
     public void start() {
         this.player.loadAnimations();
@@ -107,6 +113,10 @@ public class Play implements IState, ScreenManager {
         }
     }
 
+    /**
+     * Muda a tela que atual do jogo conforme o índice do vetor de telas, encerrando a tela atual e inicial a nova tela
+     * @param currentScreenIndex índice no vetor de telas da tela a ser inciada
+     */
     public void setCurrentScreenIndex(int currentScreenIndex) {
         if (currentScreenIndex != this.currentScreenIndex) {
             player.stopPlayerSoundEffects();
@@ -120,6 +130,10 @@ public class Play implements IState, ScreenManager {
 
     }
 
+    /**
+     * Obter a tela de combate para atualizar o pokemon a ser combatido
+     * @return tela de combate
+     */
     @Override
     public GameScreen getBattleScreen() {
         return this.screens[2];

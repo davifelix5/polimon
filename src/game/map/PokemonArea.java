@@ -4,11 +4,14 @@ import game.entity.pokemon.PokemonType;
 
 import java.awt.*;
 
+/**
+ * Classe que determina a área em que o pokemons de determinados tipos irão aparecer
+ */
 public class PokemonArea {
-    private int pokemonCount;
-    private final PokemonType[] types;
+    private int pokemonCount; // quantidade de pokemons na área
+    private final PokemonType[] types; // tipos de pokemon que podem aparecer na áera
     private final Rectangle appearanceArea;
-    private final int maximumPokemons;
+    private final int maximumPokemons; // quantidade máxima de pokemons na área
 
     public void addPokemon() {
         this.pokemonCount++;
