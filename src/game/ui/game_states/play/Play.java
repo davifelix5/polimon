@@ -108,6 +108,7 @@ public class Play implements IState, ScreenManager {
 
     public void setCurrentScreenIndex(int currentScreenIndex) {
         if (currentScreenIndex != this.currentScreenIndex) {
+            player.stopPlayerSoundEffects();
             screens[this.currentScreenIndex].stopMusic();
             TileManager tm = screens[currentScreenIndex].getTileManager();
             if (tm != null)
