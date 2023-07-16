@@ -71,4 +71,8 @@ public class Pokemon extends Entity {
     public PokemonArea getPokeArea() {
         return pokeArea;
     }
+
+    public PokemonID getID() {
+        return ID;
+    }
 }

@@ -12,7 +12,6 @@ import javax.imageio.ImageIO;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.FileInputStream;
-import java.util.ArrayList;
 
 public class Player extends Entity {
 
@@ -36,7 +35,7 @@ public class Player extends Entity {
 
     private int experience = 0;
 
-    private final ArrayList<Pokemon> pokedex = new ArrayList<>();
+    private final Pokedex pokedex;
 
 
     private MapFactory spritesFactory;
@@ -45,6 +44,7 @@ public class Player extends Entity {
         super(x, y);
         this.movementKeyInput = movementKeyInput;
         this.currentAnimation = PlayerAnimations.Walk;
+        this.pokedex = new Pokedex();
         this.colliding = false;
     }
 
@@ -112,7 +112,7 @@ public class Player extends Entity {
 
         // Gerencia qual será a animação atual do jogador.
         stopPlayerSoundEffects();
-        if (movementKeyInput.bikeButtonPressed && !swimming) {
+        if (movementKeyInput.isBikeButtonPressed() && !swimming) {
             setCurrentAnimation(PlayerAnimations.Bike);
             bikeSoundEffect.play();
             this.setMovingRate(3);
@@ -128,7 +128,7 @@ public class Player extends Entity {
         }
 
         // Lidando com a lógica de parada do jogador
-        if (!movementKeyInput.downPressed && !movementKeyInput.upPressed || colliding){
+        if (!movementKeyInput.isDownPressed() && !movementKeyInput.isUpPressed() || colliding){
             if (getCurrentAnimationSet().getCurrentIndex() == FOWARD || getCurrentAnimationSet().getCurrentIndex() == BACKWARD) {
                 getAnimation().stop();
                 getAnimation().reset();
@@ -136,7 +136,7 @@ public class Player extends Entity {
             }
             setVelY(0);
         }
-        if (!movementKeyInput.rightPressed && !movementKeyInput.leftPressed || colliding) {
+        if (!movementKeyInput.isRightPressed() && !movementKeyInput.isLeftPressed() || colliding) {
             if (getCurrentAnimationSet().getCurrentIndex() == RIGHT || getCurrentAnimationSet().getCurrentIndex() == LEFT) {
                 getAnimation().stop();
                 getAnimation().reset();
@@ -147,11 +147,11 @@ public class Player extends Entity {
 
         // Movimentação em X
         if (getVelX() == 0) { // O jogador não pode se movimentar em duas direções simultaneamente
-            if (movementKeyInput.upPressed) {
+            if (movementKeyInput.isUpPressed()) {
                 getCurrentAnimationSet().setCurrentIndex(FOWARD);
                 getAnimation().start();
                 setVelY(-movingRate);
-            } else if (movementKeyInput.downPressed) {
+            } else if (movementKeyInput.isDownPressed()) {
                 getCurrentAnimationSet().setCurrentIndex(BACKWARD);
                 getAnimation().start();
                 setVelY(movingRate);
@@ -161,11 +161,11 @@ public class Player extends Entity {
 
         // Movimentação em y
         if (getVelY() == 0) { // O jogador não pode se movimentar em duas direções simultaneamente
-            if (movementKeyInput.leftPressed) {
+            if (movementKeyInput.isLeftPressed()) {
                 getCurrentAnimationSet().setCurrentIndex(LEFT);
                 getAnimation().start();
                 setVelX(-movingRate);
-            } else if (movementKeyInput.rightPressed) {
+            } else if (movementKeyInput.isRightPressed()) {
                 getCurrentAnimationSet().setCurrentIndex(RIGHT);
                 getAnimation().start();
                 setVelX(movingRate);
@@ -206,7 +206,7 @@ public class Player extends Entity {
         g.drawImage(pikachuImage, pokedexX, pokeballY, 25, 25, null);
         g.setFont(new Font("arial", Font.PLAIN, 20));
         g.setColor(Color.white);
-        g.drawString("x " + this.pokedex.size(), pokedexX + Game.tileSize, pokeballY + 20);
+        g.drawString("x " + this.pokedex.getPokemons().size(), pokedexX + Game.tileSize, pokeballY + 20);
 
     }
 
@@ -282,10 +282,6 @@ public class Player extends Entity {
         return experience;
     }
 
-    public void addToPokedex(Pokemon poke) {
-        this.pokedex.add(poke);
-    }
-
     /***
      * Identifica a largura do jogador a partir dos sprites da animação atual.
      * @return largura do jogador
@@ -300,6 +296,10 @@ public class Player extends Entity {
      */
     public int getHeight() {
         return this.getCurrentAnimationSet().getSprites().spriteHeigth;
+    }
+
+    public Pokedex getPokedex() {
+        return pokedex;
     }
 }
 

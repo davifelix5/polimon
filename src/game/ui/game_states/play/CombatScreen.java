@@ -94,7 +94,7 @@ public class CombatScreen implements GameScreen {
             this.player.removePokeball();
             this.player.reduceHP(mode.getHPLost());
             this.player.increaseExpeciente(mode.getXPGained());
-            this.player.addToPokedex(enemyPokemon);
+            this.player.getPokedex().addPokemon(enemyPokemon);
             this.pokemons.remove(enemyPokemon);
             enemyPokemon.getPokeArea().removePokemon();
             pegar.setIsActive(false);

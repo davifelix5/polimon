@@ -27,7 +27,7 @@ public class RestScreen implements IState {
 	}
 
 	public void tick() {
-		if (keyHandler.anyKeyPressed) {
+		if (keyHandler.isAnyKeyPressed()) {
 			getStateManager().setState(GameState.Menu);
 		}
 	}

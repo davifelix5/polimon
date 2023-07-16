@@ -108,7 +108,7 @@ public class Game extends JPanel implements Runnable {
     }
 
     public void tick() {
-        if (keyHandler.escPressed) {
+        if (keyHandler.isEscPressed()) {
             gameStateManager.setState(GameState.Menu);
         } else {
             gameStateManager.getCurrentState().tick();
