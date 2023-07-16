@@ -1,5 +1,7 @@
 package game;
 
+import game.combate.Easy;
+import game.combate.GameMode;
 import game.entity.player.Player;
 import game.entity.npc.WalkNPCStrategy;
 import game.ui.game_states.*;
@@ -24,6 +26,8 @@ public class Game extends JPanel implements Runnable {
     public static final int width = tileSize*maxScreenCol, height = tileSize*maxScreenRow;
     final int FPS = 60;
 
+    private GameMode gameMode;
+
     Thread thread;
 
     private final GameStateManager gameStateManager = new GameStateManager();
@@ -40,11 +44,12 @@ public class Game extends JPanel implements Runnable {
         this.setDoubleBuffered(true);
         this.player = new Player(30*Game.tileSize ,55*Game.tileSize, keyHandler);
         this.gameStateManager.addState(GameState.RestScreen, new RestScreen(keyHandler, gameStateManager));
-        this.gameStateManager.addState(GameState.Menu, new Menu(mouseHandler, gameStateManager, this));
-        this.gameStateManager.addState(GameState.Outside, new Play(gameStateManager, player, keyHandler, mouseHandler));
+        this.gameStateManager.addState(GameState.Menu, new Menu(this, gameStateManager, mouseHandler));
+        this.gameStateManager.addState(GameState.Outside, new Play(this, gameStateManager, player, keyHandler, mouseHandler));
         this.gameStateManager.setState(GameState.RestScreen);
         this.gameStateManager.setNPCStrategy(new WalkNPCStrategy());
         this.gameStateManager.setMapPokemonStrategy(new WalkPokemonStrategy());
+        this.gameMode = new Easy();
 
         factoryMap.put("Vintage", new VintageMap());
         factoryMap.put("Classic", new ClassicMap());
@@ -108,6 +113,14 @@ public class Game extends JPanel implements Runnable {
         } else {
             gameStateManager.getCurrentState().tick();
         }
+    }
+
+    public void setGameMode(GameMode gameMode) {
+        this.gameMode = gameMode;
+    }
+
+    public GameMode getGameMode() {
+        return gameMode;
     }
 
     @Override

@@ -1,5 +1,6 @@
 package game.ui.game_states.play;
 
+import game.Game;
 import game.entity.npc.NPCStrategy;
 import game.entity.npc.Npc;
 import game.entity.player.Player;
@@ -27,13 +28,13 @@ public class Play implements IState, ScreenManager {
     private final GameScreen[] screens = new GameScreen[3];
     private int currentScreenIndex;
 
-    public Play(GameStateManager gameStateManager, Player player, KeyHandler keyHandler, MouseHandler mouseHandler) {
+    public Play(Game game, GameStateManager gameStateManager, Player player, KeyHandler keyHandler, MouseHandler mouseHandler) {
         this.gameStateManager = gameStateManager;
         this.player = player;
         this.currentScreenIndex = 0;
         screens[0] = new Outside(player, keyHandler, npcs, pokemons, this);
         screens[1] = new Bienio(player, this);
-        screens[2] = new CombatScreen(player, mouseHandler, this, pokemons);
+        screens[2] = new CombatScreen(game, player, mouseHandler, this, pokemons);
     }
 
     @Override

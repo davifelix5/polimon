@@ -1,6 +1,10 @@
 package game.ui.game_states;
 
 import game.Game;
+import game.combate.Easy;
+import game.combate.GameMode;
+import game.combate.Hard;
+import game.combate.Medium;
 import game.entity.npc.FixedNPCStrategy;
 import game.entity.npc.WalkNPCStrategy;
 import game.entity.pokemon.FixedPokemonStrategy;
@@ -17,35 +21,43 @@ import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.util.Arrays;
 
 public class Menu implements IState {
 
 	private final IStateManager stateManager;
 	private BufferedImage backgroundImage;
-	private final Button playVintage, playClassic, exit, moveNpcs, walkNpcs;
+
+	private final Button[] buttons = new Button[8];
 
 	private final Sound music = new Sound("src/game/res/sound/menu.wav");
 
-	public Menu(MouseHandler mouse, IStateManager stateManager, Game game) {
+	 private final GameMode[] modes = {new Easy(), new Medium(), new Hard()};
+
+	public Menu( Game game, IStateManager stateManager, MouseHandler mouse) {
 		this.stateManager = stateManager;
+
 		loadImages();
-		playVintage = new Button("Play Vintage Mode",35 ,180, 150, 600, 60, mouse, () -> {
+		buttons[0] = new Button("Play Vintage Mode",35 ,180, 60, 600, 60, mouse, () -> {
 			game.setMapFactory("Vintage");
 			stateManager.setState(GameState.Outside);
 		});
-		playClassic = new Button("Play Classic Mode",35 ,180, 250, 600, 60, mouse, () -> {
+		buttons[1] = new Button("Play Classic Mode",35 ,180, 130, 600, 60, mouse, () -> {
 			game.setMapFactory("Classic");
 			stateManager.setState(GameState.Outside);
 		});
-		exit = new Button("Exit",35 ,180, 350, 600, 60, mouse, () -> System.exit(0));
-		moveNpcs = new Button("NPCs & Pokemons andando",35 ,180, 450, 600, 80, mouse, () -> {
+		buttons[2] = new Button("NPCs & Pokemons andando",35 ,180, 200, 600, 60, mouse, () -> {
 			stateManager.setNPCStrategy(new WalkNPCStrategy());
 			stateManager.setMapPokemonStrategy(new WalkPokemonStrategy());
 		});
-		walkNpcs = new Button("NPCs & Pokemons parados",35 ,180, 550, 600, 80, mouse, () -> {
+		buttons[3] = new Button("NPCs & Pokemons parados",35 ,180, 270, 600, 60, mouse, () -> {
 			stateManager.setNPCStrategy(new FixedNPCStrategy());
 			stateManager.setMapPokemonStrategy(new FixedPokemonStrategy());
 		});
+		buttons[4] = new Button("Dificuldade fácil",35 ,180, 340, 600, 60, mouse, () -> game.setGameMode(modes[0]));
+		buttons[5] = new Button("Dificuldade média",35 ,180, 410, 600, 60, mouse, () -> game.setGameMode(modes[1]));
+		buttons[6] = new Button("Dificuldade difícil",35 ,180, 480, 600, 60, mouse, () -> game.setGameMode(modes[2]));
+		buttons[7] = new Button("Exit",35 ,180, 550, 600, 60, mouse, () -> System.exit(0));
 	}
 
 	public void tick() {
@@ -56,37 +68,19 @@ public class Menu implements IState {
 
 		g.drawImage(backgroundImage, 0, 0, null);
 
-		Font h1 = new Font("arial", Font.BOLD, 48);
-
-		g.setFont(h1);
-		g.setColor(Color.white);
-		g.drawString("Main Menu", (960 - (9 * h1.getSize() / 2)) / 2, 100);
-
-		playVintage.render(g);
-		playClassic.render(g);
-		exit.render(g);
-		moveNpcs.render(g);
-		walkNpcs.render(g);
+		Arrays.stream(buttons).forEach(btn -> btn.render(g));
 	}
 
 	@Override
 	public void destroy() {
-		playVintage.setIsActive(false);
-		playClassic.setIsActive(false);
-		exit.setIsActive(false);
-		moveNpcs.setIsActive(false);
-		walkNpcs.setIsActive(false);
+		Arrays.stream(buttons).forEach(btn -> btn.setIsActive(false));
 		music.stop();
 	}
 
 	@Override
 	public void start() {
 		music.restart();
-		playVintage.setIsActive(true);
-		playClassic.setIsActive(true);
-		exit.setIsActive(true);
-		moveNpcs.setIsActive(true);
-		walkNpcs.setIsActive(true);
+		Arrays.stream(buttons).forEach(btn -> btn.setIsActive(true));
 		music.play();
 		music.loop();
 	}

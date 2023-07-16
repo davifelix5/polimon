@@ -1,5 +1,6 @@
 package game.ui.game_states.play;
 
+import game.Game;
 import game.entity.player.Player;
 import game.entity.player.PlayerAnimations;
 import game.entity.pokemon.Pokemon;
@@ -29,9 +30,11 @@ public class CombatScreen implements GameScreen {
     private String message;
     private final Button pegar;
     private final Button correr;
+    private final Game game;
 
 
-    public CombatScreen(Player player, MouseHandler mouse, ScreenManager screenManager, ArrayList<Pokemon> pokemons) {
+    public CombatScreen(Game game, Player player, MouseHandler mouse, ScreenManager screenManager, ArrayList<Pokemon> pokemons) {
+        this.game = game;
         this.player = player;
         this.screenManager = screenManager;
         this.pokemons = pokemons;
@@ -81,6 +84,7 @@ public class CombatScreen implements GameScreen {
     }
 
     private void capturePokemon() {
+        System.out.println(this.game.getGameMode());
         if (this.player.hasPokeballs() && this.player.getHP() > 0) {
             this.player.removePokeball();
             this.player.reduceHP(10);
