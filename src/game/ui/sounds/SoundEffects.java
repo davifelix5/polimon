@@ -10,8 +10,12 @@ public class SoundEffects {
         soundEffect.stopAudio();
     }
 
-    public void playSoundEffect(String pathName){
+    public void setSoundEffect(String pathName){
         soundEffect.setAudio(pathName);
+    }
+
+    public void playSoundEffect(){
         soundEffect.playAudio();
+        soundEffect.loop();
     }
 }

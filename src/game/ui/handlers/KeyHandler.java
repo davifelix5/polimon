@@ -1,5 +1,8 @@
 package game.ui.handlers;
 
+import game.entity.player.PlayerAnimations;
+import game.ui.sounds.SoundEffects;
+
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 
@@ -7,6 +10,7 @@ public class KeyHandler implements KeyListener {
 
     public boolean upPressed, downPressed, leftPressed, rightPressed, bikeButtonPressed, enterPressed, escPressed;
     public boolean anyKeyPressed, spacePressed;
+
 
     @Override
     public void keyTyped(KeyEvent e) {
