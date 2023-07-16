@@ -28,6 +28,8 @@ OBS: não foi possível encontrar os mesmos _sprites_ para o _player_ nadando, a
   - Os tipos de _pokemon_ contam cada um com uma raridade, definida como uma probilidade de aparição, como é possível ver na classe `src/game/entity/PokemonType`.
   - Dentro de uma área, o tipo de pokemon que irá aparecer é escolhido aleatóriamente
 - A quantida de _pokemons_ captura é mostrada também no canto superior direito da tela
+- Para ver quais _pokemons_ foram capturados, basta aperta a tecla **P** e a pokedex irá abrir  
+
 ### Atualmente, as áreas para aparição de pokemons são
 - Tipos Normal, Grama e Fada
 

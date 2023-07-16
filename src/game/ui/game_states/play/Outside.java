@@ -35,7 +35,7 @@ public class Outside implements GameScreen {
     public final Sound music = new Sound("src/game/res/sound/outside.wav");
 
     public Outside(Player player, KeyHandler keyHandler, ArrayList<Npc> npcs, ArrayList<Pokemon> pokemons, ScreenManager screenManager) {
-        this.pokeGenerator = new PokemonGenerator(pokemons, 20);
+        this.pokeGenerator = new PokemonGenerator(pokemons, 3);
         this.player = player;
         this.player.setTileManager(tm);
         this.keyHandler = keyHandler;
@@ -142,6 +142,7 @@ public class Outside implements GameScreen {
 
         // Ticking game objects
         player.tick();
+        player.getPokedex().tick();
         this.pokemons.forEach(Pokemon::tick);
         this.npcs.forEach(Npc::tick);
 
@@ -151,7 +152,7 @@ public class Outside implements GameScreen {
 
         // Colisão com pokemon
         Pokemon foundPokemon = this.findPokemonWithinPlayer();
-        if (foundPokemon != null & keyHandler.enterPressed) {
+        if (foundPokemon != null & keyHandler.isEnterPressed()) {
             ((CombatScreen) screenManager.getBattleScreen()).setEnemyPokemon(foundPokemon);
             screenManager.setCurrentScreenIndex(2);
             System.out.println("Você achou um " + foundPokemon.getName() + "!");
@@ -160,7 +161,7 @@ public class Outside implements GameScreen {
         // Colisão e diálogo com npcs
         for (Npc npc: npcs) {
             if (this.intersets(player, npc)) {
-                if (keyHandler.enterPressed) {
+                if (keyHandler.isEnterPressed()) {
                     npc.setDialogueActivated(true);
                 }
             }
@@ -188,6 +189,10 @@ public class Outside implements GameScreen {
         // Diálogos renderizados depois para aperecerem primeiro
         for (Npc npc: npcs)
             npc.renderDialogue(g);
+
+        if (keyHandler.ispToggle()) {
+            player.getPokedex().render(g);
+        }
 
     }
 
