@@ -94,6 +94,7 @@ public class CombatScreen implements GameScreen {
             this.player.removePokeball();
             this.player.reduceHP(mode.getHPLost());
             this.player.increaseExpeciente(mode.getXPGained());
+            this.player.addToPokedex(enemyPokemon);
             this.pokemons.remove(enemyPokemon);
             enemyPokemon.getPokeArea().removePokemon();
             pegar.setIsActive(false);
@@ -173,7 +174,7 @@ public class CombatScreen implements GameScreen {
                 30, 640 - 176, 300
         );
 
-        this.player.renderPokeballAmount(g);
+        this.player.renderPlayerStatus(g);
     }
 
     @Override

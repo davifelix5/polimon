@@ -27,6 +27,7 @@ OBS: não foi possível encontrar os mesmos _sprites_ para o _player_ nadando, a
   - Cada área tem uma lista com os tipos de _pokemons_ que podem aparecer nela, além de uma quantidade máxima de _pokemons_ que podem estar nela ao mesmo tempo.
   - Os tipos de _pokemon_ contam cada um com uma raridade, definida como uma probilidade de aparição, como é possível ver na classe `src/game/entity/PokemonType`.
   - Dentro de uma área, o tipo de pokemon que irá aparecer é escolhido aleatóriamente
+- A quantida de _pokemons_ captura é mostrada também no canto superior direito da tela
 ### Atualmente, as áreas para aparição de pokemons são
 - Tipos Normal, Grama e Fada
 

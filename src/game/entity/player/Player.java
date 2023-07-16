@@ -3,6 +3,7 @@ package game.entity.player;
 import game.Game;
 import game.entity.animation.*;
 import game.entity.Entity;
+import game.entity.pokemon.Pokemon;
 import game.ui.handlers.KeyHandler;
 import game.map.factory.MapFactory;
 import game.ui.sounds.SoundEffect;
@@ -11,6 +12,7 @@ import javax.imageio.ImageIO;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.FileInputStream;
+import java.util.ArrayList;
 
 public class Player extends Entity {
 
@@ -24,7 +26,7 @@ public class Player extends Entity {
 
     private int pokeBallAmount = 0;
     private int hp = 100;
-    private BufferedImage pokeballImage;
+    private BufferedImage pokeballImage, pikachuImage;
 
     private final IAnimationSet[] animationSets = new IAnimationSet[PlayerAnimations.values().length]; // Vetor com todas as animações possíveis.
     private PlayerAnimations currentAnimation;
@@ -33,6 +35,8 @@ public class Player extends Entity {
     private final SoundEffect swimSoundEffect = new SoundEffect("src/game/res/sound/swim.wav");
 
     private int experience = 0;
+
+    private final ArrayList<Pokemon> pokedex = new ArrayList<>();
 
 
     private MapFactory spritesFactory;
@@ -60,6 +64,7 @@ public class Player extends Entity {
             this.animationSets[PlayerAnimations.Walk.getValue()] = new MoveAnimationSet(spritesFactory.getPlayerSpriteSheets(PlayerAnimations.Walk), 0, 10);
             this.animationSets[PlayerAnimations.Swimming.getValue()] = new MoveAnimationSet(spritesFactory.getPlayerSpriteSheets(PlayerAnimations.Swimming),0, 10);
             this.pokeballImage = ImageIO.read(new FileInputStream("src/game/res/sprites/pokemon/pokeball.png"));
+            this.pikachuImage = ImageIO.read(new FileInputStream("src/game/res/sprites/pokemon/poke.png"));
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -183,7 +188,11 @@ public class Player extends Entity {
         g.drawImage(image, positionX, positionY, 32, 32, null);
     }
 
-    public void renderPokeballAmount(Graphics g) {
+    /**
+     * Renderiza informações sobre o Player.
+     * @param g gráficos usados para renderização
+     */
+    public void renderPlayerStatus(Graphics g) {
         // Renderizando a quantidade de pokebolas
         int pokeballX = Game.width - 3*Game.tileSize;
         int pokeballY = Game.tileSize / 2;
@@ -191,6 +200,14 @@ public class Player extends Entity {
         g.setFont(new Font("arial", Font.PLAIN, 20));
         g.setColor(Color.white);
         g.drawString("x " + this.getPokeballs(), pokeballX + Game.tileSize, pokeballY + 20);
+
+        // Renderizando a quantidade de pokemons
+        int pokedexX = Game.width - 8*Game.tileSize;
+        g.drawImage(pikachuImage, pokedexX, pokeballY, 25, 25, null);
+        g.setFont(new Font("arial", Font.PLAIN, 20));
+        g.setColor(Color.white);
+        g.drawString("x " + this.pokedex.size(), pokedexX + Game.tileSize, pokeballY + 20);
+
     }
 
     public void setSwimming(boolean swimming) {
@@ -263,6 +280,10 @@ public class Player extends Entity {
 
     public int getExperience() {
         return experience;
+    }
+
+    public void addToPokedex(Pokemon poke) {
+        this.pokedex.add(poke);
     }
 
     /***
