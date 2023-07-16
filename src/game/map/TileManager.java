@@ -84,7 +84,7 @@ public class TileManager {
     }
 
     public void interacts() {
-        for (MapLayer l: layers) {
+            for (MapLayer l: layers) {
             if (!l.isInteractable() || l.getTileMap() == null)
                 continue;
 
