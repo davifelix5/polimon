@@ -14,6 +14,7 @@ import game.entity.npc.Npc;
 import game.entity.pokemon.PokemonType;
 import game.entity.pokemon.Pokemon;
 import game.entity.pokemon.PokemonGenerator;
+import game.ui.sounds.Sound;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
@@ -30,6 +31,8 @@ public class Outside implements GameScreen {
     private final ArrayList<Pokemon> pokemons;
     private final ScreenManager screenManager;
     private final PokemonGenerator pokeGenerator;
+
+    public final Sound music = new Sound("src/game/res/sound/outside.wav");
 
     public Outside(Player player, KeyHandler keyHandler, ArrayList<Npc> npcs, ArrayList<Pokemon> pokemons, ScreenManager screenManager) {
         this.pokeGenerator = new PokemonGenerator(pokemons, 3);
@@ -213,6 +216,17 @@ public class Outside implements GameScreen {
     @Override
     public TileManager getTileManager() {
         return tm;
+    }
+
+    @Override
+    public void startMusic() {
+        music.play();
+        music.loop();
+    }
+
+    @Override
+    public void stopMusic() {
+        music.stop();
     }
 
     public Pokemon findPokemonWithinPlayer() {

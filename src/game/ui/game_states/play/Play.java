@@ -60,6 +60,7 @@ public class Play implements IState, ScreenManager {
     public void start() {
         this.player.loadAnimations();
         screens[currentScreenIndex].loadAnimations();
+        screens[currentScreenIndex].startMusic();
 
         for (Npc npc: npcs) {
             npc.setSpritesheet(factory.getNpcSpritesheet());
@@ -107,7 +108,8 @@ public class Play implements IState, ScreenManager {
 
     public void setCurrentScreenIndex(int currentScreenIndex) {
         if (currentScreenIndex != this.currentScreenIndex) {
-            TileManager tm = screens[currentScreenIndex].getTileManager();
+            screens[this.currentScreenIndex].stopMusic();
+            TileManager tm = screens[this.currentScreenIndex].getTileManager();
             if (tm != null)
                 tm.clearLayers();
             this.currentScreenIndex = currentScreenIndex;

@@ -10,6 +10,7 @@ import game.entity.npc.NPCStrategy;
 import game.ui.handlers.MouseHandler;
 import game.map.factory.MapFactory;
 import game.entity.pokemon.MapPokemonStrategy;
+import game.ui.sounds.Sound;
 
 import javax.imageio.ImageIO;
 import java.awt.*;
@@ -22,6 +23,8 @@ public class Menu implements IState {
 	private final IStateManager stateManager;
 	private BufferedImage backgroundImage;
 	private final Button playVintage, playClassic, exit, moveNpcs, walkNpcs;
+
+	private final Sound music = new Sound("src/game/res/sound/menu.wav");
 
 	public Menu(MouseHandler mouse, IStateManager stateManager, Game game) {
 		this.stateManager = stateManager;
@@ -73,6 +76,7 @@ public class Menu implements IState {
 		exit.setIsActive(false);
 		moveNpcs.setIsActive(false);
 		walkNpcs.setIsActive(false);
+		music.stop();
 	}
 
 	@Override
@@ -82,6 +86,8 @@ public class Menu implements IState {
 		exit.setIsActive(true);
 		moveNpcs.setIsActive(true);
 		walkNpcs.setIsActive(true);
+		music.play();
+		music.loop();
 	}
 
 	@Override

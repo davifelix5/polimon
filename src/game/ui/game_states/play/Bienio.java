@@ -61,6 +61,16 @@ public class Bienio implements GameScreen {
         return tm;
     }
 
+    @Override
+    public void startMusic() {
+
+    }
+
+    @Override
+    public void stopMusic() {
+
+    }
+
     public void render(Graphics g) {
         g.drawImage(background, 0, 0, null); // Map background
         this.tm.renderRange(0, 2, g);

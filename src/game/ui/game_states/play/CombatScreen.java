@@ -180,4 +180,14 @@ public class CombatScreen implements GameScreen {
         return null;
     }
 
+    @Override
+    public void startMusic() {
+
+    }
+
+    @Override
+    public void stopMusic() {
+
+    }
+
 }

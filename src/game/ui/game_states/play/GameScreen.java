@@ -13,4 +13,6 @@ public interface GameScreen {
     void setMapFactory(MapFactory factory);
     void setPokemonStrategy(MapPokemonStrategy strategy);
     TileManager getTileManager();
+    void startMusic();
+    void stopMusic();
 }

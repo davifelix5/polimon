@@ -28,9 +28,9 @@ public class Player extends Entity {
 
     private final IAnimationSet[] animationSets = new IAnimationSet[PlayerAnimations.values().length]; // Vetor com todas as animações possíveis.
     private PlayerAnimations currentAnimation;
-    private final SoundEffect walkSoundEffect = new SoundEffect();
-    private final SoundEffect bikeSoundEffect = new SoundEffect();
-    private final SoundEffect swimSoundEffect = new SoundEffect();
+    private final SoundEffect walkSoundEffect = new SoundEffect("src/game/res/sound/grass.wav");
+    private final SoundEffect bikeSoundEffect = new SoundEffect("src/game/res/sound/bike.wav");
+    private final SoundEffect swimSoundEffect = new SoundEffect("src/game/res/sound/swim.wav");
 
     private int experience = 0;
 
@@ -42,15 +42,8 @@ public class Player extends Entity {
         this.movementKeyInput = movementKeyInput;
         this.currentAnimation = PlayerAnimations.Walk;
         this.colliding = false;
-
-        setPlayerSoundEffects();
     }
 
-    public void setPlayerSoundEffects(){
-        walkSoundEffect.setSoundEffect("src/game/ui/sounds/soundFiles/grassWalkEffect.wav");
-        bikeSoundEffect.setSoundEffect("src/game/ui/sounds/soundFiles/bikeSoundEffect.wav");
-        swimSoundEffect.setSoundEffect("src/game/ui/sounds/soundFiles/swimmingEffect.wav");
-    }
     public void stopPlayerSoundEffects(){
         walkSoundEffect.stopSoundEffect();
         bikeSoundEffect.stopSoundEffect();
@@ -113,6 +106,7 @@ public class Player extends Entity {
         int BACKWARD = 0, LEFT = 1,  RIGHT = 2, FOWARD = 3; // Indices das animações
 
         // Gerencia qual será a animação atual do jogador.
+        stopPlayerSoundEffects();
         if (movementKeyInput.bikeButtonPressed && !swimming) {
             setCurrentAnimation(PlayerAnimations.Bike);
             bikeSoundEffect.playSoundEffect();

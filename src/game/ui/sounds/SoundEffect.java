@@ -1,21 +1,19 @@
 package game.ui.sounds;
 
 public class SoundEffect {
-    Sound soundEffect = new Sound();
 
-    public SoundEffect(){
+    private final Sound soundEffect;
+
+    public SoundEffect(String pathname){
+        this.soundEffect = new Sound(pathname);
     }
 
     public void stopSoundEffect(){
-        soundEffect.stopAudio();
-    }
-
-    public void setSoundEffect(String pathName){
-        soundEffect.setAudio(pathName);
+        soundEffect.stop();
     }
 
     public void playSoundEffect(){
-        soundEffect.playAudio();
+        soundEffect.play();
         soundEffect.loop();
     }
 }

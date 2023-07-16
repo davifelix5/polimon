@@ -7,15 +7,10 @@ import java.io.File;
 
 public class Sound implements ISound{
     Clip clip;
-    public Sound() {
-
-    }
-
-    @Override
-    public void setAudio(String pathName) {
+    public Sound(String pathname) {
         try{
             clip = AudioSystem.getClip();
-            AudioInputStream music = AudioSystem.getAudioInputStream(new File(pathName).getAbsoluteFile());
+            AudioInputStream music = AudioSystem.getAudioInputStream(new File(pathname).getAbsoluteFile());
             clip.open(music);
         } catch (Exception e) {
             e.printStackTrace();
@@ -23,12 +18,12 @@ public class Sound implements ISound{
     }
 
     @Override
-    public void playAudio() {
+    public void play() {
         clip.start();
     }
 
     @Override
-    public void stopAudio() {
+    public void stop() {
         clip.stop();
     }
 
