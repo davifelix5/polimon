@@ -55,6 +55,12 @@ public class Outside implements GameScreen {
                 "Será?!",
                 "Fique por aqui e descubra!"
         };
+        String[] dialogues3 = {
+                "Olá, caro jogador!",
+                "Eu sei que é muito cansativo capturar pokémons.",
+                "Mas desistir nunca é uma opção",
+                "Tome aqui mais uma força para continuar"
+        };
 
         this.npcs.add(
                 new Npc(
@@ -72,6 +78,15 @@ public class Outside implements GameScreen {
                         new Dialogue(dialogues2, dialogueFont),
                         keyHandler,
                         this.player::addPokeball
+                )
+        );
+        this.npcs.add(
+                new Npc(
+                        new Rectangle(61 * Game.tileSize, 42 * Game.tileSize, 7*Game.tileSize, 5*Game.tileSize),
+                        tm, 2,
+                        new Dialogue(dialogues3, dialogueFont),
+                        keyHandler,
+                        this.player::cure
                 )
         );
 

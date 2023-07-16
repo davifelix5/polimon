@@ -233,6 +233,10 @@ public class Player extends Entity {
         return this.hp;
     }
 
+    public void cure() {
+        this.hp = 100;
+    }
+
     /***
      * Identifica a largura do jogador a partir dos sprites da animação atual.
      * @return largura do jogador
