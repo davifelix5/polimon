@@ -28,6 +28,8 @@ public class Player extends Entity {
     private final IAnimationSet[] animationSets = new IAnimationSet[PlayerAnimations.values().length]; // Vetor com todas as animações possíveis.
     private PlayerAnimations currentAnimation;
 
+    private int experience = 0;
+
 
     private MapFactory spritesFactory;
 
@@ -235,6 +237,14 @@ public class Player extends Entity {
 
     public void cure() {
         this.hp = 100;
+    }
+
+    public void increaseExpeciente(int addedExperience) {
+        this.experience = Game.clamp(this.experience + addedExperience, 0, 100);
+    }
+
+    public int getExperience() {
+        return experience;
     }
 
     /***

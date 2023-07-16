@@ -26,7 +26,9 @@ public class CombatScreen implements GameScreen {
     private final Player player;
     private final ArrayList<MapPokemon> pokemons;
 
-    private Button pegar, correr;
+    private String message;
+    private final Button pegar;
+    private final Button correr;
 
 
     public CombatScreen(Player player, MouseHandler mouse, ScreenManager screenManager, ArrayList<MapPokemon> pokemons) {
@@ -40,17 +42,7 @@ public class CombatScreen implements GameScreen {
                 960 / 2 + 10, 640 - 176,
                 210, 156,
                 mouse,
-                () -> {
-                    if (this.player.hasPokeballs() && this.player.getHP() >= 0) {
-                        this.player.removePokeball();
-                        this.player.reduceHP(10);
-                        this.pokemons.remove(enemyPokemon);
-                        enemyPokemon.getPokeArea().removePokemon();
-                        pegar.setIsActive(false);
-                        correr.setIsActive(false);
-                        this.screenManager.setCurrentScreenIndex(0);
-                    }
-                }
+                this::capturePokemon
         );
 
         this.correr = new Button(
@@ -65,14 +57,11 @@ public class CombatScreen implements GameScreen {
     }
 
     @Override
-    public void tick() {
-
-    }
-
-    @Override
     public void loadAnimations() {
         pegar.setIsActive(true);
         correr.setIsActive(true);
+        // Inicial message
+        this.message = "Para pegar um Pokemon basta escolher o botão de pegar Dependendo da dificuldade do jogo e da quantidade de bolas de pokemon que você possui esse pokemon será adicionado na sua pokedex";
         try {
             this.backgroundImage = ImageIO.read(new FileInputStream("src/game/res/fotos/combatScreen.jpg"));
             this.combatHUD = ImageIO.read(new FileInputStream("src/game/res/fotos/combatHUD.jpg"));
@@ -87,20 +76,31 @@ public class CombatScreen implements GameScreen {
         this.factory = factory;
     }
 
-    @Override
-    public void setPokemonStrategy(MapPokemonStrategy strategy) {
-
-    }
-
-    @Override
-    public TileManager getTileManager() {
-        return null;
-    }
-
     public void setEnemyPokemon(MapPokemon enemyPokemon) {
         this.enemyPokemon = enemyPokemon;
     }
 
+    private void capturePokemon() {
+        if (this.player.hasPokeballs() && this.player.getHP() > 0) {
+            this.player.removePokeball();
+            this.player.reduceHP(10);
+            this.player.increaseExpeciente(10);
+            this.pokemons.remove(enemyPokemon);
+            enemyPokemon.getPokeArea().removePokemon();
+            pegar.setIsActive(false);
+            correr.setIsActive(false);
+            this.screenManager.setCurrentScreenIndex(0);
+        } else if (!this.player.hasPokeballs()) {
+            this.message = "Você não tem pokebolas";
+        } else if (this.player.getHP() == 0) {
+            this.message = "Você está muito casado para capturar este pokemon. Tente se curar!";
+        }
+        else {
+            this.message = this.enemyPokemon.getName() + " não quer ser capturado. Tente novamente!";
+        }
+    }
+
+    @Override
     public void render(Graphics g) {
 
         Font h2 = new Font("arial", Font.PLAIN, 20);
@@ -123,7 +123,7 @@ public class CombatScreen implements GameScreen {
         StatBar alliedXP = new StatBar(
                 634, 425,
                 888 - 634, 436 - 425,
-                100, 100,
+                100, this.player.getExperience(),
                 Color.cyan
         );
 
@@ -158,11 +158,26 @@ public class CombatScreen implements GameScreen {
         g.drawRoundRect(30, 640 - 176, 400, 156, 30, 30);
         Fontes.renderText(
                 g,
-                "Para pegar um Pokemon basta escolher o botão de pegar Dependendo da dificuldade do jogo e da quantidade de bolas de pokemon que você possui esse pokemon será adicionado na sua pokedex",
+                message,
                 30, 640 - 176, 300
         );
 
         this.player.renderPokeballAmount(g);
+    }
+
+    @Override
+    public void tick() {
+
+    }
+
+    @Override
+    public void setPokemonStrategy(MapPokemonStrategy strategy) {
+
+    }
+
+    @Override
+    public TileManager getTileManager() {
+        return null;
     }
 
 }
