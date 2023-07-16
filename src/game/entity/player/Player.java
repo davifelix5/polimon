@@ -5,6 +5,7 @@ import game.entity.animation.*;
 import game.entity.Entity;
 import game.ui.handlers.KeyHandler;
 import game.map.factory.MapFactory;
+import game.ui.sounds.SoundEffect;
 
 import javax.imageio.ImageIO;
 import java.awt.*;
@@ -27,6 +28,9 @@ public class Player extends Entity {
 
     private final IAnimationSet[] animationSets = new IAnimationSet[PlayerAnimations.values().length]; // Vetor com todas as animações possíveis.
     private PlayerAnimations currentAnimation;
+    private final SoundEffect walkSoundEffect = new SoundEffect();
+    private final SoundEffect bikeSoundEffect = new SoundEffect();
+    private final SoundEffect swimSoundEffect = new SoundEffect();
 
     private int experience = 0;
 
@@ -38,6 +42,19 @@ public class Player extends Entity {
         this.movementKeyInput = movementKeyInput;
         this.currentAnimation = PlayerAnimations.Walk;
         this.colliding = false;
+
+        setPlayerSoundEffects();
+    }
+
+    public void setPlayerSoundEffects(){
+        walkSoundEffect.setSoundEffect("src/game/ui/sounds/soundFiles/grassWalkEffect.wav");
+        bikeSoundEffect.setSoundEffect("src/game/ui/sounds/soundFiles/bikeSoundEffect.wav");
+        swimSoundEffect.setSoundEffect("src/game/ui/sounds/soundFiles/swimmingEffect.wav");
+    }
+    public void stopPlayerSoundEffects(){
+        walkSoundEffect.stopSoundEffect();
+        bikeSoundEffect.stopSoundEffect();
+        swimSoundEffect.stopSoundEffect();
     }
 
     public void setFactory(MapFactory spritesFactory) {
@@ -98,13 +115,16 @@ public class Player extends Entity {
         // Gerencia qual será a animação atual do jogador.
         if (movementKeyInput.bikeButtonPressed && !swimming) {
             setCurrentAnimation(PlayerAnimations.Bike);
+            bikeSoundEffect.playSoundEffect();
             this.setMovingRate(3);
         } else if (swimming) {
             setCurrentAnimation(PlayerAnimations.Swimming);
+            swimSoundEffect.playSoundEffect();
             this.setMovingRate(4);
             setSwimming(false);
         } else {
             setCurrentAnimation(PlayerAnimations.Walk);
+            walkSoundEffect.playSoundEffect();
             this.setMovingRate(2);
         }
 
@@ -113,6 +133,7 @@ public class Player extends Entity {
             if (getCurrentAnimationSet().getCurrentIndex() == FOWARD || getCurrentAnimationSet().getCurrentIndex() == BACKWARD) {
                 getAnimation().stop();
                 getAnimation().reset();
+                stopPlayerSoundEffects();
             }
             setVelY(0);
         }
@@ -120,6 +141,7 @@ public class Player extends Entity {
             if (getCurrentAnimationSet().getCurrentIndex() == RIGHT || getCurrentAnimationSet().getCurrentIndex() == LEFT) {
                 getAnimation().stop();
                 getAnimation().reset();
+                stopPlayerSoundEffects();
             }
             setVelX(0);
         }
@@ -135,6 +157,7 @@ public class Player extends Entity {
                 getAnimation().start();
                 setVelY(movingRate);
             }
+
         }
 
         // Movimentação em y
@@ -204,6 +227,7 @@ public class Player extends Entity {
 
     public void setCurrentAnimation(PlayerAnimations currentAnimation) {
         this.currentAnimation = currentAnimation;
+
     }
 
     public IAnimationSet getCurrentAnimationSet() {
