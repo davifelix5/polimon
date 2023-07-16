@@ -5,7 +5,7 @@ import game.entity.animation.*;
 import game.entity.Entity;
 import game.ui.handlers.KeyHandler;
 import game.map.factory.MapFactory;
-import game.ui.sounds.SoundEffects;
+import game.ui.sounds.SoundEffect;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
@@ -22,9 +22,9 @@ public class Player extends Entity {
 
     private final IAnimationSet[] animationSets = new IAnimationSet[PlayerAnimations.values().length]; // Vetor com todas as animações possíveis.
     private PlayerAnimations currentAnimation;
-    private SoundEffects walkSoundEffect = new SoundEffects();
-    private SoundEffects bikeSoundEffect = new SoundEffects();
-    private SoundEffects swimSoundEffect = new SoundEffects();
+    private final SoundEffect walkSoundEffect = new SoundEffect();
+    private final SoundEffect bikeSoundEffect = new SoundEffect();
+    private final SoundEffect swimSoundEffect = new SoundEffect();
     private MapFactory spritesFactory;
 
     public Player(int x, int y, KeyHandler movementKeyInput) {

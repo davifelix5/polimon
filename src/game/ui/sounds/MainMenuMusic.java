@@ -1,7 +1,7 @@
 package game.ui.sounds;
 
 public class MainMenuMusic{
-    SoundClass mainMenuMusic = new SoundClass();
+    Sound mainMenuMusic = new Sound();
 
     public MainMenuMusic() {
     }

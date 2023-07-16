@@ -6,7 +6,7 @@ import game.entity.npc.NPCStrategy;
 import game.ui.handlers.MouseHandler;
 import game.map.factory.MapFactory;
 import game.entity.pokemon.MapPokemonStrategy;
-import game.ui.sounds.SoundClass;
+import game.ui.sounds.Sound;
 
 import javax.imageio.ImageIO;
 import java.awt.*;
@@ -20,13 +20,13 @@ public class Menu implements IState {
 	MouseHandler mouse;
 	IStateManager stateManager;
 	BufferedImage backgroundImage;
-	SoundClass mainMenuMusic;
+	Sound mainMenuMusic;
 
 
 	public Menu(MouseHandler mouse, IStateManager stateManager) {
 		this.mouse = mouse;
 		this.stateManager = stateManager;
-		this.mainMenuMusic = new SoundClass();
+		this.mainMenuMusic = new Sound();
 		loadImages();
 	}
 

@@ -5,7 +5,6 @@ import game.entity.npc.WalkNPCStrategy;
 import game.ui.game_states.*;
 import game.ui.game_states.Menu;
 import game.ui.game_states.play.CombatScreen;
-import game.ui.game_states.play.Outside;
 import game.ui.game_states.play.Play;
 import game.ui.handlers.KeyHandler;
 import game.ui.handlers.MouseHandler;
@@ -14,8 +13,6 @@ import game.map.factory.MapFactory;
 import game.map.factory.VintageMap;
 import game.entity.pokemon.WalkPokemonStrategy;
 import game.ui.sounds.MainMenuMusic;
-import game.ui.sounds.OutsideMusic;
-import game.ui.sounds.SoundClass;
 
 import javax.swing.*;
 import java.awt.*;

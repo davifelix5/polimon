@@ -5,9 +5,9 @@ import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.Clip;
 import java.io.File;
 
-public class SoundClass implements ISound{
+public class Sound implements ISound{
     Clip clip;
-    public SoundClass() {
+    public Sound() {
 
     }
 
@@ -18,6 +18,7 @@ public class SoundClass implements ISound{
             AudioInputStream music = AudioSystem.getAudioInputStream(new File(pathName).getAbsoluteFile());
             clip.open(music);
         } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 

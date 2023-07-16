@@ -1,9 +1,9 @@
 package game.ui.sounds;
 
-public class SoundEffects {
-    SoundClass soundEffect = new SoundClass();
+public class SoundEffect {
+    Sound soundEffect = new Sound();
 
-    public SoundEffects(){
+    public SoundEffect(){
     }
 
     public void stopSoundEffect(){

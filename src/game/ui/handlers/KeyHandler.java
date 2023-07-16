@@ -1,8 +1,5 @@
 package game.ui.handlers;
 
-import game.entity.player.PlayerAnimations;
-import game.ui.sounds.SoundEffects;
-
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 

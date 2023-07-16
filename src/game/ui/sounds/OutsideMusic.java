@@ -1,7 +1,7 @@
 package game.ui.sounds;
 
 public class OutsideMusic {
-    SoundClass outsideMusic = new SoundClass();
+    Sound outsideMusic = new Sound();
 
     public OutsideMusic() {
     }
