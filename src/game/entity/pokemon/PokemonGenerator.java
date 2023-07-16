@@ -51,7 +51,7 @@ public class PokemonGenerator {
             int posX = random.nextInt(minX, maxX);
             int posY = random.nextInt(minY, maxY);
 
-            pokemon = new MapPokemon(posX, posY, ID, pokeSprites.getSprite(ID.getValue() - 1), tm, area.getAppearanceArea());
+            pokemon = new MapPokemon(posX, posY, ID, pokeSprites.getSprite(ID.getValue() - 1), tm, area);
             pokemon.setStrategy(strategy.copy());
 
             area.addPokemon();

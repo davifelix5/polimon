@@ -217,8 +217,12 @@ public class Player extends Entity {
         return this.pokeBallAmount;
     }
 
+    public boolean hasPokeballs() {
+        return this.pokeBallAmount != 0;
+    }
+
     public void removePokeball() {
-        this.pokeBallAmount = Game.clamp(this.pokeBallAmount - 1, 0, 100);;
+        this.pokeBallAmount--;
     }
 
     public void reduceHP(int amountToReduce) {

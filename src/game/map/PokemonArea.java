@@ -14,6 +14,10 @@ public class PokemonArea {
         this.pokemonCount++;
     }
 
+    public void removePokemon() {
+        this.pokemonCount--;
+    }
+
     public PokemonArea(PokemonType[] type, Rectangle area, int maximumPokemons) {
         this.types = type;
         this.appearanceArea = area;

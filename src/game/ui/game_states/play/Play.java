@@ -33,7 +33,7 @@ public class Play implements IState, ScreenManager {
         this.currentScreenIndex = 0;
         screens[0] = new Outside(player, keyHandler, npcs, pokemons, this);
         screens[1] = new Bienio(player, this);
-        screens[2] = new CombatScreen(player, mouseHandler, this);
+        screens[2] = new CombatScreen(player, mouseHandler, this, pokemons);
     }
 
     @Override

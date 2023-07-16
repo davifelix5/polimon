@@ -6,4 +6,6 @@ public interface MouseInteraction {
     int getHeight();
     int getPosX();
     int getPosY();
+    boolean isActive();
+    void setIsActive(boolean isActive);
 }

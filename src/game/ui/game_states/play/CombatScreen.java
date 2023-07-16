@@ -11,6 +11,7 @@ import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.util.ArrayList;
 
 import game.combate.StatBar;
 import game.map.factory.MapFactory;
@@ -19,16 +20,48 @@ import game.utilities.Fontes;
 
 public class CombatScreen implements GameScreen {
     private final ScreenManager screenManager;
-    private final MouseHandler mouse;
     private BufferedImage backgroundImage, combatHUD, playerImage;
     private MapPokemon enemyPokemon;
     private MapFactory factory;
     private final Player player;
+    private final ArrayList<MapPokemon> pokemons;
 
-    public CombatScreen(Player player, MouseHandler mouse, ScreenManager screenManager) {
-        this.mouse = mouse;
+    private Button pegar, correr;
+
+
+    public CombatScreen(Player player, MouseHandler mouse, ScreenManager screenManager, ArrayList<MapPokemon> pokemons) {
         this.player = player;
         this.screenManager = screenManager;
+        this.pokemons = pokemons;
+
+        this.pegar = new Button(
+                "Pegar",
+                20,
+                960 / 2 + 10, 640 - 176,
+                210, 156,
+                mouse,
+                () -> {
+                    if (this.player.hasPokeballs() && this.player.getHP() >= 0) {
+                        this.player.removePokeball();
+                        this.player.reduceHP(10);
+                        this.pokemons.remove(enemyPokemon);
+                        enemyPokemon.getPokeArea().removePokemon();
+                        pegar.setIsActive(false);
+                        correr.setIsActive(false);
+                        this.screenManager.setCurrentScreenIndex(0);
+                    }
+                }
+        );
+
+        this.correr = new Button(
+                "Correr",
+                20,
+                960 / 2 + 240, 640 - 176,
+                210, 156,
+                mouse, () -> screenManager.setCurrentScreenIndex(0)
+        );
+
+
     }
 
     @Override
@@ -38,6 +71,8 @@ public class CombatScreen implements GameScreen {
 
     @Override
     public void loadAnimations() {
+        pegar.setIsActive(true);
+        correr.setIsActive(true);
         try {
             this.backgroundImage = ImageIO.read(new FileInputStream("src/game/res/fotos/combatScreen.jpg"));
             this.combatHUD = ImageIO.read(new FileInputStream("src/game/res/fotos/combatHUD.jpg"));
@@ -71,24 +106,6 @@ public class CombatScreen implements GameScreen {
         Font h2 = new Font("arial", Font.PLAIN, 20);
         g.setFont(h2);
 
-        Button pegar = new Button(
-                "Pegar",
-                20,
-                960 / 2 + 10, 640 - 176,
-                210, 156,
-                mouse, () -> {
-
-                }
-        );
-
-        Button correr = new Button(
-                "Correr",
-                20,
-                960 / 2 + 240, 640 - 176,
-                210, 156,
-                mouse, () -> screenManager.setCurrentScreenIndex(0)
-        );
-
         StatBar enemyHP = new StatBar(
                 210, 135,
                 402 - 210, 143 - 135,
@@ -99,7 +116,7 @@ public class CombatScreen implements GameScreen {
         StatBar alliedHP = new StatBar(
                 698, 363,
                 890 - 698, 371 - 363,
-                100, 100,
+                100, this.player.getHP(),
                 Color.green
         );
 
@@ -144,6 +161,8 @@ public class CombatScreen implements GameScreen {
                 "Para pegar um Pokemon basta escolher o botão de pegar Dependendo da dificuldade do jogo e da quantidade de bolas de pokemon que você possui esse pokemon será adicionado na sua pokedex",
                 30, 640 - 176, 300
         );
+
+        this.player.renderPokeballAmount(g);
     }
 
 }

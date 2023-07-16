@@ -19,16 +19,30 @@ import java.io.IOException;
 
 public class Menu implements IState {
 
-	private final MouseHandler mouse;
 	private final IStateManager stateManager;
 	private BufferedImage backgroundImage;
-	private final Game game;
+	private final Button playVintage, playClassic, exit, moveNpcs, walkNpcs;
 
 	public Menu(MouseHandler mouse, IStateManager stateManager, Game game) {
-		this.mouse = mouse;
 		this.stateManager = stateManager;
-		this.game = game;
 		loadImages();
+		playVintage = new Button("Play Vintage Mode",35 ,180, 150, 600, 60, mouse, () -> {
+			game.setMapFactory("Vintage");
+			stateManager.setState(GameState.Outside);
+		});
+		playClassic = new Button("Play Classic Mode",35 ,180, 250, 600, 60, mouse, () -> {
+			game.setMapFactory("Classic");
+			stateManager.setState(GameState.Outside);
+		});
+		exit = new Button("Exit",35 ,180, 350, 600, 60, mouse, () -> System.exit(0));
+		moveNpcs = new Button("NPCs & Pokemons andando",35 ,180, 450, 600, 80, mouse, () -> {
+			stateManager.setNPCStrategy(new WalkNPCStrategy());
+			stateManager.setMapPokemonStrategy(new WalkPokemonStrategy());
+		});
+		walkNpcs = new Button("NPCs & Pokemons parados",35 ,180, 550, 600, 80, mouse, () -> {
+			stateManager.setNPCStrategy(new FixedNPCStrategy());
+			stateManager.setMapPokemonStrategy(new FixedPokemonStrategy());
+		});
 	}
 
 	public void tick() {
@@ -38,23 +52,6 @@ public class Menu implements IState {
 	public void render(Graphics g) {
 
 		g.drawImage(backgroundImage, 0, 0, null);
-		Button playVintage = new Button("Play Vintage Mode",35 ,180, 150, 600, 60, mouse, () -> {
-			game.setMapFactory("Vintage");
-			stateManager.setState(GameState.Outside);
-		});
-		Button playClassic = new Button("Play Classic Mode",35 ,180, 250, 600, 60, mouse, () -> {
-			game.setMapFactory("Classic");
-			stateManager.setState(GameState.Outside);
-		});
-		Button exit = new Button("Exit",35 ,180, 350, 600, 60, mouse, () -> System.exit(0));
-		Button moveNpcs = new Button("NPCs & Pokemons andando",35 ,180, 450, 600, 80, mouse, () -> {
-			stateManager.setNPCStrategy(new WalkNPCStrategy());
-			stateManager.setMapPokemonStrategy(new WalkPokemonStrategy());
-		});
-		Button walkNpcs = new Button("NPCs & Pokemons parados",35 ,180, 550, 600, 80, mouse, () -> {
-			stateManager.setNPCStrategy(new FixedNPCStrategy());
-			stateManager.setMapPokemonStrategy(new FixedPokemonStrategy());
-		});
 
 		Font h1 = new Font("arial", Font.BOLD, 48);
 
@@ -71,12 +68,20 @@ public class Menu implements IState {
 
 	@Override
 	public void destroy() {
-		mouse.resetElements();
+		playVintage.setIsActive(false);
+		playClassic.setIsActive(false);
+		exit.setIsActive(false);
+		moveNpcs.setIsActive(false);
+		walkNpcs.setIsActive(false);
 	}
 
 	@Override
 	public void start() {
-
+		playVintage.setIsActive(true);
+		playClassic.setIsActive(true);
+		exit.setIsActive(true);
+		moveNpcs.setIsActive(true);
+		walkNpcs.setIsActive(true);
 	}
 
 	@Override

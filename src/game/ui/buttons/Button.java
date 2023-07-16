@@ -13,9 +13,14 @@ public class Button implements MouseInteraction {
     private final int posX, posY;
     private final int width, height;
     private final MouseInteractionStrategy pressStrategy;
+    private boolean active = false;
 
+    @Override
+    public String toString() {
+        return this.title;
+    }
 
-    public Button(String title,int fontSize, int posX, int posY, int width, int height, MouseHandler mouse, MouseInteractionStrategy pressStrategy) {
+    public Button(String title, int fontSize, int posX, int posY, int width, int height, MouseHandler mouse, MouseInteractionStrategy pressStrategy) {
         this.fontSize = fontSize;
         this.title = title;
         this.width = width;
@@ -49,6 +54,17 @@ public class Button implements MouseInteraction {
     public int getPosY() {
         return posY;
     }
+
+    @Override
+    public boolean isActive() {
+        return active;
+    }
+
+    @Override
+    public void setIsActive(boolean isActive) {
+        this.active = isActive;
+    }
+
 
     public void render(Graphics g) {
         int strLength = title.length();

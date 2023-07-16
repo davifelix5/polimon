@@ -15,7 +15,7 @@ public class MouseHandler extends MouseAdapter {
         this.game = game;
     }
 
-    private ArrayList<MouseInteraction> mouseElements = new ArrayList<>();
+    private final ArrayList<MouseInteraction> mouseElements = new ArrayList<>();
 
     /**
      * Percorre todos os elementos que podem interagir com o mouse e chamam sua estratégia de interação
@@ -23,18 +23,18 @@ public class MouseHandler extends MouseAdapter {
      * @param e o evento a ser processado
      */
     public void mousePressed(MouseEvent e) {
+
+    }
+
+    public void mouseReleased(MouseEvent e) {
         this.pressedPositionX = e.getX();
         this.pressedPositionY = e.getY();
 
         for (MouseInteraction el: mouseElements) {
-            if (isMouseOverOnPress(el.getPosX(), el.getPosY(),  el.getWidth(), el.getHeight())) {
+            if (isMouseOverOnPress(el.getPosX(), el.getPosY(),  el.getWidth(), el.getHeight()) && el.isActive()) {
                 el.getInteractionStrategy().onPress();
             }
         }
-    }
-
-    public void mouseReleased(MouseEvent e) {
-
     }
 
     /**
@@ -49,10 +49,6 @@ public class MouseHandler extends MouseAdapter {
         if(pressedPositionX > x && pressedPositionX < x + width) {
             return pressedPositionY > y && pressedPositionY < y + height;
         }else return false;
-    }
-
-    public void resetElements() {
-        this.mouseElements = new ArrayList<>();
     }
 
     public void addElement(MouseInteraction element) {

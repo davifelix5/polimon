@@ -2,6 +2,7 @@ package game.entity.pokemon;
 
 import game.entity.Entity;
 import game.Game;
+import game.map.PokemonArea;
 import game.map.TileManager;
 
 import java.awt.Rectangle;
@@ -13,11 +14,11 @@ public class MapPokemon extends Entity {
     private final PokemonID ID;
     private final BufferedImage pokeImage;
     private final int movingRate;
-    private final Rectangle moveArea;
+    private final PokemonArea pokeArea;
 
     private MapPokemonStrategy strategy;
     
-    public MapPokemon(int x, int y, PokemonID ID, BufferedImage pokeImage, TileManager tm, Rectangle moveArea) {
+    public MapPokemon(int x, int y, PokemonID ID, BufferedImage pokeImage, TileManager tm, PokemonArea pokeArea) {
         super(x, y);
         this.velX = 0;
         this.velY = 0;
@@ -25,11 +26,12 @@ public class MapPokemon extends Entity {
         this.pokeImage = pokeImage;
         this.tileManager = tm;
         this.movingRate = 1;
-        this.moveArea = moveArea;
+        this.pokeArea = pokeArea;
     }
 
     @Override
     public void tick() {
+        Rectangle moveArea = pokeArea.getAppearanceArea();
         int minX = moveArea.x, minY = moveArea.y;
         int maxX = moveArea.x + moveArea.width, maxY = moveArea.y + moveArea.height;
         if (!this.tileManager.colides(this)) {
@@ -65,5 +67,9 @@ public class MapPokemon extends Entity {
 
     public BufferedImage getPokeImage() {
         return pokeImage;
+    }
+
+    public PokemonArea getPokeArea() {
+        return pokeArea;
     }
 }
