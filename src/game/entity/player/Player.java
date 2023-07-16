@@ -6,8 +6,10 @@ import game.entity.Entity;
 import game.ui.handlers.KeyHandler;
 import game.map.factory.MapFactory;
 
+import javax.imageio.ImageIO;
 import java.awt.*;
 import java.awt.image.BufferedImage;
+import java.io.FileInputStream;
 
 public class Player extends Entity {
 
@@ -18,6 +20,10 @@ public class Player extends Entity {
     private int positionX, positionY; // Posição do jogador na tela
     private boolean colliding;
     private boolean swimming;
+
+    private int pokeBallAmount = 0;
+    private int hp = 100;
+    private BufferedImage pokeballImage;
 
     private final IAnimationSet[] animationSets = new IAnimationSet[PlayerAnimations.values().length]; // Vetor com todas as animações possíveis.
     private PlayerAnimations currentAnimation;
@@ -37,9 +43,14 @@ public class Player extends Entity {
     }
 
     public void loadAnimations() {
-        this.animationSets[PlayerAnimations.Bike.getValue()] = new MoveAnimationSet(spritesFactory.getPlayerSpriteSheets(PlayerAnimations.Bike), 0, 10);
-        this.animationSets[PlayerAnimations.Walk.getValue()] = new MoveAnimationSet(spritesFactory.getPlayerSpriteSheets(PlayerAnimations.Walk), 0, 10);
-        this.animationSets[PlayerAnimations.Swimming.getValue()] = new MoveAnimationSet(spritesFactory.getPlayerSpriteSheets(PlayerAnimations.Swimming),0, 10);
+        try {
+            this.animationSets[PlayerAnimations.Bike.getValue()] = new MoveAnimationSet(spritesFactory.getPlayerSpriteSheets(PlayerAnimations.Bike), 0, 10);
+            this.animationSets[PlayerAnimations.Walk.getValue()] = new MoveAnimationSet(spritesFactory.getPlayerSpriteSheets(PlayerAnimations.Walk), 0, 10);
+            this.animationSets[PlayerAnimations.Swimming.getValue()] = new MoveAnimationSet(spritesFactory.getPlayerSpriteSheets(PlayerAnimations.Swimming),0, 10);
+            this.pokeballImage = ImageIO.read(new FileInputStream("src/game/res/sprites/pokemon/pokeball.png"));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
@@ -153,6 +164,16 @@ public class Player extends Entity {
         g.drawImage(image, positionX, positionY, 32, 32, null);
     }
 
+    public void renderPokeballAmount(Graphics g) {
+        // Renderizando a quantidade de pokebolas
+        int pokeballX = Game.width - 3*Game.tileSize;
+        int pokeballY = Game.tileSize / 2;
+        g.drawImage(pokeballImage, pokeballX, pokeballY, 25, 25, null);
+        g.setFont(new Font("arial", Font.PLAIN, 20));
+        g.setColor(Color.white);
+        g.drawString("x " + this.getPokeballs(), pokeballX + Game.tileSize, pokeballY + 20);
+    }
+
     public void setSwimming(boolean swimming) {
         this.swimming = swimming;
     }
@@ -183,9 +204,29 @@ public class Player extends Entity {
         this.currentAnimation = currentAnimation;
     }
 
-
     public IAnimationSet getCurrentAnimationSet() {
         return this.animationSets[this.currentAnimation.getValue()];
+    }
+
+    public void addPokeball() {
+        final int maxPokeballs = 50;
+        this.pokeBallAmount = Game.clamp(this.pokeBallAmount + 1, 0, maxPokeballs);
+    }
+
+    public int getPokeballs() {
+        return this.pokeBallAmount;
+    }
+
+    public void removePokeball() {
+        this.pokeBallAmount = Game.clamp(this.pokeBallAmount - 1, 0, 100);;
+    }
+
+    public void reduceHP(int amountToReduce) {
+        this.hp = Game.clamp(this.hp - amountToReduce, 0, 100);
+    }
+
+    public int getHP() {
+        return this.hp;
     }
 
     /***

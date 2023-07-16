@@ -160,6 +160,8 @@ public class Outside implements GameScreen {
 
         this.tm.renderRange(4, g);
 
+        player.renderPokeballAmount(g);
+
         for (Npc npc: npcs)
             npc.renderDialogue(g);
 

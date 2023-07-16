@@ -1,5 +1,6 @@
 package game.ui.game_states.play;
 
+import game.entity.player.Player;
 import game.entity.player.PlayerAnimations;
 import game.entity.pokemon.MapPokemon;
 import game.map.TileManager;
@@ -20,12 +21,13 @@ public class CombatScreen implements GameScreen {
     private final ScreenManager screenManager;
     private final MouseHandler mouse;
     private BufferedImage backgroundImage, combatHUD, playerImage;
-
     private MapPokemon enemyPokemon;
     private MapFactory factory;
+    private final Player player;
 
-    public CombatScreen(MouseHandler mouse, ScreenManager screenManager) {
+    public CombatScreen(Player player, MouseHandler mouse, ScreenManager screenManager) {
         this.mouse = mouse;
+        this.player = player;
         this.screenManager = screenManager;
     }
 
@@ -69,22 +71,61 @@ public class CombatScreen implements GameScreen {
         Font h2 = new Font("arial", Font.PLAIN, 20);
         g.setFont(h2);
 
-        Button pegar = new Button("Pegar", 20, 960 / 2 + 10, 640 - 176, 210, 156, mouse, () -> screenManager.setCurrentScreenIndex(0));
-        Button correr = new Button("Correr", 20, 960 / 2 + 240, 640 - 176, 210, 156, mouse, () -> screenManager.setCurrentScreenIndex(0));
-        StatBar enemyHP = new StatBar(210, 135, 402 - 210, 143 - 135, 100, 100, Color.green); //depois trocar para vida max dos pokemons
-        StatBar alliedHP = new StatBar(698, 363, 890 - 698, 371 - 363, 100, 100, Color.green);
-        StatBar alliedXP = new StatBar(634, 425, 888 - 634, 436 - 425, 100, 100, Color.cyan);
+        Button pegar = new Button(
+                "Pegar",
+                20,
+                960 / 2 + 10, 640 - 176,
+                210, 156,
+                mouse, () -> {
 
+                }
+        );
+
+        Button correr = new Button(
+                "Correr",
+                20,
+                960 / 2 + 240, 640 - 176,
+                210, 156,
+                mouse, () -> screenManager.setCurrentScreenIndex(0)
+        );
+
+        StatBar enemyHP = new StatBar(
+                210, 135,
+                402 - 210, 143 - 135,
+                100, 100,
+                Color.green
+        );
+
+        StatBar alliedHP = new StatBar(
+                698, 363,
+                890 - 698, 371 - 363,
+                100, 100,
+                Color.green
+        );
+
+        StatBar alliedXP = new StatBar(
+                634, 425,
+                888 - 634, 436 - 425,
+                100, 100,
+                Color.cyan
+        );
+
+        // Fundo
         g.drawImage(backgroundImage, 0, 0, null);
         g.setColor(Color.green);
+        // Imagem do player
         g.drawImage(playerImage, 100, 230, 220, 220, null);
+        // HUD
         g.drawImage(combatHUD, 0, 640 - 196, null);
+        // Imagem do pokemon
         g.drawImage(enemyPokemon.getPokeImage(), 550, 35, 220,220, null);
 
+        // Nome do pokemon
         g.setColor(Color.black);
         g.drawString("Você", 698, 325);
         g.drawString(enemyPokemon.getName(), 210, 100);
 
+        // Botões e barras de HP
         pegar.render(g);
         correr.render(g);
 
@@ -93,12 +134,11 @@ public class CombatScreen implements GameScreen {
 
         alliedXP.render(g);
 
+        // Instruções
         g.setColor(Color.white);
         g.fillRoundRect(30, 640 - 176, 400, 156, 30, 30);
-
         g.setColor(Color.black);
         g.drawRoundRect(30, 640 - 176, 400, 156, 30, 30);
-
         Fontes.renderText(
                 g,
                 "Para pegar um Pokemon basta escolher o botão de pegar Dependendo da dificuldade do jogo e da quantidade de bolas de pokemon que você possui esse pokemon será adicionado na sua pokedex",

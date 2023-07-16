@@ -66,6 +66,7 @@ public class Bienio implements GameScreen {
         this.tm.renderRange(0, 2, g);
         player.render(g); // Player
         this.tm.renderLayer(3,g ); // Plantas
+        player.renderPokeballAmount(g);
     }
 
 }

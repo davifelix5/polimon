@@ -33,7 +33,7 @@ public class Play implements IState, ScreenManager {
         this.currentScreenIndex = 0;
         screens[0] = new Outside(player, keyHandler, npcs, pokemons, this);
         screens[1] = new Bienio(player, this);
-        screens[2] = new CombatScreen(mouseHandler, this);
+        screens[2] = new CombatScreen(player, mouseHandler, this);
     }
 
     @Override
@@ -74,7 +74,6 @@ public class Play implements IState, ScreenManager {
         npcStrategy = strategy;
         this.updateNpcStrategy();
     }
-
 
     private void updateNpcStrategy() {
         for (Npc npc: npcs) {
