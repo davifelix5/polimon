@@ -106,6 +106,7 @@ public class CombatScreen implements GameScreen {
         }
         else {
             this.player.removePokeball();
+            this.player.reduceHP(mode.getHPLost());
             this.message = this.enemyPokemon.getName() + " não quer ser capturado. Tente novamente!";
         }
     }
