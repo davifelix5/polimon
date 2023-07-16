@@ -81,6 +81,7 @@ public class Menu implements IState {
 
 	@Override
 	public void start() {
+		music.restart();
 		playVintage.setIsActive(true);
 		playClassic.setIsActive(true);
 		exit.setIsActive(true);

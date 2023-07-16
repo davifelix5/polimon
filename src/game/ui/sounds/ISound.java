@@ -4,4 +4,5 @@ public interface ISound {
     void play();
     void stop();
     void loop();
+    void restart();
 }

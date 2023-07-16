@@ -31,4 +31,9 @@ public class Sound implements ISound{
     public void loop() {
         clip.loop(Clip.LOOP_CONTINUOUSLY);
     }
+
+    @Override
+    public void restart() {
+        clip.setMicrosecondPosition(0);
+    }
 }
