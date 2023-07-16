@@ -6,6 +6,7 @@ import game.entity.animation.MoveAnimationSet;
 import game.entity.animation.SpriteSheet;
 import game.entity.Entity;
 import game.map.TileManager;
+import game.ui.handlers.KeyHandler;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
@@ -17,25 +18,31 @@ public class Npc extends Entity {
     private final Rectangle moveArea;
     private final Dialogue dialogue;
     private NPCStrategy strategy;
+    private boolean dialogueChanged = false;
+    private boolean dialogActivated = false;
+    private final KeyHandler keyInput;
+    private final NpcInteractionStrategy interaction;
 
-    public Npc(int x, int y, TileManager tm, int movingRate, Rectangle moveArea, Dialogue dialogue) {
-        super(x, y);
+    public Npc(Rectangle moveArea, TileManager tm, int movingRate, Dialogue dialogue, KeyHandler keyInput, NpcInteractionStrategy interaction) {
+        super(moveArea.x, moveArea.y);
         this.tileManager = tm;
-        this.initialPositionX = x;
-        this.initialPositionY = y;
+        this.initialPositionX = moveArea.x;
+        this.initialPositionY = moveArea.y;
         this.moveArea = moveArea;
         this.movingRate = movingRate;
         this.dialogue = dialogue;
-    }
-
-    public void renderDialogue(Graphics g) {
-        dialogue.render(g);
+        this.keyInput = keyInput;
+        this.interaction = interaction;
     }
 
     public void setSpritesheet(SpriteSheet sprites) {
         this.animationSet = new MoveAnimationSet(sprites, 0, 20);
         this.animationSet.setCurrentIndex(0);
         this.animationSet.getCurrentAnimation().start();
+    }
+
+    public void renderDialogue(Graphics g) {
+        if (dialogActivated) this.dialogue.render(g);
     }
 
     @Override
@@ -60,6 +67,7 @@ public class Npc extends Entity {
             getAnimation().tick();
         }
 
+        /* MOVIMENTAÇÃO */
         if (!isDialogueActivated()) {
             int nextPosX = getWorldX() + getVelX();
             int nextPosY = getWorldY() + getVelY();
@@ -68,23 +76,40 @@ public class Npc extends Entity {
             strategy.setAction(this);
         }
 
-        if ((getWorldX() == maxPosX || dialogue.isActivated()) && animationSet.getCurrentIndex() == RIGHT ||
-                (getWorldX() == initialPositionX || dialogue.isActivated()) && animationSet.getCurrentIndex() == LEFT) {
+        /* ANIMAÇÃO */
+        if ((getWorldX() == maxPosX || dialogActivated) && animationSet.getCurrentIndex() == RIGHT ||
+                (getWorldX() == initialPositionX || dialogActivated) && animationSet.getCurrentIndex() == LEFT) {
             setVelX(0);
             animationSet.setCurrentIndex(RIGHT);
             getAnimation().reset();
             getAnimation().stop();
         }
 
-        if ((getWorldY() == maxPosY || dialogue.isActivated()) && animationSet.getCurrentIndex() == BACKWARD ||
-                (getWorldY() == initialPositionY || dialogue.isActivated()) && animationSet.getCurrentIndex() == FOWARD) {
+        if ((getWorldY() == maxPosY || dialogActivated) && animationSet.getCurrentIndex() == BACKWARD ||
+                (getWorldY() == initialPositionY || dialogActivated) && animationSet.getCurrentIndex() == FOWARD) {
             animationSet.setCurrentIndex(BACKWARD);
             getAnimation().reset();
             getAnimation().stop();
             setVelY(0);
         }
 
-        this.dialogue.tick();
+        /* DIÁLOGO */
+        if(keyInput.spacePressed && dialogActivated) { // Está ocorrendo um diálogo, sendo solicitada a próxima fala
+            if (!dialogueChanged) { // Se não houve uma mudança após espaço pressionado
+                dialogueChanged = true;
+                if (dialogue.getCurrentLine() < dialogue.getDialogues().length - 1) // Vai para a próxima fala
+                    dialogue.nextLine();
+                else if (dialogue.getCurrentLine() == dialogue.getDialogues().length - 1) { // Acaba o diálogo quando acabaram as falas
+                    // Diálogo acabou
+                    dialogueChanged = false;
+                    dialogActivated = false;
+                    this.dialogue.reset();
+                    this.interaction.onDialogueFinished();
+                }
+            }
+        } else {
+            dialogueChanged = false; // O espaço foi solto, podendo haver uma mudança de fala na próx ativação
+        }
 
     }
 
@@ -106,11 +131,11 @@ public class Npc extends Entity {
     }
 
     public boolean isDialogueActivated() {
-        return dialogue.isActivated();
+        return dialogActivated;
     }
 
     public void setDialogueActivated(boolean dialogueActivated) {
-        this.dialogue.setActivated(dialogueActivated);
+        this.dialogActivated = dialogueActivated;
     }
 
     public MoveAnimationSet getAnimationSet() {

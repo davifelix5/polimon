@@ -58,16 +58,20 @@ public class Outside implements GameScreen {
 
         this.npcs.add(
                 new Npc(
-                        13 * Game.tileSize, 27 * Game.tileSize, tm, 2,
-                        new Rectangle(9*Game.tileSize, 4*Game.tileSize),
-                        new Dialogue(dialogues1, keyHandler, dialogueFont)
+                        new Rectangle(13 * Game.tileSize,27 * Game.tileSize, 9*Game.tileSize, 4*Game.tileSize),
+                         tm, 2,
+                        new Dialogue(dialogues1, dialogueFont),
+                        keyHandler,
+                        this.player::addPokeball
                 )
         );
         this.npcs.add(
                 new Npc(
-                        34 * Game.tileSize, 50 * Game.tileSize, tm, 2,
-                        new Rectangle(10*Game.tileSize, 4*Game.tileSize),
-                        new Dialogue(dialogues2, keyHandler, dialogueFont)
+                        new Rectangle(34 * Game.tileSize, 50 * Game.tileSize, 10*Game.tileSize, 4*Game.tileSize),
+                        tm, 2,
+                        new Dialogue(dialogues2, dialogueFont),
+                        keyHandler,
+                        this.player::addPokeball
                 )
         );
 
@@ -162,6 +166,7 @@ public class Outside implements GameScreen {
 
         player.renderPokeballAmount(g);
 
+        // Diálogos renderizados depois para aperecerem primeiro
         for (Npc npc: npcs)
             npc.renderDialogue(g);
 
