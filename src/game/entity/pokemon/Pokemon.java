@@ -5,11 +5,10 @@ import game.Game;
 import game.map.PokemonArea;
 import game.map.TileManager;
 
-import java.awt.Rectangle;
-import java.awt.Graphics;
+import java.awt.*;
 import java.awt.image.BufferedImage;
 
-public class MapPokemon extends Entity {
+public class Pokemon extends Entity {
 
     private final PokemonID ID;
     private final BufferedImage pokeImage;
@@ -18,7 +17,7 @@ public class MapPokemon extends Entity {
 
     private MapPokemonStrategy strategy;
     
-    public MapPokemon(int x, int y, PokemonID ID, BufferedImage pokeImage, TileManager tm, PokemonArea pokeArea) {
+    public Pokemon(int x, int y, PokemonID ID, BufferedImage pokeImage, TileManager tm, PokemonArea pokeArea) {
         super(x, y);
         this.velX = 0;
         this.velY = 0;
@@ -50,7 +49,7 @@ public class MapPokemon extends Entity {
 
     @Override
     public Rectangle getBounds() {
-        return new Rectangle(10, 20, 10, 10);
+        return new Rectangle(10, 15, 30, 30);
     }
 
     public void setStrategy(MapPokemonStrategy strategy) {

@@ -3,7 +3,7 @@ package game.ui.game_states.play;
 import game.entity.npc.NPCStrategy;
 import game.entity.npc.Npc;
 import game.entity.player.Player;
-import game.entity.pokemon.MapPokemon;
+import game.entity.pokemon.Pokemon;
 import game.entity.pokemon.MapPokemonStrategy;
 import game.map.TileManager;
 import game.map.factory.MapFactory;
@@ -23,7 +23,7 @@ public class Play implements IState, ScreenManager {
     private NPCStrategy npcStrategy;
     private final ArrayList<Npc> npcs = new ArrayList<>();
     private MapFactory factory;
-    private final ArrayList<MapPokemon> pokemons = new ArrayList<>();
+    private final ArrayList<Pokemon> pokemons = new ArrayList<>();
     private final GameScreen[] screens = new GameScreen[3];
     private int currentScreenIndex;
 
@@ -58,7 +58,6 @@ public class Play implements IState, ScreenManager {
 
     @Override
     public void start() {
-        System.out.println("START");
         this.player.loadAnimations();
         screens[currentScreenIndex].loadAnimations();
 
@@ -89,7 +88,7 @@ public class Play implements IState, ScreenManager {
     }
 
     public void updateMapPokemonStrategy(MapPokemonStrategy strategy) {
-        for (MapPokemon pokemon : this.pokemons) {
+        for (Pokemon pokemon : this.pokemons) {
             pokemon.setStrategy(strategy.copy());
         }
     }

@@ -115,7 +115,7 @@ public class Npc extends Entity {
 
     @Override
     public Rectangle getBounds() {
-        return new Rectangle(10, 20, 10, 10);
+        return new Rectangle(10, 20, 25, 30);
     }
 
     public int getWidth() {

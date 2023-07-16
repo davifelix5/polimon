@@ -33,10 +33,6 @@ public class TileManager {
         this.layers.add(layer);
     }
 
-    public ArrayList<MapLayer> getLayers() {
-        return this.layers;
-    }
-
     /**
      * Verifica se a entidade passada está colidindo com algum tile sólido da camada passada
      * @param entity entidade passada
@@ -111,6 +107,12 @@ public class TileManager {
             if (tile1 != null || tile2 != null || tile3 != null || tile4 != null)
                 ((InteractableLayer) l).handleInteraction();
         }
+    }
+
+    public Rectangle getReferencedBounds(Entity entity) {
+        int x1 = (entity.getWorldX() + entity.getBounds().x) - getReferenceX();
+        int y1 = (entity.getWorldY() + entity.getBounds().x) - getReferenceY();
+        return new Rectangle(x1, y1, entity.getBounds().width, entity.getBounds().height);
     }
 
 

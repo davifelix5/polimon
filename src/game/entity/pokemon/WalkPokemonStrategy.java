@@ -11,7 +11,7 @@ public class WalkPokemonStrategy implements MapPokemonStrategy {
     }
 
     @Override
-    public void setAction(MapPokemon pokemon) {
+    public void setAction(Pokemon pokemon) {
         actionLockCounter++;
 
         Random i = new Random();

@@ -1,6 +1,7 @@
 package game.ui.game_states.play;
 
 import game.Game;
+import game.entity.Entity;
 import game.entity.player.Player;
 import game.entity.pokemon.MapPokemonStrategy;
 import game.map.*;
@@ -11,7 +12,7 @@ import game.map.interactions.SwimStrategy;
 import game.entity.npc.Dialogue;
 import game.entity.npc.Npc;
 import game.entity.pokemon.PokemonType;
-import game.entity.pokemon.MapPokemon;
+import game.entity.pokemon.Pokemon;
 import game.entity.pokemon.PokemonGenerator;
 
 import java.awt.*;
@@ -26,11 +27,11 @@ public class Outside implements GameScreen {
     private final KeyHandler keyHandler;
     private MapFactory factory;
     private final ArrayList<Npc> npcs;
-    private final ArrayList<MapPokemon> pokemons;
+    private final ArrayList<Pokemon> pokemons;
     private final ScreenManager screenManager;
     private final PokemonGenerator pokeGenerator;
 
-    public Outside(Player player, KeyHandler keyHandler, ArrayList<Npc> npcs, ArrayList<MapPokemon> pokemons, ScreenManager screenManager) {
+    public Outside(Player player, KeyHandler keyHandler, ArrayList<Npc> npcs, ArrayList<Pokemon> pokemons, ScreenManager screenManager) {
         this.pokeGenerator = new PokemonGenerator(pokemons, 3);
         this.player = player;
         this.player.setTileManager(tm);
@@ -138,7 +139,7 @@ public class Outside implements GameScreen {
 
         // Ticking game objects
         player.tick();
-        this.pokemons.forEach(MapPokemon::tick);
+        this.pokemons.forEach(Pokemon::tick);
         this.npcs.forEach(Npc::tick);
 
         // Lidando com interações e colisões nas camadas
@@ -146,7 +147,7 @@ public class Outside implements GameScreen {
         this.tm.interacts();
 
         // Colisão com pokemon
-        MapPokemon foundPokemon = this.findPokemonWithinPlayer();
+        Pokemon foundPokemon = this.findPokemonWithinPlayer();
         if (foundPokemon != null & keyHandler.enterPressed) {
             ((CombatScreen) screenManager.getBattleScreen()).setEnemyPokemon(foundPokemon);
             screenManager.setCurrentScreenIndex(2);
@@ -155,7 +156,7 @@ public class Outside implements GameScreen {
 
         // Colisão e diálogo com npcs
         for (Npc npc: npcs) {
-            if (player.getWorldRow() == npc.getWorldRow() && player.getWorldCol() == npc.getWorldCol()) {
+            if (this.intersets(player, npc)) {
                 if (keyHandler.enterPressed) {
                     npc.setDialogueActivated(true);
                 }
@@ -173,7 +174,7 @@ public class Outside implements GameScreen {
         for (Npc npc: npcs)
             npc.render(g);
 
-        for (MapPokemon poke: pokemons) {
+        for (Pokemon poke: pokemons) {
             poke.render(g);
         }
 
@@ -184,12 +185,6 @@ public class Outside implements GameScreen {
         // Diálogos renderizados depois para aperecerem primeiro
         for (Npc npc: npcs)
             npc.renderDialogue(g);
-
-        g.setColor(Color.RED);
-        for (PokemonArea area: pokeGenerator.getPokemonAreas()) {
-            Rectangle r = area.getAppearanceArea();
-            g.drawRect(r.x - tm.getReferenceX(), r.y - tm.getReferenceY(), r.width, r.height);
-        }
 
     }
 
@@ -220,13 +215,17 @@ public class Outside implements GameScreen {
         return tm;
     }
 
-    public MapPokemon findPokemonWithinPlayer() {
-        for (MapPokemon pokemon : pokemons) {
-            if (player.getWorldRow() == pokemon.getWorldRow() && player.getWorldCol() == pokemon.getWorldCol()) {
+    public Pokemon findPokemonWithinPlayer() {
+        for (Pokemon pokemon : pokemons) {
+            if (this.intersets(player, pokemon)) {
                 return pokemon;
             }
         }
         return null;
+    }
+
+    public boolean intersets(Entity entity1, Entity entity2) {
+        return tm.getReferencedBounds(entity1).intersects(tm.getReferencedBounds(entity2));
     }
 
 }

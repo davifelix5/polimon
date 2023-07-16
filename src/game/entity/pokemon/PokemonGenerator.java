@@ -17,9 +17,9 @@ public class PokemonGenerator {
     private static SpriteSheet pokeSprites;
     private final int delayInSeconds; // Intervalo de tempo para gerar novos pokemons
     private final ArrayList<PokemonArea> pokemonAreas = new ArrayList<>();
-    private final ArrayList<MapPokemon> pokemons;
+    private final ArrayList<Pokemon> pokemons;
 
-    public PokemonGenerator(ArrayList<MapPokemon> pokemons, int delayInSeconds) {
+    public PokemonGenerator(ArrayList<Pokemon> pokemons, int delayInSeconds) {
         pokeSprites = new SpriteSheet("src/game/res/sprites/pokemon/pokemon.png", 64, 64);
         random = new Random();
         this.pokemons = pokemons;
@@ -28,20 +28,20 @@ public class PokemonGenerator {
 
     public void generatePokemon(TileManager tm) {
         for (PokemonArea area: pokemonAreas) {
-            MapPokemon pokemon = generatePokemonInArea(area.getTypes(), tm, area);
+            Pokemon pokemon = generatePokemonInArea(area.getTypes(), tm, area);
             if (pokemon != null)
                 this.pokemons.add(pokemon);
         }
     }
 
-    public MapPokemon generatePokemonInArea(PokemonType[] types, TileManager tm, PokemonArea area) {
+    public Pokemon generatePokemonInArea(PokemonType[] types, TileManager tm, PokemonArea area) {
         PokemonType type = types[random.nextInt(types.length)]; // Escolha aleatório de qual dos tipos gerar
 
         double attempt = random.nextFloat(); // Número aleatório para calcular a propabilidade de um pokemonser gerado
 
         if (attempt <= type.getGenProbability() && area.getPokemonCount() + 1 <= area.getMaximumPokemons()) {
             PokemonID ID = type.getPokemons().get(random.nextInt(type.getPokemons().size()));
-            MapPokemon pokemon;
+            Pokemon pokemon;
 
             int minX = (int) area.getAppearanceArea().getX();
             int maxX = minX + (int) area.getAppearanceArea().getWidth() - 64;
@@ -51,7 +51,7 @@ public class PokemonGenerator {
             int posX = random.nextInt(minX, maxX);
             int posY = random.nextInt(minY, maxY);
 
-            pokemon = new MapPokemon(posX, posY, ID, pokeSprites.getSprite(ID.getValue() - 1), tm, area);
+            pokemon = new Pokemon(posX, posY, ID, pokeSprites.getSprite(ID.getValue() - 1), tm, area);
             pokemon.setStrategy(strategy.copy());
 
             area.addPokemon();
@@ -81,7 +81,4 @@ public class PokemonGenerator {
         this.pokemonAreas.add(area);
     }
 
-    public ArrayList<PokemonArea> getPokemonAreas() {
-        return pokemonAreas;
-    }
 }

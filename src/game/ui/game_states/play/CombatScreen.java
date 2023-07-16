@@ -2,7 +2,7 @@ package game.ui.game_states.play;
 
 import game.entity.player.Player;
 import game.entity.player.PlayerAnimations;
-import game.entity.pokemon.MapPokemon;
+import game.entity.pokemon.Pokemon;
 import game.map.TileManager;
 import game.ui.handlers.MouseHandler;
 import game.ui.buttons.Button;
@@ -21,17 +21,17 @@ import game.utilities.Fontes;
 public class CombatScreen implements GameScreen {
     private final ScreenManager screenManager;
     private BufferedImage backgroundImage, combatHUD, playerImage;
-    private MapPokemon enemyPokemon;
+    private Pokemon enemyPokemon;
     private MapFactory factory;
     private final Player player;
-    private final ArrayList<MapPokemon> pokemons;
+    private final ArrayList<Pokemon> pokemons;
 
     private String message;
     private final Button pegar;
     private final Button correr;
 
 
-    public CombatScreen(Player player, MouseHandler mouse, ScreenManager screenManager, ArrayList<MapPokemon> pokemons) {
+    public CombatScreen(Player player, MouseHandler mouse, ScreenManager screenManager, ArrayList<Pokemon> pokemons) {
         this.player = player;
         this.screenManager = screenManager;
         this.pokemons = pokemons;
@@ -76,7 +76,7 @@ public class CombatScreen implements GameScreen {
         this.factory = factory;
     }
 
-    public void setEnemyPokemon(MapPokemon enemyPokemon) {
+    public void setEnemyPokemon(Pokemon enemyPokemon) {
         this.enemyPokemon = enemyPokemon;
     }
 
