@@ -1,7 +1,7 @@
 package game.map;
 
-import game.animation.SpriteSheet;
-import game.entity.Player;
+import game.entity.animation.SpriteSheet;
+import game.entity.player.Player;
 import game.map.interactions.InteractableLayer;
 import game.map.interactions.LayerInteractionStrategy;
 

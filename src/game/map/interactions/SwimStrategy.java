@@ -1,6 +1,6 @@
 package game.map.interactions;
 
-import game.entity.Player;
+import game.entity.player.Player;
 
 public class SwimStrategy implements LayerInteractionStrategy<Player> {
     @Override

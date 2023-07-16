@@ -1,8 +1,7 @@
 package game.map;
 
 import game.Game;
-import game.animation.SpriteSheet;
-import game.pokemon.PokemonType;
+import game.entity.animation.SpriteSheet;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
@@ -19,8 +18,7 @@ public class MapLayer {
     private int rows, cols;
     private Tile[][] tileMap; // tilemap com todos os tiles da camada em suas respectivas posiçõe
     protected boolean interactable;
-    protected boolean pokemonLayer;
-    protected PokemonType pokemonType;
+
 
     // Construtores recebendo String com o caminho do tilemap
     public MapLayer(String tilemapPath, SpriteSheet spriteSheet, boolean solid) {
@@ -29,8 +27,6 @@ public class MapLayer {
             this.spritesheet = spriteSheet;
             this.solid = solid;
             this.interactable = false;
-            this.pokemonLayer = false;
-            this.pokemonType = null;
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -94,14 +90,6 @@ public class MapLayer {
 
     public boolean isInteractable() {
         return interactable;
-    }
-
-    public boolean isPokemonLayer() {
-        return pokemonLayer;
-    }
-
-    public PokemonType getPokemonType() {
-        return this.pokemonType;
     }
 
 }

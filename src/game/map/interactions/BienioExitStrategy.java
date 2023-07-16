@@ -1,14 +1,13 @@
 package game.map.interactions;
 
-import game.entity.Player;
-import game.game_states.GameState;
-import game.game_states.GameStateManager;
+import game.entity.player.Player;
+import game.ui.game_states.play.ScreenManager;
 
 public class BienioExitStrategy implements LayerInteractionStrategy<Player>{
-    GameStateManager gameStateManager;
+    ScreenManager screenManager;
 
-    public BienioExitStrategy(GameStateManager gameStateManager) {
-        this.gameStateManager = gameStateManager;
+    public BienioExitStrategy(ScreenManager screenManager) {
+        this.screenManager = screenManager;
     }
 
     @Override
@@ -16,6 +15,6 @@ public class BienioExitStrategy implements LayerInteractionStrategy<Player>{
         int exitWorldX = 672, exitWorldY = 1664;
         element.setWorldX(exitWorldX);
         element.setWorldY(exitWorldY);
-        gameStateManager.setState(GameState.Outside);
+        screenManager.setCurrentScreenIndex(0);
     }
 }
