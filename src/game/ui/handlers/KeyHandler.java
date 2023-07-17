@@ -7,6 +7,7 @@ public class KeyHandler implements KeyListener {
 
     public boolean upPressed, downPressed, leftPressed, rightPressed, bikeButtonPressed, enterPressed, escPressed;
     public boolean anyKeyPressed, spacePressed;
+    public boolean useItemPressed;
 
 
     @Override
@@ -27,6 +28,7 @@ public class KeyHandler implements KeyListener {
             case KeyEvent.VK_SPACE -> spacePressed = true;
             case KeyEvent.VK_ENTER -> enterPressed = true;
             case KeyEvent.VK_ESCAPE -> escPressed = true;
+            case KeyEvent.VK_U -> useItemPressed = true;
         }
     }
 
@@ -43,6 +45,7 @@ public class KeyHandler implements KeyListener {
             case KeyEvent.VK_SPACE -> spacePressed = false;
             case KeyEvent.VK_ENTER -> enterPressed = false;
             case KeyEvent.VK_ESCAPE -> escPressed = false;
+            case KeyEvent.VK_U -> useItemPressed = false;
         }
     }
 
