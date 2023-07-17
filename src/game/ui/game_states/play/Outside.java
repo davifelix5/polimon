@@ -8,7 +8,6 @@ import game.map.*;
 import game.map.interactions.BienioEnterStrategy;
 import game.ui.handlers.KeyHandler;
 import game.map.factory.MapFactory;
-import game.map.interactions.SwimStrategy;
 import game.entity.npc.Dialogue;
 import game.entity.npc.Npc;
 import game.entity.pokemon.PokemonType;
@@ -17,14 +16,12 @@ import game.entity.pokemon.PokemonGenerator;
 import game.ui.sounds.Sound;
 
 import java.awt.*;
-import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 
 public class Outside implements GameScreen {
 
     private final TileManager tm = new TileManager(60, 70);
     private final Player player;
-    private BufferedImage backgroundImage;
     private final KeyHandler keyHandler;
     private MapFactory factory;
     private final ArrayList<Npc> npcs;
@@ -170,8 +167,7 @@ public class Outside implements GameScreen {
 
     @Override
     public void render(Graphics g) {
-        g.drawImage(this.backgroundImage, -tm.getReferenceX(), -tm.getReferenceY(), null);
-        this.tm.renderRange(0, 3, g);
+        this.tm.renderRange(0, 4, g);
 
         player.render(g);
 
@@ -182,7 +178,7 @@ public class Outside implements GameScreen {
             poke.render(g);
         }
 
-        this.tm.renderRange(4, g);
+        this.tm.renderRange(5, g);
 
         player.renderPlayerStatus(g);
 
@@ -198,10 +194,9 @@ public class Outside implements GameScreen {
 
     @Override
     public void loadAnimations() {
-        // Background
-        this.backgroundImage = factory.getBackgroundImage();
         // Tilemaps e layers
-        this.tm.addLayer(new PlayerInteractableLayer("src/game/res/mapas/raia_agua.csv", factory.getMapTileSet(), new SwimStrategy(), player));
+        this.tm.addLayer(new PlayerInteractableLayer("src/game/res/mapas/raia_chao.csv", factory.getMapTileSet(), (Player p) -> p.setSwimming(false), player));
+        this.tm.addLayer(new PlayerInteractableLayer("src/game/res/mapas/raia_agua.csv", factory.getMapTileSet(), (Player p) -> p.setSwimming(true), player));
         this.tm.addLayer(new MapLayer("src/game/res/mapas/raia_solido.csv", factory.getMapTileSet(), true));
         this.tm.addLayer(new PlayerInteractableLayer("src/game/res/mapas/raia_portas.csv", factory.getMapTileSet(), new BienioEnterStrategy(screenManager), player));
         this.tm.addLayer(new MapLayer("src/game/res/mapas/raia_base_do_poste.csv", factory.getMapTileSet(),true));
