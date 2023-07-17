@@ -11,11 +11,9 @@ import java.io.IOException;
 public class ClassicMap implements MapFactory{
 
     //  Gera o mapa clássico do jogo para a implementação do look-and-fells
-    private BufferedImage outsiteBackgroundImage;
     private BufferedImage playerWalkSprites;
     private BufferedImage playerSwimSprites;
     private BufferedImage playerBikeSprites;
-    private BufferedImage bienioBackground;
     private SpriteSheet mapTiles, npcSprites;
 
 //    Construtor do mapa
@@ -24,10 +22,8 @@ public class ClassicMap implements MapFactory{
             this.playerWalkSprites = ImageIO.read(new FileInputStream("src/game/res/sprites/playerSprites.png"));
             this.playerSwimSprites = ImageIO.read(new FileInputStream("src/game/res/sprites/playerSwim.png"));
             this.playerBikeSprites = ImageIO.read(new FileInputStream("src/game/res/sprites/playerBike.png"));
-            this.outsiteBackgroundImage =  ImageIO.read(new FileInputStream("src/game/res/mapas/chao_raia.png"));
             this.mapTiles = new SpriteSheet("src/game/res/sprites/tileset_mapa.png", 32,32);
             this.npcSprites = new SpriteSheet("src/game/res/sprites/npc_sprites.png", 51, 54);
-            this.bienioBackground = ImageIO.read(new FileInputStream("src/game/res/mapas/chao_bienio.png"));
         }
         catch(IOException e){
             e.printStackTrace();
@@ -48,20 +44,12 @@ public class ClassicMap implements MapFactory{
         }
         return new SpriteSheet(playerWalkSprites, 32, 41);
     }
-    @Override
-    public BufferedImage getBackgroundImage() {
-        return outsiteBackgroundImage;
-    }
 
     @Override
     public SpriteSheet getNpcSpritesheet() {
         return npcSprites;
     }
 
-    @Override
-    public BufferedImage getBienioBackground() {
-        return bienioBackground;
-    }
 
     @Override
     public MapFactory copy() {

@@ -3,7 +3,6 @@ package game.entity.player;
 import game.Game;
 import game.entity.animation.*;
 import game.entity.Entity;
-import game.entity.pokemon.Pokemon;
 import game.ui.handlers.KeyHandler;
 import game.map.factory.MapFactory;
 import game.ui.sounds.SoundEffect;
@@ -120,7 +119,6 @@ public class Player extends Entity {
             setCurrentAnimation(PlayerAnimations.Swimming);
             swimSoundEffect.play();
             this.setMovingRate(4);
-            setSwimming(false);
         } else {
             setCurrentAnimation(PlayerAnimations.Walk);
             walkSoundEffect.play();
