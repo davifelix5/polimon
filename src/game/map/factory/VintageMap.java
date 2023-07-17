@@ -18,10 +18,10 @@ public class VintageMap implements MapFactory {
 
     public VintageMap() {
         try{
-            this.mapTiles = new SpriteSheet("src/game/res/sprites/Vintage_tileset_mapa.png", 32,32);
-            this.playerWalkSprites = ImageIO.read(new FileInputStream("src/game/res/sprites/VintagePlayerSprites2.png"));
-            this.playerSwimSprites = ImageIO.read(new FileInputStream("src/game/res/sprites/playerSwim.png"));
-            this.playerBikeSprites = ImageIO.read(new FileInputStream("src/game/res/sprites/VintagePlayerBike.png"));
+            this.mapTiles = new SpriteSheet("src/game/res/sprites/vintage_tileset.png", 32,32);
+            this.playerWalkSprites = ImageIO.read(new FileInputStream("src/game/res/sprites/vintage_player.png"));
+            this.playerSwimSprites = ImageIO.read(new FileInputStream("src/game/res/sprites/player_swim.png"));
+            this.playerBikeSprites = ImageIO.read(new FileInputStream("src/game/res/sprites/vintage_player_bike.png"));
             this.npcSprites = new SpriteSheet("src/game/res/sprites/npc_sprites_vintage.png", 51, 54);
         }
         catch(IOException e){
