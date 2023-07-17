@@ -62,6 +62,14 @@ public class Outside implements GameScreen {
                 "Mas desistir nunca é uma opção",
                 "Tome aqui mais uma força para continuar"
         };
+        String[] dialogues4 = {
+                "Olá, caro jogador!",
+                "Que tal acrescentar um pouco de magia nessa aventura, hein?",
+                "Tome aqui um item mágico! Mas tome cuidado com seus efeitos misteriosos...",
+                "Você pode aumentar sua velocidade, ficar mais lento ou até mesmo andar para a direção contrária!",
+                "Ahh! E para usar seus itens, você deve primeiro estar na terra e sem bicicleta!",
+                "Use com sabedoria e se divirta!"
+        };
 
         this.npcs.add(
                 new Npc(
@@ -90,6 +98,17 @@ public class Outside implements GameScreen {
                         this.player::cure
                 )
         );
+
+        this.npcs.add(
+                new Npc(
+                        new Rectangle(65 * Game.tileSize, 28 * Game.tileSize, 4 * Game.tileSize, 5 * Game.tileSize),
+                        tm, 2,
+                        new Dialogue(dialogues4, dialogueFont),
+                        keyHandler,
+                        this.player::addItem
+                )
+        );
+        
 
         // Normal, grama e fadas
         this.pokeGenerator.addArea(

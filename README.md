@@ -17,6 +17,16 @@
 
 OBS: não foi possível encontrar os mesmos _sprites_ para o _player_ nadando, andando e jogando de bicileta
 
+## Itens
+- Há itens consumíveis no jogo que, ao serem utilizados, fornecem diferentes comportamentos dinâmicos ao jogador.
+- Há três tipos de comportamento: aumento da velocidade, redução da velocidade e alteração do sentido de movimento. Existe um único tipo de item e o seu efeito é sorteado aleatoriamente no momento do consumo.
+- Para usar o item, basta apertar a tecla **U** estando em terra e sem a bicicleta (pode ser parado ou andando).
+- Para excluir os efeitos dos itens vigentes, basta apertar a tecla **R**.
+- Para pegar um item, basta interagir com o NPC da região mostrada a seguir:
+  -![Imagem NPC Item](assets/regiao_itens.png)
+- Quanto à implementação, foi utilizado o padrão Decorator, a fim de adicionar comportamentos cumulativos de forma flexível e prática.
+
+
 ## Looks and feels
 - Para mudar a aparência do jogo, basta escolher o tema desejado no Menu Inicial.
 - As opções são _Clássico_ e _Vintage_, sendo que o segundo deixa o jogo com uma aparência mais antiga e o primeiro com cores mais vivas

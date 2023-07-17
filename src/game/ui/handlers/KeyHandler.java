@@ -8,6 +8,7 @@ public class KeyHandler implements KeyListener {
     private boolean upPressed, downPressed, leftPressed, rightPressed, bikeButtonPressed, enterPressed, escPressed;
     private boolean pToggle = false;
     private boolean anyKeyPressed, spacePressed;
+    private boolean useItemPressed, resetEffectsPressed;
 
 
     @Override
@@ -28,7 +29,9 @@ public class KeyHandler implements KeyListener {
             case KeyEvent.VK_SPACE -> spacePressed = true;
             case KeyEvent.VK_ENTER -> enterPressed = true;
             case KeyEvent.VK_ESCAPE -> escPressed = true;
+            case KeyEvent.VK_U -> useItemPressed = true;
             case KeyEvent.VK_P -> pToggle = !pToggle;
+            case KeyEvent.VK_R -> resetEffectsPressed = true;
         }
     }
 
@@ -45,6 +48,9 @@ public class KeyHandler implements KeyListener {
             case KeyEvent.VK_SPACE -> spacePressed = false;
             case KeyEvent.VK_ENTER -> enterPressed = false;
             case KeyEvent.VK_ESCAPE -> escPressed = false;
+            case KeyEvent.VK_U -> useItemPressed = false;
+            case KeyEvent.VK_R -> resetEffectsPressed = false;
+
         }
     }
 
@@ -86,5 +92,13 @@ public class KeyHandler implements KeyListener {
 
     public boolean isSpacePressed() {
         return spacePressed;
+    }
+
+    public boolean isUseItemPressed() {
+        return useItemPressed;
+    }
+
+    public boolean isResetEffectsPressed() {
+        return resetEffectsPressed;
     }
 }
