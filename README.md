@@ -43,6 +43,10 @@ OBS: não foi possível encontrar os mesmos _sprites_ para o _player_ nadando, a
   
   ![Imagem Região Aço, Veneno, Pedra](assets/pokemon_metal.png)
 
+- Tipo elétrico e fogo
+
+  ![Imagem Região Elétrico, Fogo](assets/pokemon_eletrico.jpg)
+
 - A cada 20 segundos, os Pokémons de cada região são regenerados seguindo uma lógica randômica:
   - Cada tipo possui uma porbabilidade de ser criado no mapa seguindo sua raridade.
   - Dado que deve ser criado, o Pokémon correspondente a um certo tipo é sorteado aleatoriamente do conjunto de Pokémons desse tipo.
@@ -96,7 +100,7 @@ OBS: não foi possível encontrar os mesmos _sprites_ para o _player_ nadando, a
 em mais estados internos, que indicam os ambientes ou estágios do jogo nos quais o jogador se encontra
     - `Outside`: mapa externo da USP, com NPCs e _pokemons_
     - `Biênio`: este é um estado interior; para acessá-lo, basta entrar no prédio redondo com teto rosado (como mostra a imagem abaixo)
-      - ![Imagem do biênio](assets/img.png)
+      - ![Imagem do biênio](assets/bienio.png)
 
 - Buscamos sempre usar a injeção de dependências para evitar acoplamento excessivo entre classes.
 

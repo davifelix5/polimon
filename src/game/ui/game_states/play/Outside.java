@@ -32,7 +32,7 @@ public class Outside implements GameScreen {
     public final Sound music = new Sound("src/game/res/sound/outside.wav");
 
     public Outside(Player player, KeyHandler keyHandler, ArrayList<Npc> npcs, ArrayList<Pokemon> pokemons, ScreenManager screenManager) {
-        this.pokeGenerator = new PokemonGenerator(pokemons, 3);
+        this.pokeGenerator = new PokemonGenerator(pokemons, 20);
         this.player = player;
         this.player.setTileManager(tm);
         this.keyHandler = keyHandler;
@@ -91,12 +91,25 @@ public class Outside implements GameScreen {
                 )
         );
 
+        // Normal, grama e fadas
         this.pokeGenerator.addArea(
                 new PokemonArea(
                         new PokemonType[]{PokemonType.NORMAL, PokemonType.GRASS, PokemonType.FAIRY},
                         new Rectangle(
                             34*Game.tileSize, 27*Game.tileSize,
                             9*Game.tileSize, 5*Game.tileSize
+                        ),
+                        5
+                )
+        );
+
+        // Elétricos e fogo
+        this.pokeGenerator.addArea(
+                new PokemonArea(
+                        new PokemonType[]{PokemonType.ELECTRIC, PokemonType.FIRE},
+                        new Rectangle(
+                                45*Game.tileSize, 33*Game.tileSize,
+                                6*Game.tileSize, 5*Game.tileSize
                         ),
                         5
                 )
