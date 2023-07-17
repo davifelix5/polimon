@@ -19,9 +19,9 @@ public class ClassicMap implements MapFactory{
 //    Construtor do mapa
     public ClassicMap() {
         try{
-            this.playerWalkSprites = ImageIO.read(new FileInputStream("src/game/res/sprites/playerSprites.png"));
-            this.playerSwimSprites = ImageIO.read(new FileInputStream("src/game/res/sprites/playerSwim.png"));
-            this.playerBikeSprites = ImageIO.read(new FileInputStream("src/game/res/sprites/playerBike.png"));
+            this.playerWalkSprites = ImageIO.read(new FileInputStream("src/game/res/sprites/player.png"));
+            this.playerSwimSprites = ImageIO.read(new FileInputStream("src/game/res/sprites/player_swim.png"));
+            this.playerBikeSprites = ImageIO.read(new FileInputStream("src/game/res/sprites/player_bike.png"));
             this.mapTiles = new SpriteSheet("src/game/res/sprites/tileset_mapa.png", 32,32);
             this.npcSprites = new SpriteSheet("src/game/res/sprites/npc_sprites.png", 51, 54);
         }
