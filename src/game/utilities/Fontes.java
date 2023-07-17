@@ -1,7 +1,6 @@
 package game.utilities;
 
 import game.Game;
-import game.ui.game_states.play.GameScreen;
 
 import java.awt.*;
 import java.io.File;

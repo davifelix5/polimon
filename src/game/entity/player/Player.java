@@ -158,9 +158,13 @@ public class Player extends Entity {
         if (this.hasUsedItem == true) {
             this.hasUsedItem = movementKeyInput.isUseItemPressed();
         }
-        if (movementKeyInput.isUseItemPressed() && !this.hasUsedItem && this.numItems != 0 && !swimming && !movementKeyInput.isBikeButtonPressed()) {
+        if (movementKeyInput.isUseItemPressed() && !this.hasUsedItem && !movementKeyInput.isResetEffectsPressed() && this.numItems != 0 && !swimming && !movementKeyInput.isBikeButtonPressed()) {
             this.useItem();
             this.hasUsedItem = true;
+        }
+
+        if (movementKeyInput.isResetEffectsPressed()) {
+            this.velSetter = BaseVelSetter.getInstance(this);
         }
 
         this.velSetter.setVel();
