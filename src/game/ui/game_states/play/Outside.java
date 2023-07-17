@@ -8,7 +8,6 @@ import game.map.*;
 import game.map.interactions.BienioEnterStrategy;
 import game.ui.handlers.KeyHandler;
 import game.map.factory.MapFactory;
-import game.map.interactions.SwimStrategy;
 import game.entity.npc.Dialogue;
 import game.entity.npc.Npc;
 import game.entity.pokemon.PokemonType;
@@ -17,14 +16,12 @@ import game.entity.pokemon.PokemonGenerator;
 import game.ui.sounds.Sound;
 
 import java.awt.*;
-import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 
 public class Outside implements GameScreen {
 
     private final TileManager tm = new TileManager(60, 70);
     private final Player player;
-    private BufferedImage backgroundImage;
     private final KeyHandler keyHandler;
     private MapFactory factory;
     private final ArrayList<Npc> npcs;
@@ -111,13 +108,27 @@ public class Outside implements GameScreen {
                         this.player::addItem
                 )
         );
+        
 
+        // Normal, grama e fadas
         this.pokeGenerator.addArea(
                 new PokemonArea(
                         new PokemonType[]{PokemonType.NORMAL, PokemonType.GRASS, PokemonType.FAIRY},
                         new Rectangle(
                             34*Game.tileSize, 27*Game.tileSize,
                             9*Game.tileSize, 5*Game.tileSize
+                        ),
+                        5
+                )
+        );
+
+        // Elétricos e fogo
+        this.pokeGenerator.addArea(
+                new PokemonArea(
+                        new PokemonType[]{PokemonType.ELECTRIC, PokemonType.FIRE},
+                        new Rectangle(
+                                45*Game.tileSize, 33*Game.tileSize,
+                                6*Game.tileSize, 5*Game.tileSize
                         ),
                         5
                 )
@@ -160,6 +171,7 @@ public class Outside implements GameScreen {
 
         // Ticking game objects
         player.tick();
+        player.getPokedex().tick();
         this.pokemons.forEach(Pokemon::tick);
         this.npcs.forEach(Npc::tick);
 
@@ -169,7 +181,7 @@ public class Outside implements GameScreen {
 
         // Colisão com pokemon
         Pokemon foundPokemon = this.findPokemonWithinPlayer();
-        if (foundPokemon != null & keyHandler.enterPressed) {
+        if (foundPokemon != null & keyHandler.isEnterPressed()) {
             ((CombatScreen) screenManager.getBattleScreen()).setEnemyPokemon(foundPokemon);
             screenManager.setCurrentScreenIndex(2);
             System.out.println("Você achou um " + foundPokemon.getName() + "!");
@@ -178,7 +190,7 @@ public class Outside implements GameScreen {
         // Colisão e diálogo com npcs
         for (Npc npc: npcs) {
             if (this.intersets(player, npc)) {
-                if (keyHandler.enterPressed) {
+                if (keyHandler.isEnterPressed()) {
                     npc.setDialogueActivated(true);
                 }
             }
@@ -187,8 +199,7 @@ public class Outside implements GameScreen {
 
     @Override
     public void render(Graphics g) {
-        g.drawImage(this.backgroundImage, -tm.getReferenceX(), -tm.getReferenceY(), null);
-        this.tm.renderRange(0, 3, g);
+        this.tm.renderRange(0, 4, g);
 
         player.render(g);
 
@@ -199,23 +210,25 @@ public class Outside implements GameScreen {
             poke.render(g);
         }
 
-        this.tm.renderRange(4, g);
+        this.tm.renderRange(5, g);
 
-        player.renderPokeballAmount(g);
-        player.renderItemAmount(g);
+        player.renderPlayerStatus(g);
 
         // Diálogos renderizados depois para aperecerem primeiro
         for (Npc npc: npcs)
             npc.renderDialogue(g);
 
+        if (keyHandler.ispToggle()) {
+            player.getPokedex().render(g);
+        }
+
     }
 
     @Override
     public void loadAnimations() {
-        // Background
-        this.backgroundImage = factory.getBackgroundImage();
         // Tilemaps e layers
-        this.tm.addLayer(new PlayerInteractableLayer("src/game/res/mapas/raia_agua.csv", factory.getMapTileSet(), new SwimStrategy(), player));
+        this.tm.addLayer(new PlayerInteractableLayer("src/game/res/mapas/raia_chao.csv", factory.getMapTileSet(), (Player p) -> p.setSwimming(false), player));
+        this.tm.addLayer(new PlayerInteractableLayer("src/game/res/mapas/raia_agua.csv", factory.getMapTileSet(), (Player p) -> p.setSwimming(true), player));
         this.tm.addLayer(new MapLayer("src/game/res/mapas/raia_solido.csv", factory.getMapTileSet(), true));
         this.tm.addLayer(new PlayerInteractableLayer("src/game/res/mapas/raia_portas.csv", factory.getMapTileSet(), new BienioEnterStrategy(screenManager), player));
         this.tm.addLayer(new MapLayer("src/game/res/mapas/raia_base_do_poste.csv", factory.getMapTileSet(),true));
@@ -248,6 +261,10 @@ public class Outside implements GameScreen {
         music.stop();
     }
 
+    /**
+     * Verifica se algum pokemon na tela estão em colisão com o player
+     * @return pokemons que está em contato com o player
+     */
     public Pokemon findPokemonWithinPlayer() {
         for (Pokemon pokemon : pokemons) {
             if (this.intersets(player, pokemon)) {
@@ -257,6 +274,12 @@ public class Outside implements GameScreen {
         return null;
     }
 
+    /**
+     * Verifica se uma entidade está colidindo com outra
+     * @param entity1 primeira entidade
+     * @param entity2 segunda entidade
+     * @return indica se há ou não colisão entre a primeira e a segunda entidade
+     */
     public boolean intersets(Entity entity1, Entity entity2) {
         return tm.getReferencedBounds(entity1).intersects(tm.getReferencedBounds(entity2));
     }

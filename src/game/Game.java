@@ -42,7 +42,7 @@ public class Game extends JPanel implements Runnable {
         this.addKeyListener(keyHandler);
         this.addMouseListener(mouseHandler);
         this.setDoubleBuffered(true);
-        this.player = new Player(30*Game.tileSize ,55*Game.tileSize, keyHandler);
+        this.player = new Player(30*Game.tileSize ,50*Game.tileSize, keyHandler);
         this.gameStateManager.addState(GameState.RestScreen, new RestScreen(keyHandler, gameStateManager));
         this.gameStateManager.addState(GameState.Menu, new Menu(this, gameStateManager, mouseHandler));
         this.gameStateManager.addState(GameState.Outside, new Play(this, gameStateManager, player, keyHandler, mouseHandler));
@@ -108,7 +108,7 @@ public class Game extends JPanel implements Runnable {
     }
 
     public void tick() {
-        if (keyHandler.escPressed) {
+        if (keyHandler.isEscPressed()) {
             gameStateManager.setState(GameState.Menu);
         } else {
             gameStateManager.getCurrentState().tick();

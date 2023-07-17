@@ -25,7 +25,7 @@ public class Player extends Entity {
 
     private int pokeBallAmount = 0;
     private int hp = 100;
-    private BufferedImage pokeballImage;
+    private BufferedImage pokeballImage, pikachuImage;
     private BufferedImage itemImage;
 
     private final IAnimationSet[] animationSets = new IAnimationSet[PlayerAnimations.values().length]; // Vetor com todas as animações possíveis.
@@ -42,6 +42,7 @@ public class Player extends Entity {
     private int numItems;
     private Random itemSorter;
     private boolean hasUsedItem;
+    private final Pokedex pokedex;
 
     private MapFactory spritesFactory;
 
@@ -49,17 +50,18 @@ public class Player extends Entity {
         super(x, y);
         this.movementKeyInput = movementKeyInput;
         this.currentAnimation = PlayerAnimations.Walk;
+        this.pokedex = new Pokedex();
         this.colliding = false;
         this.velSetter = BaseVelSetter.getInstance(this);
-        this.numItems = 50;
+        this.numItems = 0;
         this.itemSorter = new Random();
         this.hasUsedItem = false;
     }
 
     public void stopPlayerSoundEffects(){
-        walkSoundEffect.stopSoundEffect();
-        bikeSoundEffect.stopSoundEffect();
-        swimSoundEffect.stopSoundEffect();
+        walkSoundEffect.stop();
+        bikeSoundEffect.stop();
+        swimSoundEffect.stop();
     }
 
     public void setFactory(MapFactory spritesFactory) {
@@ -73,6 +75,7 @@ public class Player extends Entity {
             this.animationSets[PlayerAnimations.Swimming.getValue()] = new MoveAnimationSet(spritesFactory.getPlayerSpriteSheets(PlayerAnimations.Swimming),0, 10);
             this.pokeballImage = ImageIO.read(new FileInputStream("src/game/res/sprites/pokemon/pokeball.png"));
             this.itemImage = ImageIO.read(new FileInputStream("src/game/res/sprites/item.png"));
+            this.pikachuImage = ImageIO.read(new FileInputStream("src/game/res/sprites/pokemon/poke.png"));
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -120,23 +123,22 @@ public class Player extends Entity {
 
         // Gerencia qual será a animação atual do jogador.
         stopPlayerSoundEffects();
-        if (movementKeyInput.bikeButtonPressed && !swimming) {
+        if (movementKeyInput.isBikeButtonPressed() && !swimming) {
             setCurrentAnimation(PlayerAnimations.Bike);
-            bikeSoundEffect.playSoundEffect();
+            bikeSoundEffect.play();
             this.setMovingRate(3);
         } else if (swimming) {
             setCurrentAnimation(PlayerAnimations.Swimming);
-            swimSoundEffect.playSoundEffect();
+            swimSoundEffect.play();
             this.setMovingRate(4);
-            setSwimming(false);
         } else {
             setCurrentAnimation(PlayerAnimations.Walk);
-            walkSoundEffect.playSoundEffect();
+            walkSoundEffect.play();
             this.setMovingRate(2);
         }
 
         // Lidando com a lógica de parada do jogador
-        if (!movementKeyInput.downPressed && !movementKeyInput.upPressed || colliding){
+        if (!movementKeyInput.isDownPressed() && !movementKeyInput.isUpPressed() || colliding){
             if (getCurrentAnimationSet().getCurrentIndex() == FOWARD || getCurrentAnimationSet().getCurrentIndex() == BACKWARD) {
                 getAnimation().stop();
                 getAnimation().reset();
@@ -144,7 +146,7 @@ public class Player extends Entity {
             }
             setVelY(0);
         }
-        if (!movementKeyInput.rightPressed && !movementKeyInput.leftPressed || colliding) {
+        if (!movementKeyInput.isRightPressed() && !movementKeyInput.isLeftPressed() || colliding) {
             if (getCurrentAnimationSet().getCurrentIndex() == RIGHT || getCurrentAnimationSet().getCurrentIndex() == LEFT) {
                 getAnimation().stop();
                 getAnimation().reset();
@@ -154,9 +156,9 @@ public class Player extends Entity {
         }
 
         if (this.hasUsedItem == true) {
-            this.hasUsedItem = movementKeyInput.useItemPressed;
+            this.hasUsedItem = movementKeyInput.isUseItemPressed();
         }
-        if (movementKeyInput.useItemPressed && !this.hasUsedItem && this.numItems != 0 && !swimming && !movementKeyInput.bikeButtonPressed) {
+        if (movementKeyInput.isUseItemPressed() && !this.hasUsedItem && this.numItems != 0 && !swimming && !movementKeyInput.isBikeButtonPressed()) {
             this.useItem();
             this.hasUsedItem = true;
         }
@@ -179,7 +181,11 @@ public class Player extends Entity {
         g.drawImage(image, positionX, positionY, 32, 32, null);
     }
 
-    public void renderPokeballAmount(Graphics g) {
+    /**
+     * Renderiza informações sobre o Player.
+     * @param g gráficos usados para renderização
+     */
+    public void renderPlayerStatus(Graphics g) {
         // Renderizando a quantidade de pokebolas
         int pokeballX = Game.width - 3*Game.tileSize;
         int pokeballY = Game.tileSize / 2;
@@ -187,9 +193,7 @@ public class Player extends Entity {
         g.setFont(new Font("arial", Font.PLAIN, 20));
         g.setColor(Color.white);
         g.drawString("x " + this.getPokeballs(), pokeballX + Game.tileSize, pokeballY + 20);
-    }
 
-    public void renderItemAmount(Graphics g) {
         // Renderizando a quantidade de itens
         int itemX = Game.width - 3*Game.tileSize;
         int itemY = 3 * Game.tileSize / 2;
@@ -197,6 +201,14 @@ public class Player extends Entity {
         g.setFont(new Font("arial", Font.PLAIN, 20));
         g.setColor(Color.white);
         g.drawString("x " + this.numItems, itemX + Game.tileSize, itemY + 20);
+
+        // Renderizando a quantidade de pokemons
+        int pokedexX = Game.width - 8*Game.tileSize;
+        g.drawImage(pikachuImage, pokedexX, pokeballY, 25, 25, null);
+        g.setFont(new Font("arial", Font.PLAIN, 20));
+        g.setColor(Color.white);
+        g.drawString("x " + this.pokedex.getPokemons().size(), pokedexX + Game.tileSize, pokeballY + 20);
+
     }
 
     public void setSwimming(boolean swimming) {
@@ -311,7 +323,11 @@ public class Player extends Entity {
     }
 
     public void addItem() {
-        this.numItems++;
+        this.numItems = Game.clamp(this.numItems + 1, 0, 50);
+    }
+
+    public Pokedex getPokedex() {
+        return pokedex;
     }
 }
 

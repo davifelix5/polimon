@@ -65,7 +65,7 @@ public class CombatScreen implements GameScreen {
         pegar.setIsActive(true);
         correr.setIsActive(true);
         // Inicial message
-        this.message = "Para pegar um Pokemon basta escolher o botão de pegar Dependendo da dificuldade do jogo e da quantidade de bolas de pokemon que você possui esse pokemon será adicionado na sua pokedex";
+        this.message = "Para pegar um Pokemon, basta escolher o botão de pegar. Dependendo da dificuldade do jogo e da quantidade de bolas de pokebolas que você possui, esse pokemon será adicionado na sua pokedex";
         try {
             this.backgroundImage = ImageIO.read(new FileInputStream("src/game/res/fotos/combatScreen.jpg"));
             this.combatHUD = ImageIO.read(new FileInputStream("src/game/res/fotos/combatHUD.jpg"));
@@ -84,6 +84,9 @@ public class CombatScreen implements GameScreen {
         this.enemyPokemon = enemyPokemon;
     }
 
+    /**
+     * Lógica para a captura do Pokemon conforme a situação do Player (HP e pokebolas) e a dificuldade do jogo
+     */
     private void capturePokemon() {
         GameMode mode = this.game.getGameMode();
         System.out.println(mode);
@@ -91,6 +94,7 @@ public class CombatScreen implements GameScreen {
             this.player.removePokeball();
             this.player.reduceHP(mode.getHPLost());
             this.player.increaseExpeciente(mode.getXPGained());
+            this.player.getPokedex().addPokemon(enemyPokemon);
             this.pokemons.remove(enemyPokemon);
             enemyPokemon.getPokeArea().removePokemon();
             pegar.setIsActive(false);
@@ -103,6 +107,7 @@ public class CombatScreen implements GameScreen {
         }
         else {
             this.player.removePokeball();
+            this.player.reduceHP(mode.getHPLost());
             this.message = this.enemyPokemon.getName() + " não quer ser capturado. Tente novamente!";
         }
     }
@@ -169,7 +174,7 @@ public class CombatScreen implements GameScreen {
                 30, 640 - 176, 300
         );
 
-        this.player.renderPokeballAmount(g);
+        this.player.renderPlayerStatus(g);
     }
 
     @Override

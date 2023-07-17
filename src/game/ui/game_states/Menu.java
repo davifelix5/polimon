@@ -38,6 +38,8 @@ public class Menu implements IState {
 		this.stateManager = stateManager;
 
 		loadImages();
+
+		/* Botões para trocar de fábrica abstrata */
 		buttons[0] = new Button("Play Vintage Mode",35 ,180, 60, 600, 60, mouse, () -> {
 			game.setMapFactory("Vintage");
 			stateManager.setState(GameState.Outside);
@@ -46,6 +48,8 @@ public class Menu implements IState {
 			game.setMapFactory("Classic");
 			stateManager.setState(GameState.Outside);
 		});
+
+		/* Botões para alterar a estratégia nos NPCs e Pokemons */
 		buttons[2] = new Button("NPCs & Pokemons andando",35 ,180, 200, 600, 60, mouse, () -> {
 			stateManager.setNPCStrategy(new WalkNPCStrategy());
 			stateManager.setMapPokemonStrategy(new WalkPokemonStrategy());
@@ -54,6 +58,8 @@ public class Menu implements IState {
 			stateManager.setNPCStrategy(new FixedNPCStrategy());
 			stateManager.setMapPokemonStrategy(new FixedPokemonStrategy());
 		});
+
+		/* Botões para viabilizar a troca de dificuldades */
 		buttons[4] = new Button("Dificuldade fácil",35 ,180, 340, 600, 60, mouse, () -> game.setGameMode(modes[0]));
 		buttons[5] = new Button("Dificuldade média",35 ,180, 410, 600, 60, mouse, () -> game.setGameMode(modes[1]));
 		buttons[6] = new Button("Dificuldade difícil",35 ,180, 480, 600, 60, mouse, () -> game.setGameMode(modes[2]));

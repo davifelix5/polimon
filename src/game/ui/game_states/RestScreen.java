@@ -16,8 +16,8 @@ import java.io.IOException;
 
 public class RestScreen implements IState {
 
-	KeyHandler keyHandler;
-	IStateManager stateManager;
+	private final KeyHandler keyHandler;
+	private final IStateManager stateManager;
 	private BufferedImage backgroundImage;
 
 	public RestScreen(KeyHandler keyHandler, IStateManager stateManager) {
@@ -27,7 +27,7 @@ public class RestScreen implements IState {
 	}
 
 	public void tick() {
-		if (keyHandler.anyKeyPressed) {
+		if (keyHandler.isAnyKeyPressed()) {
 			getStateManager().setState(GameState.Menu);
 		}
 	}

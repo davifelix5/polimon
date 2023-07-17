@@ -27,6 +27,9 @@ OBS: não foi possível encontrar os mesmos _sprites_ para o _player_ nadando, a
   - Cada área tem uma lista com os tipos de _pokemons_ que podem aparecer nela, além de uma quantidade máxima de _pokemons_ que podem estar nela ao mesmo tempo.
   - Os tipos de _pokemon_ contam cada um com uma raridade, definida como uma probilidade de aparição, como é possível ver na classe `src/game/entity/PokemonType`.
   - Dentro de uma área, o tipo de pokemon que irá aparecer é escolhido aleatóriamente
+- A quantida de _pokemons_ captura é mostrada também no canto superior direito da tela
+- Para ver quais _pokemons_ foram capturados, basta aperta a tecla **P** e a pokedex irá abrir  
+
 ### Atualmente, as áreas para aparição de pokemons são
 - Tipos Normal, Grama e Fada
 
@@ -39,6 +42,10 @@ OBS: não foi possível encontrar os mesmos _sprites_ para o _player_ nadando, a
 - Tipo Aço, Veneno, Pedra
   
   ![Imagem Região Aço, Veneno, Pedra](assets/pokemon_metal.png)
+
+- Tipo elétrico e fogo
+
+  ![Imagem Região Elétrico, Fogo](assets/pokemon_eletrico.jpg)
 
 - A cada 20 segundos, os Pokémons de cada região são regenerados seguindo uma lógica randômica:
   - Cada tipo possui uma porbabilidade de ser criado no mapa seguindo sua raridade.
@@ -73,6 +80,7 @@ OBS: não foi possível encontrar os mesmos _sprites_ para o _player_ nadando, a
   - Dependendo da animação do player, ele emite sons diferentes
 
 ## Dificuldade
+- As dificuldades foram implementadas a partir da interface `src/combate/GameMode.java`
 - Dependendo da dificuldade, será mais fácil ou mais difícil capturar pokemons:
   - Fácil: sempre que tiver _pokebolas_ e vida, captura o Pokemon (ganha 10 de XP, perde 10 de vida)
   - Médio: se tiver _pokebolas_ e vida, chance de 70% para capturar o Pokemon (ganha 5 de XP, perde 15 de vida)
@@ -92,7 +100,7 @@ OBS: não foi possível encontrar os mesmos _sprites_ para o _player_ nadando, a
 em mais estados internos, que indicam os ambientes ou estágios do jogo nos quais o jogador se encontra
     - `Outside`: mapa externo da USP, com NPCs e _pokemons_
     - `Biênio`: este é um estado interior; para acessá-lo, basta entrar no prédio redondo com teto rosado (como mostra a imagem abaixo)
-      - ![Imagem do biênio](assets/img.png)
+      - ![Imagem do biênio](assets/bienio.png)
 
 - Buscamos sempre usar a injeção de dependências para evitar acoplamento excessivo entre classes.
 

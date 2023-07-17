@@ -13,6 +13,10 @@ public class GameStateManager implements IStateManager {
         return states[currentState.getValue()];
     }
 
+    /**
+     * Mud ao estado atual do jogo, iniciando o próximo estado e encerrando o antigo
+     * @param id estado a ser iniciado
+     */
     @Override
     public void setState(GameState id) {
         if (currentState != id) {
@@ -24,6 +28,10 @@ public class GameStateManager implements IStateManager {
         }
     }
 
+    /**
+     * Percorre todos os estados do jogo e muda a fábrica abstrata usada por eles
+     * @param factory nova fábrica a ser utilizada pelos estados
+     */
     @Override
     public void setFactory(MapFactory factory) {
         for (IState s: states) {
@@ -38,6 +46,10 @@ public class GameStateManager implements IStateManager {
         this.states[id.getValue()] = state;
     }
 
+    /**
+     * Percorre todos os estados e muda a estratégia para movimentação do NPC usada por eles
+     * @param strategy nova estratégia para movimentação do NPC
+     */
     @Override
     public void setNPCStrategy(NPCStrategy strategy) {
         for (IState s: states) {
@@ -47,6 +59,10 @@ public class GameStateManager implements IStateManager {
         }
     }
 
+    /**
+     * Percorre todos os estados e muda a estratégia para movimentação dos Pokemons usada por eles
+     * @param strategy nova estratégia para movimentação dos Pokemons
+     */
     @Override
     public void setMapPokemonStrategy(MapPokemonStrategy strategy) {
         for (IState s: states) {

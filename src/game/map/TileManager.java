@@ -109,6 +109,11 @@ public class TileManager {
         }
     }
 
+    /**
+     * Dá, em coordenadas relativas conforme a posição da câmera, os limites de colisão de uma determinada entidate
+     * @param entity entidade cujos limites estão sendo consultados
+     * @return limite de colisão para a entidade solicitada
+     */
     public Rectangle getReferencedBounds(Entity entity) {
         int x1 = (entity.getWorldX() + entity.getBounds().x) - getReferenceX();
         int y1 = (entity.getWorldY() + entity.getBounds().x) - getReferenceY();
@@ -137,6 +142,11 @@ public class TileManager {
         }
     }
 
+    /**
+     * Rederiza várias camadas a partir de uma determinada camada
+     * @param layerStartIndex índice da primeira camada a ser renderizada
+     * @param g gráficos usados no jogo
+     */
     public void renderRange(int layerStartIndex, Graphics g) {
         for (int i = layerStartIndex; i < layers.size(); i ++) {
             renderLayer(i, g);

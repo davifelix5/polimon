@@ -94,7 +94,7 @@ public class Npc extends Entity {
         }
 
         /* DIÁLOGO */
-        if(keyInput.spacePressed && dialogActivated) { // Está ocorrendo um diálogo, sendo solicitada a próxima fala
+        if(keyInput.isSpacePressed() && dialogActivated) { // Está ocorrendo um diálogo, sendo solicitada a próxima fala
             if (!dialogueChanged) { // Se não houve uma mudança após espaço pressionado
                 dialogueChanged = true;
                 if (dialogue.getCurrentLine() < dialogue.getDialogues().length - 1) // Vai para a próxima fala

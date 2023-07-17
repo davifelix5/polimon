@@ -10,15 +10,12 @@ import game.map.factory.MapFactory;
 import game.map.interactions.BienioExitStrategy;
 
 import java.awt.*;
-import java.awt.image.BufferedImage;
 
 public class Bienio implements GameScreen {
     private MapFactory factory;
     private final Player player;
     private final ScreenManager screenManager;
     private final TileManager tm = new TileManager(20, 30);
-    private BufferedImage background;
-
 
     public Bienio(Player player, ScreenManager screenManager) {
         this.screenManager = screenManager;
@@ -36,10 +33,8 @@ public class Bienio implements GameScreen {
         // Sprites
         SpriteSheet mapSprites = factory.getMapTileSet();
 
-        // Chao
-        this.background = factory.getBienioBackground();
-
         // Layers
+        this.tm.addLayer(new MapLayer("src/game/res/mapas/bienio_chao.csv", mapSprites, false));
         this.tm.addLayer(new MapLayer("src/game/res/mapas/bienio_solidos.csv", mapSprites, true));
         this.tm.addLayer(new PlayerInteractableLayer("src/game/res/mapas/bienio_tapete.csv", mapSprites, new BienioExitStrategy(screenManager), player));
         this.tm.addLayer(new MapLayer("src/game/res/mapas/bienio_nao_solido_antes.csv", mapSprites, false));
@@ -72,12 +67,10 @@ public class Bienio implements GameScreen {
     }
 
     public void render(Graphics g) {
-        g.drawImage(background, 0, 0, null); // Map background
-        this.tm.renderRange(0, 2, g);
+        this.tm.renderRange(0, 3, g);
         player.render(g); // Player
-        this.tm.renderLayer(3,g ); // Plantas
-        player.renderPokeballAmount(g);
-        player.renderItemAmount(g);
+        this.tm.renderLayer(4,g ); // Plantas
+        player.renderPlayerStatus(g);
     }
 
 }
