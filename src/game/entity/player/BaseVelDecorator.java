@@ -6,7 +6,7 @@ public class BaseVelDecorator implements IPlayerVelSetter {
 
     public BaseVelDecorator(IPlayerVelSetter previousVelSetter) {
         this.previousVelSetter = previousVelSetter;
-        this.player = previousVelSetter.getPlayer();
+        this.player = previousVelSetter.player();
     }
 
     @Override
@@ -15,7 +15,7 @@ public class BaseVelDecorator implements IPlayerVelSetter {
     }
 
     @Override
-    public Player getPlayer() {
+    public Player player() {
         return this.player;
     }
 }

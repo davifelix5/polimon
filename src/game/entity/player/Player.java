@@ -40,7 +40,7 @@ public class Player extends Entity {
 
     private IPlayerVelSetter velSetter;
     private int numItems;
-    private Random itemSorter;
+    private final Random itemSorter;
     private boolean hasUsedItem;
     private final Pokedex pokedex;
 
@@ -52,7 +52,7 @@ public class Player extends Entity {
         this.currentAnimation = PlayerAnimations.Walk;
         this.pokedex = new Pokedex();
         this.colliding = false;
-        this.velSetter = BaseVelSetter.getInstance(this);
+        this.velSetter = new BaseVelSetter(this);
         this.numItems = 0;
         this.itemSorter = new Random();
         this.hasUsedItem = false;
@@ -155,16 +155,16 @@ public class Player extends Entity {
             setVelX(0);
         }
 
-        if (this.hasUsedItem == true) {
+        if (this.hasUsedItem) {
             this.hasUsedItem = movementKeyInput.isUseItemPressed();
         }
-        if (movementKeyInput.isUseItemPressed() && !this.hasUsedItem && !movementKeyInput.isResetEffectsPressed() && this.numItems != 0 && !swimming && !movementKeyInput.isBikeButtonPressed()) {
+        else if (movementKeyInput.isUseItemPressed() && !movementKeyInput.isResetEffectsPressed() && this.numItems != 0 && !swimming && !movementKeyInput.isBikeButtonPressed()) {
             this.useItem();
             this.hasUsedItem = true;
         }
 
         if (movementKeyInput.isResetEffectsPressed()) {
-            this.velSetter = BaseVelSetter.getInstance(this);
+            this.velSetter = new BaseVelSetter(this);
         }
 
         this.velSetter.setVel();
@@ -313,15 +313,9 @@ public class Player extends Entity {
 
     public void useItem() {
         switch (this.itemSorter.nextInt(3)) {
-            case 0:
-                this.velSetter = new IncrementVelDecorator(this.velSetter);
-                break;
-            case 1:
-                this.velSetter = new DecrementVelDecorator(this.velSetter);
-                break;
-            case 2:
-                this.velSetter = new ReverseVelDecorator(this.velSetter);
-                break;
+            case 0 -> this.velSetter = new IncrementVelDecorator(this.velSetter);
+            case 1 -> this.velSetter = new DecrementVelDecorator(this.velSetter);
+            case 2 -> this.velSetter = new ReverseVelDecorator(this.velSetter);
         }
         this.numItems--;
     }
