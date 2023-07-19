@@ -23,7 +23,7 @@ OBS: não foi possível encontrar os mesmos _sprites_ para o _player_ nadando, a
 - Para usar o item, basta apertar a tecla **U** estando em terra e sem a bicicleta (pode ser parado ou andando).
 - Para excluir os efeitos dos itens vigentes, basta apertar a tecla **R**.
 - Para pegar um item, basta interagir com o NPC da região mostrada a seguir:
-  -![Imagem NPC Item](assets/regiao_itens.png)
+  - ![Imagem NPC Item](assets/regiao_itens.png)
 - Quanto à implementação, foi utilizado o padrão Decorator, a fim de adicionar comportamentos cumulativos de forma flexível e prática.
 
 

@@ -1,20 +1,6 @@
 package game.entity.player;
 
-public class BaseVelSetter implements IPlayerVelSetter {
-
-    private static BaseVelSetter instance = null;
-    private Player player;
-
-    private BaseVelSetter(Player player) {
-        this.player = player;
-    }
-
-    public static BaseVelSetter getInstance(Player player) {
-        if (instance == null) {
-            instance = new BaseVelSetter(player);
-        }
-        return instance;
-    }
+public record BaseVelSetter(Player player) implements IPlayerVelSetter {
 
     @Override
     public void setVel() {
@@ -45,10 +31,5 @@ public class BaseVelSetter implements IPlayerVelSetter {
                 player.setVelX(player.getMovingRate());
             }
         }
-    }
-
-    @Override
-    public Player getPlayer() {
-        return this.player;
     }
 }
